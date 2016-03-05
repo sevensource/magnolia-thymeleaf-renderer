@@ -29,6 +29,8 @@ Maven coordinates:
     <version>0.2.1</version>
 </dependency>
 ```
+March 2016: There is a new branch for thymeleaf 3 support, but it's W.i.p. gives me some headache
+
 April 2015: Magnolia 5.3.8, Blossom 3.0.6
 March 2015: Magnolia 5.3.7
 
