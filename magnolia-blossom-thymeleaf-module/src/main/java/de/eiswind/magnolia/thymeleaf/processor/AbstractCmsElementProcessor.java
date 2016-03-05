@@ -59,7 +59,8 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
     public AbstractCmsElementProcessor(final TemplateMode templateMode, final String dialectPrefix,
                                        final String elementName, final boolean prefixElementName,
                                        final String attributeName, final boolean prefixAttributeName) {
-        super(templateMode, dialectPrefix, elementName, prefixElementName, attributeName, prefixAttributeName, PRECEDENCE, true);
+        super(templateMode, dialectPrefix, elementName,
+                prefixElementName, attributeName, prefixAttributeName, PRECEDENCE, true);
     }
 
 

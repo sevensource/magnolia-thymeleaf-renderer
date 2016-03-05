@@ -45,20 +45,28 @@ import java.util.Set;
 public class MagnoliaDialect extends AbstractProcessorDialect {
 
 
+    /**
+     * the magnolia dialoect
+     */
     public MagnoliaDialect() {
-        super("cms","cms",101);
+        super("cms", "cms", 101);
     }
 
 
     // TODO push dialect name to processors
-    public Set<IProcessor> getProcessors(String dialectName){
+
+    /**
+     * the magnolia processors
+     * @param dialectName
+     * @return
+     */
+    public Set<IProcessor> getProcessors(String dialectName) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new CmsInitElementProcessor());
         processors.add(new CmsAreaElementProcessor());
         processors.add(new CmsComponentElementProcessor());
         return processors;
     }
-
 
 
 }
