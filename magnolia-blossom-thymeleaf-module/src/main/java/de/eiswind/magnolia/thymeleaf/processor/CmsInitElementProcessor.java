@@ -41,24 +41,26 @@ import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.template.TemplateDefinition;
 import info.magnolia.templating.elements.MarkupHelper;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Comment;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Node;
-import org.thymeleaf.dom.Text;
+import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.processor.attr.AbstractChildrenModifierAttrProcessor;
+import org.thymeleaf.model.IComment;
+import org.thymeleaf.model.IModel;
+import org.thymeleaf.model.IModelFactory;
+import org.thymeleaf.model.IStandaloneElementTag;
+import org.thymeleaf.processor.element.AbstractElementModelProcessor;
+import org.thymeleaf.processor.element.IElementModelStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.jcr.RepositoryException;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * initlializes mgnl stuff on the page.
  */
-public class CmsInitElementProcessor extends AbstractChildrenModifierAttrProcessor {
+public class CmsInitElementProcessor extends AbstractElementModelProcessor {
+
+    private static final String ATTR_NAME="init";
 
     private static final int PRECEDENCE = 1000;
     private final I18nContentSupport i18nContentSupport = Components.getComponent(I18nContentSupport.class);
@@ -82,14 +84,17 @@ public class CmsInitElementProcessor extends AbstractChildrenModifierAttrProcess
      * create an instance.
      */
     public CmsInitElementProcessor() {
-        super("init");
+
+        super(TemplateMode.HTML,"cms","head",false,"init",false,1000);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected List<Node> getModifiedChildren(Arguments arguments, Element element, String attributeName) {
+    protected void doProcess(ITemplateContext context,
+                             IModel model,
+                             IElementModelStructureHandler structureHandler) {
         AggregationState aggregationState = MgnlContext.getAggregationState();
 
         javax.jcr.Node activePage = aggregationState.getMainContentNode();
@@ -101,42 +106,38 @@ public class CmsInitElementProcessor extends AbstractChildrenModifierAttrProcess
                 && NodeUtil.isGranted(activePage, Permission.SET);
 
         if (!isAdmin) {
-            return element.getChildren();
+            return ;
         }
 
-        String name = element.getNormalizedName();
-        if (!"head".equals(name)) {
-            throw new TemplateProcessingException("cms:init is only allowed on head element");
-        }
-        List<Node> result = new ArrayList<>(element.getChildren());
-        Element el = new Element("meta");
-        el.setAttribute("gwt:property", "locale=" + i18nContentSupport.getLocale());
-        result.add(el);
+        final TemplateMode templateMode = context.getTemplateMode();
+        final IModelFactory modelFactory =
+                context.getConfiguration().getModelFactory(templateMode);
+        IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta", false);
+        meta.getAttributes().setAttribute("gwt:property", "locale=" + i18nContentSupport.getLocale());
+        model.insert(0,meta);
+
+
         String ctx = MgnlContext.getContextPath();
         for (String sheet : CSS) {
-            el = new Element("link");
-            el.setAttribute("rel", "stylesheet");
-            el.setAttribute("type", "text/css");
-            el.setAttribute("href", ctx + sheet);
-            result.add(el);
-            Text t = new Text("\n");
-            result.add(t);
+            IStandaloneElementTag link = modelFactory.createStandaloneElementTag("link", false);
+            link.getAttributes().setAttribute("rel", "stylesheet");
+            link.getAttributes().setAttribute("type", "text/css");
+            link.getAttributes().setAttribute("href", ctx + sheet);
+            model.insert(1,link);
+
         }
         for (String script : JS) {
-            el = new Element("script");
-            el.setAttribute("type", "text/javascript");
-            el.setAttribute("src", ctx + script);
-            result.add(el);
-            Text t = new Text("\n");
-            result.add(t);
+            IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
+            scriptTag.getAttributes().setAttribute("type", "text/javascript");
+            scriptTag.getAttributes().setAttribute("src", ctx + script);
+            model.insert(1,scriptTag);
         }
-        el = new Element("script");
-        el.setAttribute("type", "text/javascript");
-        el.setAttribute("src", ctx + "/.resources/calendar/lang/calendar-"
+        IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
+        scriptTag.getAttributes().setAttribute("type", "text/javascript");
+        scriptTag.getAttributes().setAttribute("src", ctx + "/.resources/calendar/lang/calendar-"
                 + MgnlContext.getLocale().getLanguage() + ".js");
-        result.add(el);
-        Text t = new Text("\n");
-        result.add(t);
+        model.insert(1,scriptTag);
+
         StringWriter writer = new StringWriter();
         MarkupHelper helper = new MarkupHelper(writer);
         try {
@@ -179,26 +180,21 @@ public class CmsInitElementProcessor extends AbstractChildrenModifierAttrProcess
             throw new TemplateProcessingException("comment", e);
         }
 
-        Comment comment = new Comment(writer.toString());
+        IComment comment =
+                modelFactory.createComment(writer.toString());
 
-        result.add(comment);
-        t = new Text("\n");
-        result.add(t);
-        comment = new Comment(" /" + CMS_PAGE_TAG + " ");
-        result.add(comment);
-        t = new Text("\n");
-        result.add(t);
+        model.insert(1,comment);
+//        t = new Text("\n");
+//        result.add(t);
+        comment = modelFactory.createComment(" /" + CMS_PAGE_TAG + " ");
+        model.insert(1,comment);
+//        t = new Text("\n");
+//        result.add(t);
 
-        return result;
+
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPrecedence() {
-        return PRECEDENCE;
-    }
+
 
     /**
      * the path to a node.
@@ -214,4 +210,7 @@ public class CmsInitElementProcessor extends AbstractChildrenModifierAttrProcess
             throw new TemplateProcessingException("Can't construct node path for node " + node, e);
         }
     }
+
+
+
 }

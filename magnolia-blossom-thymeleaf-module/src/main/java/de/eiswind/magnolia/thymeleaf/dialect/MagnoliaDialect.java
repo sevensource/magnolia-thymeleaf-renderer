@@ -45,14 +45,13 @@ import java.util.Set;
 public class MagnoliaDialect extends AbstractDialect  {
 
 
-    @Override
-    public String getPrefix() {
-        return "cms";
+    protected MagnoliaDialect() {
+        super("cms");
     }
 
 
-    @Override
-    public Set<IProcessor> getProcessors() {
+    // TODO push dialect name to processors
+    Set<IProcessor> getProcessors(String dialectName){
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new CmsInitElementProcessor());
         processors.add(new CmsAreaElementProcessor());

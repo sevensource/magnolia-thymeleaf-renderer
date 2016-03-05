@@ -34,42 +34,34 @@ import info.magnolia.objectfactory.Components;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderException;
 import info.magnolia.templating.elements.TemplatingElement;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Macro;
-import org.thymeleaf.dom.Node;
+import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.processor.attr.AbstractAttrProcessor;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 
 /**
  * abstract base class for the magnolia element processors.
  *
  * @param <T> the element type.
  */
-public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> extends AbstractAttrProcessor {
-
+public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> extends AbstractAttributeTagProcessor {
 
     private static final int PRECEDENCE = 1000;
 
     /**
-     * initializes the attribute name.
-     *
-     * @param attrName the attribute name
      */
-    public AbstractCmsElementProcessor(String attrName) {
-        super(attrName);
+
+    public AbstractCmsElementProcessor(final TemplateMode templateMode, final String dialectPrefix,
+                                       final String elementName, final boolean prefixElementName,
+                                       final String attributeName, final boolean prefixAttributeName) {
+        super(templateMode, dialectPrefix, elementName, prefixElementName, attributeName, prefixAttributeName, PRECEDENCE, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int getPrecedence() {
-        return PRECEDENCE;
-    }
 
     /**
      * create mgnl templating element.
@@ -77,6 +69,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
      * @param renderingContext the context
      * @return the teplating element
      */
+
     protected final T createElement(RenderingContext renderingContext) {
         return Components.getComponentProvider().newInstance(getTemplatingElementClass(), renderingContext);
     }
@@ -93,12 +86,13 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 
     /**
      * mimics mgnl rendering behaviour.
-     *
-     * @param element           the thyme element
-     * @param attributeName     the att name
-     * @param templatingElement the mgnl templating element
      */
-    protected final void processElement(Element element, String attributeName, T templatingElement) {
+    protected void processElement(
+            final ITemplateContext context,
+            final IProcessableElementTag tag,
+            final IElementTagStructureHandler structureHandler,
+            final T templatingElement) {
+
         final StringBuilder out = new StringBuilder();
         try {
             templatingElement.begin(out);
@@ -106,17 +100,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
         } catch (RenderException | IOException e) {
             throw new TemplateProcessingException("render area element", e);
         }
-
-        // now convert the cms:area into a macro node and return done
-        final Macro macro = new Macro(out.toString());
-        macro.setProcessable(false);
-
-        // remove all children so they are ignored
-        element.clearChildren();
-        // and set children now to be our html
-        element.setChildren(Collections.<Node>singletonList(macro));
-
-        // remove cms:area attribute so isn't processed again
-        element.removeAttribute(attributeName);
+        structureHandler.removeAllButFirstChild();
+        structureHandler.replaceWith(out, false);
     }
 }
