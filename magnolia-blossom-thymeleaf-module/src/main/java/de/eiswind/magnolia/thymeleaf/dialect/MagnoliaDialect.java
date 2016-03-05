@@ -46,7 +46,7 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
 
 
     /**
-     * the magnolia dialoect
+     * the magnolia dialect.
      */
     public MagnoliaDialect() {
         super("cms", "cms", 101);
@@ -56,7 +56,7 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
     // TODO push dialect name to processors
 
     /**
-     * the magnolia processors
+     * the magnolia processors.
      * @param dialectName
      * @return
      */
