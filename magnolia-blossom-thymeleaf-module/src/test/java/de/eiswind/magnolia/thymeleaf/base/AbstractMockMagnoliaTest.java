@@ -124,6 +124,7 @@ public class AbstractMockMagnoliaTest {
         when(config.isAdmin()).thenReturn(true);
 
         componentProvider = mock(ComponentProvider.class);
+        Components.setComponentProvider(componentProvider);
         when(componentProvider.getComponent(ServerConfiguration.class)).thenReturn(config);
         engine = mock(RenderingEngine.class);
         when(componentProvider.getComponent(RenderingEngine.class)).thenReturn(engine);

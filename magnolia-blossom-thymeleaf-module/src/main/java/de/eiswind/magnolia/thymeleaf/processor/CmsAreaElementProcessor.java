@@ -60,19 +60,19 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
      */
     public CmsAreaElementProcessor() {
 
-        super(TemplateMode.HTML,"cms",null,false,ATTR_NAME,false);
+        super(TemplateMode.HTML, "cms", null, false, ATTR_NAME, false);
     }
 
     /**
      * {@inheritDoc}
      */
 
-    protected  void doProcess(
+    protected void doProcess(
             final ITemplateContext context,
             final IProcessableElementTag tag,
             final AttributeName attributeName,
             final String attributeValue,
-            final IElementTagStructureHandler structureHandler){
+            final IElementTagStructureHandler structureHandler) {
         final RenderingEngine renderingEngine = Components.getComponent(RenderingEngine.class);
         final RenderingContext renderingContext = renderingEngine.getRenderingContext();
 
@@ -96,7 +96,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 
         AreaElement areaElement = createElement(renderingContext);
         areaElement.setName(areaDef.getName());
-        processElement(context,tag, structureHandler, areaElement);
+        processElement(context, tag, structureHandler, areaElement);
     }
 
 }

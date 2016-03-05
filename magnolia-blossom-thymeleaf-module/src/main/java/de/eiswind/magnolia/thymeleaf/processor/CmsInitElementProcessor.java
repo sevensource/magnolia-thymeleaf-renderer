@@ -43,10 +43,7 @@ import info.magnolia.rendering.template.TemplateDefinition;
 import info.magnolia.templating.elements.MarkupHelper;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.model.IComment;
-import org.thymeleaf.model.IModel;
-import org.thymeleaf.model.IModelFactory;
-import org.thymeleaf.model.IStandaloneElementTag;
+import org.thymeleaf.model.*;
 import org.thymeleaf.processor.element.AbstractElementModelProcessor;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -60,7 +57,7 @@ import java.io.StringWriter;
  */
 public class CmsInitElementProcessor extends AbstractElementModelProcessor {
 
-    private static final String ATTR_NAME="init";
+    private static final String ATTR_NAME = "init";
 
     private static final int PRECEDENCE = 1000;
     private final I18nContentSupport i18nContentSupport = Components.getComponent(I18nContentSupport.class);
@@ -84,8 +81,7 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
      * create an instance.
      */
     public CmsInitElementProcessor() {
-
-        super(TemplateMode.HTML,"cms","head",false,"init",false,1000);
+        super(TemplateMode.HTML, "cms", "head", false, ATTR_NAME, true, PRECEDENCE);
     }
 
     /**
@@ -96,8 +92,8 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
                              IModel model,
                              IElementModelStructureHandler structureHandler) {
         AggregationState aggregationState = MgnlContext.getAggregationState();
-
         javax.jcr.Node activePage = aggregationState.getMainContentNode();
+
 
         ServerConfiguration config = Components.getComponent(ServerConfiguration.class);
         boolean isAdmin = config.isAdmin()
@@ -106,7 +102,7 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
                 && NodeUtil.isGranted(activePage, Permission.SET);
 
         if (!isAdmin) {
-            return ;
+            return;
         }
 
         final TemplateMode templateMode = context.getTemplateMode();
@@ -114,7 +110,9 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
                 context.getConfiguration().getModelFactory(templateMode);
         IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta", false);
         meta.getAttributes().setAttribute("gwt:property", "locale=" + i18nContentSupport.getLocale());
-        model.insert(0,meta);
+        IOpenElementTag head = (IOpenElementTag) model.get(0);
+        head.getAttributes().removeAttribute("cms", "init");
+        model.insert(1, meta);
 
 
         String ctx = MgnlContext.getContextPath();
@@ -123,20 +121,20 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             link.getAttributes().setAttribute("rel", "stylesheet");
             link.getAttributes().setAttribute("type", "text/css");
             link.getAttributes().setAttribute("href", ctx + sheet);
-            model.insert(1,link);
+            model.insert(1, link);
 
         }
         for (String script : JS) {
             IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
             scriptTag.getAttributes().setAttribute("type", "text/javascript");
             scriptTag.getAttributes().setAttribute("src", ctx + script);
-            model.insert(1,scriptTag);
+            model.insert(2, scriptTag);
         }
         IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
         scriptTag.getAttributes().setAttribute("type", "text/javascript");
         scriptTag.getAttributes().setAttribute("src", ctx + "/.resources/calendar/lang/calendar-"
                 + MgnlContext.getLocale().getLanguage() + ".js");
-        model.insert(1,scriptTag);
+        model.insert(2, scriptTag);
 
         StringWriter writer = new StringWriter();
         MarkupHelper helper = new MarkupHelper(writer);
@@ -183,17 +181,15 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         IComment comment =
                 modelFactory.createComment(writer.toString());
 
-        model.insert(1,comment);
+        model.insert(2, comment);
 //        t = new Text("\n");
 //        result.add(t);
         comment = modelFactory.createComment(" /" + CMS_PAGE_TAG + " ");
-        model.insert(1,comment);
+        model.insert(2, comment);
 //        t = new Text("\n");
 //        result.add(t);
 
-
     }
-
 
 
     /**
@@ -210,7 +206,6 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             throw new TemplateProcessingException("Can't construct node path for node " + node, e);
         }
     }
-
 
 
 }

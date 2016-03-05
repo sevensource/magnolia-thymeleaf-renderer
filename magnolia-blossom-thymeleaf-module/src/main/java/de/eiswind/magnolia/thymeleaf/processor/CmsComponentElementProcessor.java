@@ -48,7 +48,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 /**
  * the component processor.
  */
-public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
+public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
 
     /**
      * the content attribute name.
@@ -60,19 +60,19 @@ public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<C
      */
     public CmsComponentElementProcessor() {
 
-        super(TemplateMode.HTML,"cms",null,false,ATTR_NAME,false);
+        super(TemplateMode.HTML, "cms", null, false, ATTR_NAME, false);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected  void doProcess(
+    protected void doProcess(
             final ITemplateContext context,
             final IProcessableElementTag tag,
             final AttributeName attributeName,
             final String attributeValue,
-            final IElementTagStructureHandler structureHandler){
+            final IElementTagStructureHandler structureHandler) {
 
         final Expression expression = new StandardExpressionParser().parseExpression(context, attributeValue);
 
@@ -92,7 +92,7 @@ public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<C
 
         ComponentElement componentElement = createElement(renderingContext);
         componentElement.setContent(content);
-        processElement(context,tag,structureHandler,componentElement);
+        processElement(context, tag, structureHandler, componentElement);
 
 
     }

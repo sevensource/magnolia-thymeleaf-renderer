@@ -33,7 +33,7 @@ package de.eiswind.magnolia.thymeleaf.dialect;
 import de.eiswind.magnolia.thymeleaf.processor.CmsAreaElementProcessor;
 import de.eiswind.magnolia.thymeleaf.processor.CmsComponentElementProcessor;
 import de.eiswind.magnolia.thymeleaf.processor.CmsInitElementProcessor;
-import org.thymeleaf.dialect.AbstractDialect;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 
 import java.util.HashSet;
@@ -42,16 +42,16 @@ import java.util.Set;
 /**
  * configures the mgnl processors.
  */
-public class MagnoliaDialect extends AbstractDialect  {
+public class MagnoliaDialect extends AbstractProcessorDialect {
 
 
-    protected MagnoliaDialect() {
-        super("cms");
+    public MagnoliaDialect() {
+        super("cms","cms",101);
     }
 
 
     // TODO push dialect name to processors
-    Set<IProcessor> getProcessors(String dialectName){
+    public Set<IProcessor> getProcessors(String dialectName){
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new CmsInitElementProcessor());
         processors.add(new CmsAreaElementProcessor());
