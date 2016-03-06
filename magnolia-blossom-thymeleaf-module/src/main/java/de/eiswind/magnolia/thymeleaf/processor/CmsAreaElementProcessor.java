@@ -60,7 +60,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
      */
     public CmsAreaElementProcessor(String prefix) {
 
-        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, false);
+        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
     }
 
     /**

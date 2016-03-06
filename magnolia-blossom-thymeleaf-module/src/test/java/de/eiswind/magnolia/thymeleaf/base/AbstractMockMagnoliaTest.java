@@ -19,6 +19,8 @@ package de.eiswind.magnolia.thymeleaf.base;
 import com.google.inject.Provider;
 import de.eiswind.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import de.eiswind.magnolia.thymeleaf.renderer.ThymeleafRenderer;
+import info.magnolia.beanmerger.BeanMerger;
+import info.magnolia.beanmerger.ProxyBasedBeanMerger;
 import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.cms.core.AggregationState;
 import info.magnolia.cms.i18n.DefaultMessagesManager;
@@ -27,6 +29,7 @@ import info.magnolia.cms.i18n.MessagesManager;
 import info.magnolia.cms.security.AccessManager;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.context.WebContext;
+import info.magnolia.i18nsystem.I18nizer;
 import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.module.blossom.template.BlossomTemplateDefinition;
 import info.magnolia.objectfactory.ComponentProvider;
@@ -73,9 +76,6 @@ import static org.mockito.Mockito.when;
  */
 public class AbstractMockMagnoliaTest {
 
-    @Resource
-    private WebApplicationContext webApplicationContext;
-
     protected Node node;
     protected ThymeleafRenderer renderer;
     protected RenderableDefinition renderableDefinition;
@@ -85,7 +85,8 @@ public class AbstractMockMagnoliaTest {
     protected ComponentProvider componentProvider;
     protected ServerConfiguration config;
     protected RenderingEngine engine;
-
+    @Resource
+    private WebApplicationContext webApplicationContext;
 
     @Before
     public void setUp() throws Exception {
@@ -135,11 +136,16 @@ public class AbstractMockMagnoliaTest {
         when(i18nContentSupport.getDefaultLocale()).thenReturn(Locale.ENGLISH);
         when(componentProvider.getComponent(I18nContentSupport.class)).thenReturn(i18nContentSupport);
 
-
+        RenderableVariationResolver variationResolver = mock(RenderableVariationResolver.class);
+        when(componentProvider.getComponent(RenderableVariationResolver.class)).thenReturn(variationResolver);
+        I18nizer i18nizer = mock(I18nizer.class);
+        when(componentProvider.getComponent(I18nizer.class)).thenReturn(i18nizer);
         Components.pushProvider(componentProvider);
 
         DefaultMessagesManager mgr = new DefaultMessagesManager();
         when(componentProvider.getComponent(MessagesManager.class)).thenReturn(mgr);
+
+        when(componentProvider.getComponent(BeanMerger.class)).thenReturn(new ProxyBasedBeanMerger());
 
         RenderContext.push();
         RenderContext.get().setModel(new HashMap<>());
@@ -157,7 +163,7 @@ public class AbstractMockMagnoliaTest {
         renderableDefinition = mock(RenderableDefinition.class);
         renderingContext = mock(RenderingContext.class);
         when(engine.getRenderingContext()).thenReturn(renderingContext);
-        RenderableVariationResolver variationResolver = mock(RenderableVariationResolver.class);
+
         AreaElement areaElement = new AreaElement(config, renderingContext, engine, variationResolver);
         areaElement.setContent(node);
         when(componentProvider.newInstance(eq(AreaElement.class), any())).thenReturn(areaElement);
@@ -175,6 +181,7 @@ public class AbstractMockMagnoliaTest {
         areaMap.put("Area", areaDef);
         when(templateDefinition.getAreas()).thenReturn(areaMap);
         when(renderingContext.getRenderableDefinition()).thenReturn(templateDefinition);
+        when(i18nizer.decorate(templateDefinition)).thenReturn(templateDefinition);
     }
 
     @After

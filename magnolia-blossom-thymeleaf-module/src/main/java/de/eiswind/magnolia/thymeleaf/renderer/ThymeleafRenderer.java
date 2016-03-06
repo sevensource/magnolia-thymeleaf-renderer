@@ -16,6 +16,7 @@
 
 package de.eiswind.magnolia.thymeleaf.renderer;
 
+import de.eiswind.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.objectfactory.Components;
@@ -103,7 +104,7 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
 
             Context context = new Context(MgnlContext.getLocale(), vars);
             // and pass the fragment name and spec then onto the engine
-            engine.process(templateScript, selectors, context, out);
+            engine.process(templateScript, selectors, context, new AppendableWriterWrapper(out));
 
         } catch (IOException x) {
             throw new RenderException(x);

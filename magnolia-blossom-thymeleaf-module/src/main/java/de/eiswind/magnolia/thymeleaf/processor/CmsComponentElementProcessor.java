@@ -60,7 +60,7 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
      */
     public CmsComponentElementProcessor(String prefix) {
 
-        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, false);
+        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
     }
 
     /**
