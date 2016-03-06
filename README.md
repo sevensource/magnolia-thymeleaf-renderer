@@ -3,7 +3,13 @@ magnolia-thymeleaf-renderer
 
 This is a working, fully functional integration of the thymeleaf template engine into magnolia cms
 
-It supports blossom (spring-mvc) templates. If someone needs to have a pure STK integration please look into [magnolia forge](http://git.magnolia-cms.com/gitweb/?p=forge/namics-mgnl-thymeleaf.git), there is a module with support for that.
+NOW supports thymeleaf3
+=======================
+
+Thymeleaf3 required a complete rewrite. So if you want to use thymeleaf2 you should go for 0.2.1. The 0.3.0 Release is completely new and works only with thymeleaf3.
+
+It supports blossom (spring-mvc) templates. MTK should work too, let me know if you tried it.
+It should work with MTK as well. Let me know if you tried it.
 
 The custom dialect comes with cms:init, cms:area and cms:component
 
@@ -26,10 +32,10 @@ Maven coordinates:
 <dependency>
     <groupId>de.eiswind</groupId>
     <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 </dependency>
 ```
-March 2016: There is a new branch for thymeleaf 3 support, but it's W.i.p. gives me some headache
+March 2016: thymeleaf 3 support, Magnolia 5.4.x, Blossom 3.1.x
 
 April 2015: Magnolia 5.3.8, Blossom 3.0.6
 March 2015: Magnolia 5.3.7
