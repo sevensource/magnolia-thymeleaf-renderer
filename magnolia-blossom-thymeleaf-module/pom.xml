@@ -22,7 +22,7 @@
 
 
     <scm>
-        <connection>scm:git:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</connection>
+        <connection>scm:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</connection>
         <developerConnection>scm:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</developerConnection>
         <url>scm:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</url>
       <tag>HEAD</tag>
