@@ -9,7 +9,7 @@ NOW supports thymeleaf3
 Thymeleaf3 required a complete rewrite. So if you want to use thymeleaf2 you should go for 0.2.1. The 0.3.0 Release is completely new and works only with thymeleaf3.
 
 It supports blossom (spring-mvc) templates. MTK should work too, let me know if you tried it.
-It should work with MTK as well. Let me know if you tried it.
+
 
 The custom dialect comes with cms:init, cms:area and cms:component
 
