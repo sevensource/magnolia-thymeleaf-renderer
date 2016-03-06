@@ -16,6 +16,7 @@
 
 package de.eiswind.magnolia.thymeleaf.renderer;
 
+import de.eiswind.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.objectfactory.Components;
@@ -32,14 +33,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.support.RequestContext;
-import org.thymeleaf.context.IWebContext;
-import org.thymeleaf.context.ProcessingContext;
+import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.naming.SpringContextVariableNames;
-import org.thymeleaf.standard.fragment.StandardFragment;
-import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
-import org.thymeleaf.standard.processor.attr.StandardFragmentAttrProcessor;
 
 import javax.jcr.Node;
 import javax.servlet.ServletContext;
@@ -47,7 +43,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * mgnl renderer for thymeleaf.
@@ -94,21 +92,20 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
         // copy all spring model attributes into the spring web context as variables
         vars.putAll(RenderContext.get().getModel());
 
-        final IWebContext context = new SpringWebContext(request, response, servletContext, MgnlContext.getWebContext()
-                .getRequest().getLocale(), vars, getApplicationContext());
-
+        Set<String> selectors = new HashSet<>();
+        // we mimic the fragment selector syntax here
+        if (templateScript.contains("::")) {
+            String[] split = templateScript.split("::");
+            templateScript = split[0].trim();
+            selectors.add(split[1].trim());
+        }
         try (AppendableWriter out = renderingCtx.getAppendable()) {
-            // need to ensure engine initialised before getting configuration
-            if (!engine.isInitialized()) {
-                engine.initialize();
-            }
             // allow template fragment syntax to be used e.g. template.html :: area
-            final StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
-                    engine.getConfiguration(), new ProcessingContext(context), templateScript, null, "th:"
-                            + StandardFragmentAttrProcessor.ATTR_NAME);
 
+            Context context = new Context(MgnlContext.getLocale(), vars);
             // and pass the fragment name and spec then onto the engine
-            engine.process(fragment.getTemplateName(), context, fragment.getFragmentSpec(), out);
+            engine.process(templateScript, selectors, context, new AppendableWriterWrapper(out));
+
         } catch (IOException x) {
             throw new RenderException(x);
         }
@@ -157,4 +154,6 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
     public void setApplicationContext(final ApplicationContext applicationContext1) {
         this.applicationContext = applicationContext1;
     }
+
+
 }

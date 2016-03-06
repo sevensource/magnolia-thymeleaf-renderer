@@ -36,10 +36,13 @@ import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.template.AreaDefinition;
 import info.magnolia.templating.elements.AreaElement;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
+
 
 /**
  * the area processor.
@@ -55,19 +58,21 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
     /**
      * create an instance.
      */
-    public CmsAreaElementProcessor() {
+    public CmsAreaElementProcessor(String prefix) {
 
-        super(ATTR_NAME);
+        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
-        final String attributeValue = element.getAttributeValue(attributeName);
-
+    protected void doProcess(
+            final ITemplateContext context,
+            final IProcessableElementTag tag,
+            final AttributeName attributeName,
+            final String attributeValue,
+            final IElementTagStructureHandler structureHandler) {
         final RenderingEngine renderingEngine = Components.getComponent(RenderingEngine.class);
         final RenderingContext renderingContext = renderingEngine.getRenderingContext();
 
@@ -91,8 +96,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 
         AreaElement areaElement = createElement(renderingContext);
         areaElement.setName(areaDef.getName());
-        processElement(element, attributeName, areaElement);
-
-        return ProcessorResult.OK;
+        processElement(context, tag, structureHandler, areaElement);
     }
+
 }

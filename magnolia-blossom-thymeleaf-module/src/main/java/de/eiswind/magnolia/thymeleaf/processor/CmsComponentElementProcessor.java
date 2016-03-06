@@ -35,18 +35,20 @@ import info.magnolia.objectfactory.Components;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.templating.elements.ComponentElement;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.Expression;
 import org.thymeleaf.standard.expression.StandardExpressionParser;
+import org.thymeleaf.templatemode.TemplateMode;
 
 
 /**
  * the component processor.
  */
-public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
+public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
 
     /**
      * the content attribute name.
@@ -56,20 +58,25 @@ public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<C
     /**
      * instance.
      */
-    public CmsComponentElementProcessor() {
+    public CmsComponentElementProcessor(String prefix) {
 
-        super(ATTR_NAME);
+        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ProcessorResult processAttribute(Arguments arguments, Element element,  String attributeName) {
+    protected void doProcess(
+            final ITemplateContext context,
+            final IProcessableElementTag tag,
+            final AttributeName attributeName,
+            final String attributeValue,
+            final IElementTagStructureHandler structureHandler) {
 
-        final Expression expression = new StandardExpressionParser().parseExpression(arguments.getConfiguration(),
-                arguments, element.getAttributeValue(attributeName));
-        final Object contentObject = expression.execute(arguments.getConfiguration(), arguments);
+        final Expression expression = new StandardExpressionParser().parseExpression(context, attributeValue);
+
+        final Object contentObject = expression.execute(context);
 
         final javax.jcr.Node content;
         if (contentObject instanceof ContentMap) {
@@ -85,8 +92,8 @@ public  class CmsComponentElementProcessor extends AbstractCmsElementProcessor<C
 
         ComponentElement componentElement = createElement(renderingContext);
         componentElement.setContent(content);
-        processElement(element, attributeName, componentElement);
+        processElement(context, tag, structureHandler, componentElement);
 
-        return ProcessorResult.OK;
+
     }
 }
