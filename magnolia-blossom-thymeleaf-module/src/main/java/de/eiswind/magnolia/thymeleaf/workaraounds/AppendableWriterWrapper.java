@@ -8,6 +8,7 @@ import java.io.Writer;
 /**
  *
  * wraps magnolias AppendableWriter, because its badly misdesigned.
+ * https://jira.magnolia-cms.com/browse/MAGNOLIA-6583
  * Created by thomas on 06.03.16.
  */
 public class AppendableWriterWrapper extends Writer {
