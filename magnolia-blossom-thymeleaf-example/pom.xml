@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.eiswind</groupId>
@@ -16,11 +16,12 @@
     <properties>
         <project.config.path>${project.basedir}/../config</project.config.path>
 
-        <magnoliaVersion>5.3.8</magnoliaVersion>
+        <magnoliaVersion>5.4.4</magnoliaVersion>
         <javaVersion>1.8</javaVersion>
-        <blossomVersion>3.0.6</blossomVersion>
-        <spring.version>4.1.6.RELEASE</spring.version>
-        <thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
+        <blossomVersion>3.1.2</blossomVersion>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <thymeleaf.version>3.0.0-SNAPSHOT</thymeleaf.version>
+        <thymeleaf.spring.version>3.0.0.BETA02</thymeleaf.spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     </properties>
@@ -87,6 +88,14 @@
                     <groupId>info.magnolia</groupId>
                     <artifactId>magnolia-module-google-sitemap</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>info.magnolia.demo</groupId>
+                    <artifactId>magnolia-travel-demo</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>info.magnolia.demo</groupId>
+                    <artifactId>magnolia-travel-tours</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -102,7 +111,7 @@
         <dependency>
             <groupId>de.eiswind</groupId>
             <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-            <version>0.2.2-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
 
 

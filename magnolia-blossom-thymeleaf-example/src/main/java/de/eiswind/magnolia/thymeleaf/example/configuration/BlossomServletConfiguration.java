@@ -58,8 +58,8 @@ import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.util.Collections;
 import java.util.Set;
@@ -197,10 +197,10 @@ public class BlossomServletConfiguration {
 
     @Bean
     public ITemplateResolver getTemplateResolver() {
-        ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setPrefix("/WEB-INF/classes/thymeleaf_proto/");
         resolver.setSuffix("");
-        resolver.setTemplateMode("HTML5");
+        resolver.setTemplateMode("HTML");
         resolver.setCacheable(false); // TODO make this configurable for prod deployments
         return resolver;
     }

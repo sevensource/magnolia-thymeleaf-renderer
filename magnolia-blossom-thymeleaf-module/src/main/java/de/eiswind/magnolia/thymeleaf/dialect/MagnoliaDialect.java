@@ -62,9 +62,9 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
      */
     public Set<IProcessor> getProcessors(String dialectName) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new CmsInitElementProcessor());
-        processors.add(new CmsAreaElementProcessor());
-        processors.add(new CmsComponentElementProcessor());
+        processors.add(new CmsInitElementProcessor(dialectName));
+        processors.add(new CmsAreaElementProcessor(dialectName));
+        processors.add(new CmsComponentElementProcessor(dialectName));
         return processors;
     }
 

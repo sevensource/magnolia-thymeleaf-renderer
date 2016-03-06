@@ -58,9 +58,9 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
     /**
      * instance.
      */
-    public CmsComponentElementProcessor() {
+    public CmsComponentElementProcessor(String prefix) {
 
-        super(TemplateMode.HTML, "cms", null, false, ATTR_NAME, false);
+        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, false);
     }
 
     /**

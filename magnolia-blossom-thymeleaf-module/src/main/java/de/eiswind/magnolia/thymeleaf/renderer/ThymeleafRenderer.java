@@ -42,7 +42,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * mgnl renderer for thymeleaf.
@@ -89,13 +91,20 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
         // copy all spring model attributes into the spring web context as variables
         vars.putAll(RenderContext.get().getModel());
 
-
+        Set<String> selectors = new HashSet<>();
+        // we mimic the fragment selector syntax here
+        if (templateScript.contains("::")) {
+            String[] split = templateScript.split("::");
+            templateScript = split[0].trim();
+            selectors.add(split[1].trim());
+        }
         try (AppendableWriter out = renderingCtx.getAppendable()) {
             // allow template fragment syntax to be used e.g. template.html :: area
 
             Context context = new Context(MgnlContext.getLocale(), vars);
             // and pass the fragment name and spec then onto the engine
-            engine.process(templateScript, context, out);
+            engine.process(templateScript, selectors, context, out);
+
         } catch (IOException x) {
             throw new RenderException(x);
         }

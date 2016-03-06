@@ -63,7 +63,7 @@ public class RendererTest extends AbstractMockMagnoliaTest {
     @Test
     public void smokeComponentTest() throws Exception {
         Map<String, Object> vars = new HashMap<>();
-        renderer.onRender(node, renderableDefinition, renderingContext, vars, "component.html");
+        renderer.onRender(node, renderableDefinition, renderingContext, vars, "main.html :: component");
         String result = stringWriter.toString();
         assertTrue("fragment is wrong", result.startsWith("<div"));
     }

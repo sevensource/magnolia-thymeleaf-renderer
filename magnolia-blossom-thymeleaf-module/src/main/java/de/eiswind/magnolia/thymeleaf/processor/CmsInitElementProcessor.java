@@ -61,17 +61,13 @@ import java.io.StringWriter;
  */
 public class CmsInitElementProcessor extends AbstractElementModelProcessor {
 
-    private static final String ATTR_NAME = "init";
-
-    private static final int PRECEDENCE = 1000;
-    private final I18nContentSupport i18nContentSupport = Components.getComponent(I18nContentSupport.class);
-
-    private static final String CMS_PAGE_TAG = "cms:page";
     /**
      * name of the content attribute.
      */
     public static final String CONTENT_ATTRIBUTE = "content";
-
+    private static final String ATTR_NAME = "init";
+    private static final int PRECEDENCE = 1000;
+    private static final String CMS_PAGE_TAG = "cms:page";
     private static final String[] JS = new String[]{"/.magnolia/pages/javascript.js",
             "/.magnolia/pages/messages.en.js", "/.resources/admin-js/dialogs/dialogs.js",
             "/.resources/calendar/calendar.js",
@@ -80,12 +76,13 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
                     + ".nocache.js"};
     private static final String[] CSS = new String[]{"/.resources/admin-css/admin-all.css",
             "/.resources/magnolia-templating-editor/css/editor.css", "/.resources/calendar/skins/aqua/theme.css"};
+    private final I18nContentSupport i18nContentSupport = Components.getComponent(I18nContentSupport.class);
 
     /**
      * create an instance.
      */
-    public CmsInitElementProcessor() {
-        super(TemplateMode.HTML, "cms", "head", false, ATTR_NAME, true, PRECEDENCE);
+    public CmsInitElementProcessor(String prefix) {
+        super(TemplateMode.HTML, prefix, "head", false, ATTR_NAME, true, PRECEDENCE);
     }
 
     /**
@@ -116,7 +113,7 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         meta.getAttributes().setAttribute("gwt:property", "locale=" + i18nContentSupport.getLocale());
         IOpenElementTag head = (IOpenElementTag) model.get(0);
         head.getAttributes().removeAttribute("cms", "init");
-        model.insert(1, meta);
+        model.insert(model.size() - 1, meta); // insert before closing head tag
 
 
         String ctx = MgnlContext.getContextPath();
@@ -125,20 +122,20 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             link.getAttributes().setAttribute("rel", "stylesheet");
             link.getAttributes().setAttribute("type", "text/css");
             link.getAttributes().setAttribute("href", ctx + sheet);
-            model.insert(1, link);
+            model.insert(model.size() - 1, link);
 
         }
         for (String script : JS) {
             IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
             scriptTag.getAttributes().setAttribute("type", "text/javascript");
             scriptTag.getAttributes().setAttribute("src", ctx + script);
-            model.insert(2, scriptTag);
+            model.insert(model.size() - 1, scriptTag);
         }
         IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
         scriptTag.getAttributes().setAttribute("type", "text/javascript");
         scriptTag.getAttributes().setAttribute("src", ctx + "/.resources/calendar/lang/calendar-"
                 + MgnlContext.getLocale().getLanguage() + ".js");
-        model.insert(2, scriptTag);
+        model.insert(model.size() - 1, scriptTag);
 
         StringWriter writer = new StringWriter();
         MarkupHelper helper = new MarkupHelper(writer);
@@ -185,11 +182,11 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         IComment comment =
                 modelFactory.createComment(writer.toString());
 
-        model.insert(2, comment);
+        model.insert(model.size() - 1, comment);
 //        t = new Text("\n");
 //        result.add(t);
         comment = modelFactory.createComment(" /" + CMS_PAGE_TAG + " ");
-        model.insert(2, comment);
+        model.insert(model.size() - 1, comment);
 //        t = new Text("\n");
 //        result.add(t);
 
