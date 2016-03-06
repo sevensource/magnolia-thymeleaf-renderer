@@ -3,7 +3,7 @@ magnolia-thymeleaf-renderer
 
 This is a working, fully functional integration of the thymeleaf template engine into magnolia cms
 
-NOW supports thymeleaf3
+Now supports thymeleaf3
 =======================
 
 Thymeleaf3 required a complete rewrite. So if you want to use thymeleaf2 you should go for 0.2.1. The 0.3.0 Release is completely new and works only with thymeleaf3.
