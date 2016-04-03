@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.eiswind</groupId>
     <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Magnolia Blossom Thymeleaf Module</name>
 
@@ -30,8 +30,8 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-eiswind</id>
-            <name>bintray-eiswind</name>
+            <id>bintray</id>
+            <name>bintray</name>
             <url>https://api.bintray.com/maven/eiswind/maven/magnolia-thymeleaf/</url>
         </repository>
     </distributionManagement>
