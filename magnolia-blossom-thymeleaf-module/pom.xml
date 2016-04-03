@@ -30,8 +30,8 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray</id>
-            <name>bintray</name>
+            <id>bintray-eiswind</id>
+            <name>bintray-eiswind</name>
             <url>https://api.bintray.com/maven/eiswind/maven/magnolia-thymeleaf/</url>
         </repository>
     </distributionManagement>
