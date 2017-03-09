@@ -33,9 +33,11 @@ Maven coordinates:
 <dependency>
     <groupId>de.eiswind</groupId>
     <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.2</version>
 </dependency>
 ```
+March 2016: thymeleaf 3.0.3 support, Magnolia 5.5.2, Blossom 3.1.3
+
 March 2016: thymeleaf 3 support, Magnolia 5.4.x, Blossom 3.1.x
 
 April 2015: Magnolia 5.3.8, Blossom 3.0.6

@@ -111,7 +111,7 @@
         <dependency>
             <groupId>de.eiswind</groupId>
             <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-            <version>0.3.2-SNAPSHOT</version>
+            <version>0.3.2</version>
         </dependency>
         <dependency>
             <groupId>info.magnolia.blossom</groupId>
