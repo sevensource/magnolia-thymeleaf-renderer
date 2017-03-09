@@ -31,7 +31,7 @@ public class CmsInitTest extends AbstractMockMagnoliaTest {
         when(templateContext.getTemplateMode()).thenReturn(TemplateMode.HTML);
         IModelFactory modelFactory = configuration.getModelFactory(TemplateMode.HTML);
         IOpenElementTag tag = modelFactory.createOpenElementTag("head");
-        tag.getAttributes().setAttribute("cms:init", "");
+        modelFactory.setAttribute(tag,"cms:init", "");
         IModel model = mock(IModel.class);
         // we cannot use the real model because of access restrictions, so this test is pretty limited
         when(model.get(0)).thenReturn(tag);

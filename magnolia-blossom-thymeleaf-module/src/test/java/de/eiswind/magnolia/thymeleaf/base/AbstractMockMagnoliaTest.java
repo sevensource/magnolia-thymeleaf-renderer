@@ -112,6 +112,7 @@ public class AbstractMockMagnoliaTest {
         when(webCtx.getResponse()).thenReturn(response);
         AggregationState state = mock(AggregationState.class);
         when(state.getMainContentNode()).thenReturn(node);
+       // when(state.equals(state)).thenReturn(true);
 
         when(webCtx.getAggregationState()).thenReturn(state);
 

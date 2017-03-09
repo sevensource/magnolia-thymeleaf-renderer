@@ -109,31 +109,32 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         final TemplateMode templateMode = context.getTemplateMode();
         final IModelFactory modelFactory =
                 context.getConfiguration().getModelFactory(templateMode);
-        IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta", false);
-        meta.getAttributes().setAttribute("gwt:property", "locale=" + i18nContentSupport.getLocale());
+        IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta");
+        modelFactory.setAttribute(meta, "gwt:property", "locale=" + i18nContentSupport.getLocale());
         IOpenElementTag head = (IOpenElementTag) model.get(0);
-        head.getAttributes().removeAttribute("cms", "init");
+        head = modelFactory.removeAttribute(head, "cms:init");
+        model.replace(0, head);
         model.insert(model.size() - 1, meta); // insert before closing head tag
 
 
         String ctx = MgnlContext.getContextPath();
         for (String sheet : CSS) {
-            IStandaloneElementTag link = modelFactory.createStandaloneElementTag("link", false);
-            link.getAttributes().setAttribute("rel", "stylesheet");
-            link.getAttributes().setAttribute("type", "text/css");
-            link.getAttributes().setAttribute("href", ctx + sheet);
+            IStandaloneElementTag link = modelFactory.createStandaloneElementTag("link");
+            link = modelFactory.setAttribute(link, "rel", "stylesheet");
+            link = modelFactory.setAttribute(link, "type", "text/css");
+            link = modelFactory.setAttribute(link, "href", ctx + sheet);
             model.insert(model.size() - 1, link);
 
         }
         for (String script : JS) {
-            IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
-            scriptTag.getAttributes().setAttribute("type", "text/javascript");
-            scriptTag.getAttributes().setAttribute("src", ctx + script);
+            IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script");
+            scriptTag = modelFactory.setAttribute(scriptTag, "type", "text/javascript");
+            scriptTag = modelFactory.setAttribute(scriptTag, "src", ctx + script);
             model.insert(model.size() - 1, scriptTag);
         }
-        IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script", false);
-        scriptTag.getAttributes().setAttribute("type", "text/javascript");
-        scriptTag.getAttributes().setAttribute("src", ctx + "/.resources/calendar/lang/calendar-"
+        IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script");
+        scriptTag = modelFactory.setAttribute(scriptTag, "type", "text/javascript");
+        scriptTag = modelFactory.setAttribute(scriptTag, "src", ctx + "/.resources/calendar/lang/calendar-"
                 + MgnlContext.getLocale().getLanguage() + ".js");
         model.insert(model.size() - 1, scriptTag);
 
