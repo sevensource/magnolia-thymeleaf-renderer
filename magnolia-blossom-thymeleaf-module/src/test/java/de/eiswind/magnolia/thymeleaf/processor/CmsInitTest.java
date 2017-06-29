@@ -54,7 +54,7 @@ public class CmsInitTest extends AbstractMockMagnoliaTest {
         processor.doProcess(templateContext, model, structureHandler);
 
         verify(model).get(0);
-        verify(model, times(20)).insert(anyInt(), any());
+        verify(model, times(23)).insert(anyInt(), any());
     }
     
     @Test
@@ -65,6 +65,6 @@ public class CmsInitTest extends AbstractMockMagnoliaTest {
         processor.doProcess(templateContext, model, structureHandler);
 
         verify(model).get(0);
-        verify(model, times(3)).insert(anyInt(), any());
+        verify(model, times(6)).insert(anyInt(), any());
     }
 }

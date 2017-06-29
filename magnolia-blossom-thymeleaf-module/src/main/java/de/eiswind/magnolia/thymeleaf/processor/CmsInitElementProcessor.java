@@ -67,9 +67,10 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
     /**
      * name of the content attribute.
      */
-    public static final String CONTENT_ATTRIBUTE = "content";
+    private static final String CONTENT_ATTRIBUTE = "content";
     private static final String ATTR_NAME = "init";
     private static final int PRECEDENCE = 1000;
+    
     private static final String CMS_PAGE_TAG = "cms:page";
     
     private static final String LANGUAGE_REPLACEMENT_KEY = "%LANGUAGE%";
@@ -92,6 +93,7 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             };
     
     private final I18nContentSupport i18nContentSupport;
+    private final RenderingEngine renderingEngine;
 
     private boolean addLegacyResources = false;
     
@@ -100,8 +102,9 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
      */
     public CmsInitElementProcessor(String prefix) {
         super(TemplateMode.HTML, prefix, "head", false, ATTR_NAME, true, PRECEDENCE);
-        
+
         this.i18nContentSupport = Components.getComponent(I18nContentSupport.class);
+        this.renderingEngine = Components.getComponent(RenderingEngine.class);
     }
 
     /**
@@ -129,14 +132,13 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         final IModelFactory modelFactory =
                 context.getConfiguration().getModelFactory(templateMode);
         
+        IOpenElementTag head = (IOpenElementTag) model.get(0);
+        head = modelFactory.removeAttribute(head, getDialectPrefix() + ":init");
+        model.replace(0, head);
+        
         IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta");
         meta = modelFactory.setAttribute(meta, "gwt:property", "locale=" + i18nContentSupport.getLocale());
-        
-        IOpenElementTag head = (IOpenElementTag) model.get(0);
-        head = modelFactory.removeAttribute(head, "cms:init");
-        model.replace(0, head);
         model.insert(model.size() - 1, meta); // insert before closing head tag
-
 
         if(isAddLegacyResources()) {
         	final List<ITemplateEvent> legacyResources = getLegacyAdminResources(modelFactory);
@@ -151,10 +153,10 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             helper.append(" " + CMS_PAGE_TAG);
             helper.attribute(CONTENT_ATTRIBUTE, getNodePath(activePage));
 
-            final RenderingEngine renderingEngine = Components.getComponent(RenderingEngine.class);
+            
             final RenderingContext renderingContext = renderingEngine.getRenderingContext();
-            TemplateDefinition templateDefinition = (TemplateDefinition) renderingContext.getRenderableDefinition();
-            String dlg = templateDefinition.getDialog();
+            final TemplateDefinition templateDefinition = (TemplateDefinition) renderingContext.getRenderableDefinition();
+            final String dlg = templateDefinition.getDialog();
             if (dlg != null) {
                 helper.attribute("dialog", dlg);
             }
@@ -187,20 +189,23 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
             throw new TemplateProcessingException("comment", e);
         }
 
-        IComment comment =
-                modelFactory.createComment(writer.toString());
-
+        model.insert(model.size() - 1, modelFactory.createText("\n"));
+        IComment comment = modelFactory.createComment(writer.toString());
         model.insert(model.size() - 1, comment);
-//        t = new Text("\n");
-//        result.add(t);
+        
+        model.insert(model.size() - 1, modelFactory.createText("\n"));
         comment = modelFactory.createComment(" /" + CMS_PAGE_TAG + " ");
         model.insert(model.size() - 1, comment);
-//        t = new Text("\n");
-//        result.add(t);
-
+        
+        model.insert(model.size() - 1, modelFactory.createText("\n"));
     }
 
-    
+    /**
+     * creates a list of JS and CSS resources to be added for legacy admin applications
+     * 
+     * @param modelFactory
+     * @return the list of {@link ITemplateEvent}
+     */
     private List<ITemplateEvent> getLegacyAdminResources(IModelFactory modelFactory) {
         final String ctx = MgnlContext.getContextPath();
         final List<ITemplateEvent> resources = new ArrayList<>();
