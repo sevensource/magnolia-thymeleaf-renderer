@@ -70,7 +70,6 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
      * @param renderingContext the context
      * @return the teplating element
      */
-
     protected final T createElement(RenderingContext renderingContext) {
         return Components.getComponentProvider().newInstance(getTemplatingElementClass(), renderingContext);
     }

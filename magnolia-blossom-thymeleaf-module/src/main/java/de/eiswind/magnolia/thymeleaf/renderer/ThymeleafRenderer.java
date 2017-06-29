@@ -52,14 +52,8 @@ import java.util.Set;
  */
 public class ThymeleafRenderer extends AbstractRenderer implements ServletContextAware, ApplicationContextAware {
 
-
-    //private final Logger log = LoggerFactory.getLogger(getClass());
-
     private SpringTemplateEngine engine;
-
     private ApplicationContext applicationContext;
-
-
     private ServletContext servletContext;
 
 
@@ -101,16 +95,13 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
         }
         try (AppendableWriter out = renderingCtx.getAppendable()) {
             // allow template fragment syntax to be used e.g. template.html :: area
-
             Context context = new Context(MgnlContext.getLocale(), vars);
+            
             // and pass the fragment name and spec then onto the engine
             engine.process(templateScript, selectors, context, new AppendableWriterWrapper(out));
-
         } catch (IOException x) {
             throw new RenderException(x);
         }
-
-
     }
 
     /**
@@ -129,7 +120,6 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
                                            final RenderingModel<?> model, final String actionResult) {
         return RenderContext.get().getTemplateScript();
     }
-
 
     public SpringTemplateEngine getEngine() {
         return engine;
@@ -154,6 +144,4 @@ public class ThymeleafRenderer extends AbstractRenderer implements ServletContex
     public void setApplicationContext(final ApplicationContext applicationContext1) {
         this.applicationContext = applicationContext1;
     }
-
-
 }

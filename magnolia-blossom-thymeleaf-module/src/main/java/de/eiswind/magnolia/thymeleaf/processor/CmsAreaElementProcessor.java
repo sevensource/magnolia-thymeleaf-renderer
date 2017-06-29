@@ -77,16 +77,15 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
         final RenderingContext renderingContext = renderingEngine.getRenderingContext();
 
         AreaDefinition areaDef = null;
-        BlossomTemplateDefinition templateDefinition;
+        
         try {
-
-            templateDefinition = (BlossomTemplateDefinition) renderingContext.getRenderableDefinition();
+        	BlossomTemplateDefinition templateDefinition = 
+        			(BlossomTemplateDefinition) renderingContext.getRenderableDefinition();
+            
             if (templateDefinition.getAreas().containsKey(attributeValue)) {
                 areaDef = templateDefinition.getAreas().get(attributeValue);
             }
-
         } catch (ClassCastException x) {
-
             throw new TemplateProcessingException("Only Blossom, templates supported", x);
         }
 
@@ -94,9 +93,8 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
             throw new TemplateProcessingException("Area not found:" + attributeValue);
         }
 
-        AreaElement areaElement = createElement(renderingContext);
+        final AreaElement areaElement = createElement(renderingContext);
         areaElement.setName(areaDef.getName());
         processElement(context, tag, structureHandler, areaElement);
     }
-
 }

@@ -59,7 +59,6 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
      * instance.
      */
     public CmsComponentElementProcessor(String prefix) {
-
         super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
     }
 
@@ -93,7 +92,5 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
         ComponentElement componentElement = createElement(renderingContext);
         componentElement.setContent(content);
         processElement(context, tag, structureHandler, componentElement);
-
-
     }
 }
