@@ -1,6 +1,8 @@
 package de.eiswind.magnolia.thymeleaf.processor;
 
 import de.eiswind.magnolia.thymeleaf.base.AbstractMockMagnoliaTest;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.context.ITemplateContext;
@@ -22,25 +24,47 @@ import static org.mockito.Mockito.when;
  */
 public class CmsInitTest extends AbstractMockMagnoliaTest {
 
-    @Test
-    public void testCmsInit() {
-        CmsInitElementProcessor processor = new CmsInitElementProcessor("cms");
-        ITemplateContext templateContext = mock(ITemplateContext.class);
-        IEngineConfiguration configuration = renderer.getEngine().getConfiguration();
+	ITemplateContext templateContext;
+	IEngineConfiguration configuration;
+	IModelFactory modelFactory;
+	IModel model;
+	IElementModelStructureHandler structureHandler;
+	
+	@Before
+	public void before() {
+		templateContext = mock(ITemplateContext.class);
+		configuration = renderer.getEngine().getConfiguration();
+		modelFactory = configuration.getModelFactory(TemplateMode.HTML);
+		model = mock(IModel.class);
+		structureHandler = mock(IElementModelStructureHandler.class);
+		
         when(templateContext.getConfiguration()).thenReturn(configuration);
         when(templateContext.getTemplateMode()).thenReturn(TemplateMode.HTML);
-        IModelFactory modelFactory = configuration.getModelFactory(TemplateMode.HTML);
+        
         IOpenElementTag tag = modelFactory.createOpenElementTag("head");
-        modelFactory.setAttribute(tag,"cms:init", "");
-        IModel model = mock(IModel.class);
-        // we cannot use the real model because of access restrictions, so this test is pretty limited
+        tag = modelFactory.setAttribute(tag,"cms:init", "");
         when(model.get(0)).thenReturn(tag);
-        IElementModelStructureHandler structureHandler = mock(IElementModelStructureHandler.class);
-
+	}
+	
+    @Test
+    public void testCmsInitLegacy() {
+        CmsInitElementProcessor processor = new CmsInitElementProcessor("cms");
+        processor.setAddLegacyResources(true);
+        
         processor.doProcess(templateContext, model, structureHandler);
 
         verify(model).get(0);
-        verify(model, times(13)).insert(anyInt(), any());
+        verify(model, times(20)).insert(anyInt(), any());
+    }
+    
+    @Test
+    public void testCmsInitDefault() {
+        CmsInitElementProcessor processor = new CmsInitElementProcessor("cms");
+        processor.setAddLegacyResources(false);
+        
+        processor.doProcess(templateContext, model, structureHandler);
 
+        verify(model).get(0);
+        verify(model, times(3)).insert(anyInt(), any());
     }
 }

@@ -48,6 +48,7 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.model.IOpenElementTag;
 import org.thymeleaf.model.IStandaloneElementTag;
+import org.thymeleaf.model.ITemplateEvent;
 import org.thymeleaf.processor.element.AbstractElementModelProcessor;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -55,6 +56,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import javax.jcr.RepositoryException;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * initlializes mgnl stuff on the page.
@@ -68,21 +71,37 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
     private static final String ATTR_NAME = "init";
     private static final int PRECEDENCE = 1000;
     private static final String CMS_PAGE_TAG = "cms:page";
-    private static final String[] JS = new String[]{"/.magnolia/pages/javascript.js",
-            "/.magnolia/pages/messages.en.js", "/.resources/admin-js/dialogs/dialogs.js",
+    
+    private static final String LANGUAGE_REPLACEMENT_KEY = "%LANGUAGE%";
+    
+    private static final String[] LEGACY_JS = new String[] {
+    		"/.magnolia/pages/javascript.js",
+            "/.magnolia/pages/messages.en.js", 
+            "/.resources/admin-js/dialogs/dialogs.js",
             "/.resources/calendar/calendar.js",
             "/.resources/calendar/calendar-setup.js",
             "/.resources/editor/info.magnolia.templating.editor.PageEditor/info.magnolia.templating.editor.PageEditor"
-                    + ".nocache.js"};
-    private static final String[] CSS = new String[]{"/.resources/admin-css/admin-all.css",
-            "/.resources/magnolia-templating-editor/css/editor.css", "/.resources/calendar/skins/aqua/theme.css"};
-    private final I18nContentSupport i18nContentSupport = Components.getComponent(I18nContentSupport.class);
+                    + ".nocache.js",
+            "/.resources/calendar/lang/calendar-" + LANGUAGE_REPLACEMENT_KEY + ".js"
+            };
+    
+    private static final String[] LEGACY_CSS = new String[] {
+    		"/.resources/admin-css/admin-all.css",
+            "/.resources/magnolia-templating-editor/css/editor.css",
+            "/.resources/calendar/skins/aqua/theme.css"
+            };
+    
+    private final I18nContentSupport i18nContentSupport;
 
+    private boolean addLegacyResources = false;
+    
     /**
      * create an instance.
      */
     public CmsInitElementProcessor(String prefix) {
         super(TemplateMode.HTML, prefix, "head", false, ATTR_NAME, true, PRECEDENCE);
+        
+        this.i18nContentSupport = Components.getComponent(I18nContentSupport.class);
     }
 
     /**
@@ -109,34 +128,22 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         final TemplateMode templateMode = context.getTemplateMode();
         final IModelFactory modelFactory =
                 context.getConfiguration().getModelFactory(templateMode);
+        
         IStandaloneElementTag meta = modelFactory.createStandaloneElementTag("meta");
-        modelFactory.setAttribute(meta, "gwt:property", "locale=" + i18nContentSupport.getLocale());
+        meta = modelFactory.setAttribute(meta, "gwt:property", "locale=" + i18nContentSupport.getLocale());
+        
         IOpenElementTag head = (IOpenElementTag) model.get(0);
         head = modelFactory.removeAttribute(head, "cms:init");
         model.replace(0, head);
         model.insert(model.size() - 1, meta); // insert before closing head tag
 
 
-        String ctx = MgnlContext.getContextPath();
-        for (String sheet : CSS) {
-            IStandaloneElementTag link = modelFactory.createStandaloneElementTag("link");
-            link = modelFactory.setAttribute(link, "rel", "stylesheet");
-            link = modelFactory.setAttribute(link, "type", "text/css");
-            link = modelFactory.setAttribute(link, "href", ctx + sheet);
-            model.insert(model.size() - 1, link);
-
+        if(isAddLegacyResources()) {
+        	final List<ITemplateEvent> legacyResources = getLegacyAdminResources(modelFactory);
+        	for(ITemplateEvent e : legacyResources) {
+        		model.insert(model.size() - 1, e);
+        	}
         }
-        for (String script : JS) {
-            IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script");
-            scriptTag = modelFactory.setAttribute(scriptTag, "type", "text/javascript");
-            scriptTag = modelFactory.setAttribute(scriptTag, "src", ctx + script);
-            model.insert(model.size() - 1, scriptTag);
-        }
-        IStandaloneElementTag scriptTag = modelFactory.createStandaloneElementTag("script");
-        scriptTag = modelFactory.setAttribute(scriptTag, "type", "text/javascript");
-        scriptTag = modelFactory.setAttribute(scriptTag, "src", ctx + "/.resources/calendar/lang/calendar-"
-                + MgnlContext.getLocale().getLanguage() + ".js");
-        model.insert(model.size() - 1, scriptTag);
 
         StringWriter writer = new StringWriter();
         MarkupHelper helper = new MarkupHelper(writer);
@@ -193,6 +200,31 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
 
     }
 
+    
+    private List<ITemplateEvent> getLegacyAdminResources(IModelFactory modelFactory) {
+        final String ctx = MgnlContext.getContextPath();
+        final List<ITemplateEvent> resources = new ArrayList<>();
+        
+        for (String sheet : LEGACY_CSS) {
+            IStandaloneElementTag link = modelFactory.createStandaloneElementTag("link");
+            link = modelFactory.setAttribute(link, "rel", "stylesheet");
+            link = modelFactory.setAttribute(link, "type", "text/css");
+            link = modelFactory.setAttribute(link, "href", ctx + sheet);
+            resources.add(link);
+        }
+        
+        for (String script : LEGACY_JS) {
+        	final String scriptUrl = ctx + script.replaceAll(LANGUAGE_REPLACEMENT_KEY, MgnlContext.getLocale().getLanguage());
+        	IOpenElementTag scriptTag = modelFactory.createOpenElementTag("script");
+            scriptTag = modelFactory.setAttribute(scriptTag, "type", "text/javascript");
+            scriptTag = modelFactory.setAttribute(scriptTag, "src", scriptUrl);
+            resources.add(scriptTag);
+            resources.add(modelFactory.createCloseElementTag("script"));
+        }
+        
+        return resources;
+    }
+    
 
     /**
      * the path to a node.
@@ -209,5 +241,12 @@ public class CmsInitElementProcessor extends AbstractElementModelProcessor {
         }
     }
 
-
+    
+    public boolean isAddLegacyResources() {
+		return addLegacyResources;
+	}
+    
+    public void setAddLegacyResources(boolean addLegacyResources) {
+		this.addLegacyResources = addLegacyResources;
+	}
 }
