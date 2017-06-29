@@ -2,15 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.eiswind</groupId>
+    <groupId>org.sevensource.magnolia</groupId>
     <artifactId>magnolia-blossom-thymeleaf-example</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <name>Thymeleaf Magnolia Webapp Example</name>
 
     <packaging>war</packaging>
-
-    <!-- Fill the following in, so you can use the release plugin -->
-
 
     <properties>
         <project.config.path>${project.basedir}/../config</project.config.path>
@@ -23,15 +20,16 @@
         <thymeleaf.spring.version>3.0.6.RELEASE</thymeleaf.spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <magnolia-blossom-thymeleaf-module.version>0.3.3-SNAPSHOT</magnolia-blossom-thymeleaf-module.version>
+        <magnolia-blossom-thymeleaf-renderer.version>0.9.0-SNAPSHOT</magnolia-blossom-thymeleaf-renderer.version>
     </properties>
 
+<!-- 
     <scm>
         <connection>scm:git:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</connection>
         <developerConnection>scm:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</developerConnection>
         <url>scm:git:git@github.com:eiswind/magnolia-thymeleaf-renderer.git</url>
     </scm>
-    
+     -->
     <repositories>
 		<repository>
 			<id>magnolia.public</id>
@@ -44,20 +42,9 @@
 			<id>vaadin-addons</id>
 			<url>https://maven.vaadin.com/vaadin-addons</url>
 		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray-eiswind</id>
-			<name>bintray</name>
-			<url>http://dl.bintray.com/eiswind/maven</url>
-		</repository>
 	</repositories>
 	
     <dependencies>
-        <!-- Add your project specific dependencies here: --><!-- Overlay Magnolia Empty Webapp. Alternatively, use the bundled-webapp
-			or the enterprise-webapp. Dependencies versions are already imported by parent, 
-			so no need to replicate here. -->
         <dependency>
             <groupId>info.magnolia.bundle</groupId>
             <artifactId>magnolia-bundled-webapp</artifactId>
@@ -132,9 +119,9 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>de.eiswind</groupId>
-            <artifactId>magnolia-blossom-thymeleaf-module</artifactId>
-            <version>${magnolia-blossom-thymeleaf-module.version}</version>
+            <groupId>org.sevensource.magnolia</groupId>
+            <artifactId>magnolia-blossom-thymeleaf-renderer</artifactId>
+            <version>${magnolia-blossom-thymeleaf-renderer.version}</version>
         </dependency>
         <dependency>
             <groupId>info.magnolia.blossom</groupId>
