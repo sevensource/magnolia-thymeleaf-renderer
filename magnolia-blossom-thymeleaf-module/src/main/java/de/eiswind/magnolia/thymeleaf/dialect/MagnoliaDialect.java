@@ -35,6 +35,8 @@ import de.eiswind.magnolia.thymeleaf.processor.CmsComponentElementProcessor;
 import de.eiswind.magnolia.thymeleaf.processor.CmsInitElementProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,16 +46,15 @@ import java.util.Set;
  */
 public class MagnoliaDialect extends AbstractProcessorDialect {
 
+	private final static String DIALECT_PREFIX = "cms";
+	private boolean addLegacyResources = false;
 
     /**
      * the magnolia dialect.
      */
     public MagnoliaDialect() {
-        super("cms", "cms", 101);
+        super(DIALECT_PREFIX, DIALECT_PREFIX, 101);
     }
-
-
-    // TODO push dialect name to processors
 
     /**
      * the magnolia processors.
@@ -61,12 +62,21 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
      * @return
      */
     public Set<IProcessor> getProcessors(String dialectName) {
-        final Set<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new CmsInitElementProcessor(dialectName));
+        final Set<IProcessor> processors = new HashSet<>();
+        
+        final CmsInitElementProcessor initProcessor = new CmsInitElementProcessor(dialectName);
+        initProcessor.setAddLegacyResources(addLegacyResources);
+        processors.add(initProcessor);
+        
         processors.add(new CmsAreaElementProcessor(dialectName));
         processors.add(new CmsComponentElementProcessor(dialectName));
+        
+        // remove xmlns:cms
+        processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, DIALECT_PREFIX));
         return processors;
     }
-
-
+    
+    public void setAddLegacyResources(boolean addLegacyResources) {
+		this.addLegacyResources = addLegacyResources;
+	}
 }

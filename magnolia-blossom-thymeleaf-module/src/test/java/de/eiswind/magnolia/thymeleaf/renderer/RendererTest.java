@@ -28,6 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -58,6 +59,7 @@ public class RendererTest extends AbstractMockMagnoliaTest {
         renderer.onRender(node, renderableDefinition, renderingContext, vars, "main.html");
         String result = stringWriter.toString();
         assertTrue("cms:init was not rendered", result.contains("<!-- cms:page"));
+        assertFalse("xmlns:cms was not removed", result.matches("xmlns:cms=\"[^\"]+\""));
     }
 
     @Test
