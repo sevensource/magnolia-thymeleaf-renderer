@@ -1,97 +1,44 @@
-/*
- * Copyright (c) 2014 Thomas Kratz
- *
- This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-    Dieses Programm ist Freie Software: Sie können es unter den Bedingungen
-    der GNU General Public License, wie von der Free Software Foundation,
-    Version 3 der Lizenz oder (nach Ihrer Wahl) jeder neueren
-    veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-
-    Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber
-    OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-    Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-    Siehe die GNU General Public License für weitere Details.
-
-    Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-    Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- */
-
 package org.sevensource.magnolia.thymeleaf.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.standard.expression.Expression;
-import org.thymeleaf.standard.expression.StandardExpressionParser;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import info.magnolia.jcr.util.ContentMap;
 import info.magnolia.objectfactory.Components;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.templating.elements.ComponentElement;
 
 
-/**
- * the component processor.
- */
 public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
 
-    /**
-     * the content attribute name.
-     */
-    public static final String ATTR_NAME = "component";
-
-    /**
-     * instance.
-     */
+	private static final Logger logger = LoggerFactory.getLogger(CmsComponentElementProcessor.class);
+	
+    public static final String EL_NAME = "component";
+    
+    private final RenderingEngine renderingEngine;
+    
     public CmsComponentElementProcessor(String prefix) {
-        super(TemplateMode.HTML, prefix, null, false, ATTR_NAME, true);
+        super(TemplateMode.HTML, prefix, EL_NAME);
+        this.renderingEngine = Components.getComponent(RenderingEngine.class);
     }
-
-    /**
-     * {@inheritDoc}
-     */
+    
     @Override
-    protected void doProcess(
-            final ITemplateContext context,
-            final IProcessableElementTag tag,
-            final AttributeName attributeName,
-            final String attributeValue,
-            final IElementTagStructureHandler structureHandler) {
-
-        final Expression expression = new StandardExpressionParser().parseExpression(context, attributeValue);
-
-        final Object contentObject = expression.execute(context);
-
-        final javax.jcr.Node content;
-        if (contentObject instanceof ContentMap) {
-            content = ((ContentMap) contentObject).getJCRNode();
-        } else if (contentObject instanceof javax.jcr.Node) {
-            content = (javax.jcr.Node) contentObject;
-        } else {
-            throw new TemplateProcessingException("Cannot cast " + contentObject.getClass() + " to javax.jcr.Node");
-        }
-
-        final RenderingEngine renderingEngine = Components.getComponent(RenderingEngine.class);
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+    		IElementTagStructureHandler structureHandler) {
+    
         final RenderingContext renderingContext = renderingEngine.getRenderingContext();
-
-        ComponentElement componentElement = createElement(renderingContext);
-        componentElement.setContent(content);
-        processElement(context, tag, structureHandler, componentElement);
+        final ComponentElement componentElement = createTemplatingElement(renderingContext);
+        initContentElement(context, tag, componentElement);
+        componentElement.setEditable(parseBooleanAttribute(context, tag, "editable"));
+        componentElement.setDialog(parseStringAttribute(context, tag, "dialog"));
+        
+//      Map<String, Object> contextAttributes = (Map<String, Object>) object(params, "contextAttributes");
+//      templatingElement.setContextAttributes(contextAttributes);
+        
+        renderElement(structureHandler, componentElement);
     }
 }
