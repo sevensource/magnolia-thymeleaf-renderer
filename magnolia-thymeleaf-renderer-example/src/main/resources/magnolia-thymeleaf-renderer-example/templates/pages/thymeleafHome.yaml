@@ -1,0 +1,20 @@
+title: Thymeleaf Home
+renderType: thymeleaf
+templateScript: /magnolia-thymeleaf-renderer-example/templates/pages/thymeleafHome.html
+dialog: travel-demo:pages/pageProperties
+#class: info.magnolia.module.site.templates.PageTemplateDefinition
+#type: home
+
+areas:
+  main:
+    type: list
+    availableComponents:
+      thymeleafExample:
+        id: magnolia-thymeleaf-renderer-example:components/thymeleafExampleComponent
+        
+  aux:
+    type: list
+    templateScript: /magnolia-thymeleaf-renderer-example/templates/areas/auxArea.html
+    availableComponents:
+      thymeleafExample:
+        id: magnolia-thymeleaf-renderer-example:components/thymeleafExampleComponent

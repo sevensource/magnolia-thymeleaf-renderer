@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+  <name>magnolia-thymeleaf-renderer-example</name>
+  <displayName>Magnolia Thymeleaf Renderer Example</displayName>
+  <version>${project.version}</version>
+
+
+  <dependencies>
+    <dependency>
+      <name>core</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>rendering</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>templating</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>magnolia-thymeleaf-renderer</name>
+      <version>*/*</version>
+    </dependency>
+  </dependencies>
+</module>
