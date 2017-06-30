@@ -34,9 +34,9 @@ public class ThymeleafRenderingHelper {
 		this.templateEngine = getTemplateEngine();
 	}
 	
-	public void render(HttpServletRequest request, HttpServletResponse response, String templateScript, Locale locale, Map<String, Object> data, Writer out) throws RenderException {
+	public void render(HttpServletRequest request, HttpServletResponse response, String templateScript, Locale locale, Map<String, Object> variables, Writer out) throws RenderException {
 		
-		IContext context = createContext(request, response, locale, data);
+		IContext context = createContext(request, response, locale, variables);
 		
         Set<String> selectors = null;
         

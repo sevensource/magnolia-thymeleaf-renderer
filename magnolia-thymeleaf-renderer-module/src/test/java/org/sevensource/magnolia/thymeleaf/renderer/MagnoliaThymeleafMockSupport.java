@@ -3,6 +3,7 @@ package org.sevensource.magnolia.thymeleaf.renderer;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -95,9 +96,19 @@ public class MagnoliaThymeleafMockSupport {
 			WebContext webCtx = mock(WebContext.class);
 			HttpServletResponse response = mock(HttpServletResponse.class);
 			HttpServletRequest request = mock(HttpServletRequest.class);
+			
+			Map<String, Object> requestAttributes = new HashMap<>();
+			
 			when(request.getServletContext()).then((j) -> {
 				return mock(ServletContext.class);
 			});
+			when(request.getAttribute(any())).then((j) -> requestAttributes.get(j.getArgumentAt(0, String.class)));
+			
+			
+			doAnswer((j) -> requestAttributes.put(j.getArgumentAt(0, String.class), j.getArgumentAt(1, Object.class))).
+			when(request).setAttribute(any(), any());
+			
+			when(request.getAttributeNames()).then((j) -> requestAttributes.keySet());
 
 			when(webCtx.getRequest()).thenReturn(request);
 			when(webCtx.getResponse()).thenReturn(response);
@@ -162,6 +173,7 @@ public class MagnoliaThymeleafMockSupport {
 			when(i18nizer.decorate(templateDefinition)).thenReturn(templateDefinition);
 			
 			TemplateDefinitionAssignment templateDefinitionAssignment = mock(TemplateDefinitionAssignment.class);
+			when(templateDefinitionAssignment.getAssignedTemplateDefinition(any())).then((j) -> templateDefinition);
 			ComponentElement element = new ComponentElement(serverConfiguration, renderingContext, engine, templateDefinitionAssignment, i18nizer, webContextProvider.get());
 			return element;
 		});

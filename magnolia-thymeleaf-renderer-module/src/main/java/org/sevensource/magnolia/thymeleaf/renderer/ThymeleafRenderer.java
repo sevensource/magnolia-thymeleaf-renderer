@@ -54,7 +54,7 @@ public class ThymeleafRenderer extends AbstractRenderer {
         		vars.replace("content", templatingFunctions.decode(contentMap));
         	}
         }
-
+        
         final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
         final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
         final Locale locale = MgnlContext.getAggregationState().getLocale();
