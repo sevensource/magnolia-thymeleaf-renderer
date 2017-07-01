@@ -1,0 +1,10 @@
+<html xmlns:cms="http://www.sevensource.org" xmlns:th="http://www.thymeleaf.org" lang="en" >
+  <head>
+  	<cms:page />
+  </head>
+  <body>
+  	<div th:fragment="main">
+  	  	<cms:component cms:content="${someContent}" cms:dialog="somedialog" />
+  	</div>
+  </body>
+</html>

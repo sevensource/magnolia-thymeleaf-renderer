@@ -14,17 +14,18 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Workspace;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import info.magnolia.rendering.engine.RenderException;
 
 public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSupport {
 	
-	@Test
-	public void test_component() throws RenderException, RepositoryException {
-		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, templatingFunctions);
-		
-		Node content = mock(Node.class);
+	Node content;
+	
+	@Before
+	public void beforeEach() throws RepositoryException {
+		content = mock(Node.class);
 		when(content.getSession()).then((i) -> {
 			Workspace workspace = mock(Workspace.class);
 			when(workspace.getName()).thenReturn("pages");
@@ -43,6 +44,11 @@ public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSuppo
 	      when(nodeIterator.hasNext()).thenReturn(false);
 	      return nodeIterator;
 		});
+	}
+	
+	@Test
+	public void test_component() throws RenderException, RepositoryException {
+		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, templatingFunctions);
 		
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("someContent", content);
@@ -50,5 +56,18 @@ public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSuppo
 		renderer.onRender(node, renderableDefinition, renderingContext, variables, "test_component.html");
 		String result = stringWriter.toString();
 		assertTrue("cms:component was not rendered", result.contains("<!-- cms:component"));		
+	}
+	
+	@Test
+	public void test_component_fragment() throws RenderException, RepositoryException {
+		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, templatingFunctions);
+		
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("someContent", content);
+		
+		renderer.onRender(node, renderableDefinition, renderingContext, variables, "test_fragment.html :: main");
+		String result = stringWriter.toString();
+		assertTrue("cms:component was not rendered", result.contains("<!-- cms:component"));
+		assertTrue("fragment was not selected", result.trim().startsWith("<div"));
 	}
 }
