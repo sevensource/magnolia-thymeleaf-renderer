@@ -4,7 +4,7 @@ package org.sevensource.magnolia.example.config;
  * #%L
  * magnolia-thymeleaf-example-blossom Magnolia Module
  * %%
- * Copyright (C) 2017 SevenSource
+ * Copyright (C) 2017 SevenSource, pgaschuetz
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as

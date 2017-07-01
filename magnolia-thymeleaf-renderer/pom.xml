@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.sevensource.magnolia</groupId>
@@ -15,10 +16,17 @@
 		<thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
 	</properties>
 
-  <modules>
-    <module>magnolia-thymeleaf-renderer-module</module>
-    <module>magnolia-thymeleaf-renderer-blossom-module</module>
-  </modules>
+	<inceptionYear>2017</inceptionYear>
+
+	<organization>
+		<name>SevenSource, pgaschuetz</name>
+		<url>http://www.github.com/sevensource</url>
+	</organization>
+
+	<modules>
+		<module>magnolia-thymeleaf-renderer-module</module>
+		<module>magnolia-thymeleaf-renderer-blossom-module</module>
+	</modules>
 
 	<repositories>
 		<repository>
@@ -35,7 +43,7 @@
 	</repositories>
 
 	<dependencies>
-  </dependencies>
+	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
