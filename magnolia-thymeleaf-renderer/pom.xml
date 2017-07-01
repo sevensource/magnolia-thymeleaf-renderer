@@ -4,7 +4,7 @@
 
 	<groupId>org.sevensource.magnolia</groupId>
 	<artifactId>magnolia-thymeleaf-renderer</artifactId>
-	<version>0.9.3</version>
+	<version>0.9.4</version>
 	<packaging>pom</packaging>
 
 	<name>Magnolia Thymeleaf Renderer</name>
@@ -205,8 +205,6 @@
 						<serverId>ossrh</serverId>
 						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 						<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						<skipLocalStaging>true</skipLocalStaging>
-						<skipStagingRepositoryClose>false</skipStagingRepositoryClose>
 					</configuration>
 				</plugin>
 			</plugins>
