@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.sevensource.magnolia.thymeleaf.processor.CmsAreaElementProcessor;
 import org.sevensource.magnolia.thymeleaf.processor.CmsComponentElementProcessor;
-import org.sevensource.magnolia.thymeleaf.processor.CmsInitElementProcessor;
+import org.sevensource.magnolia.thymeleaf.processor.CmsPageElementProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.StandardDialect;
@@ -23,7 +23,7 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
 
     public Set<IProcessor> getProcessors(String dialectName) {
         final Set<IProcessor> processors = new HashSet<>();
-        processors.add(new CmsInitElementProcessor(dialectName));
+        processors.add(new CmsPageElementProcessor(dialectName));
         processors.add(new CmsAreaElementProcessor(dialectName));
         processors.add(new CmsComponentElementProcessor(dialectName));
         

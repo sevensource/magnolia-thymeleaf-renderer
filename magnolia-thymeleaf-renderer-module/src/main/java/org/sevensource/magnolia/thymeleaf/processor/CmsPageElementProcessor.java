@@ -11,14 +11,14 @@ import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.templating.elements.PageElement;
 
 
-public class CmsInitElementProcessor extends AbstractCmsElementProcessor<PageElement> {
+public class CmsPageElementProcessor extends AbstractCmsElementProcessor<PageElement> {
 	
-    private static final String EL_NAME = "init";
+    private static final String EL_NAME = "page";
     private static final String ATTR_DIALOG = "dialog";
     
     private final RenderingEngine renderingEngine;
     
-    public CmsInitElementProcessor(String prefix) {
+    public CmsPageElementProcessor(String prefix) {
     	super(TemplateMode.HTML, prefix, EL_NAME);
         this.renderingEngine = Components.getComponent(RenderingEngine.class);
     }
