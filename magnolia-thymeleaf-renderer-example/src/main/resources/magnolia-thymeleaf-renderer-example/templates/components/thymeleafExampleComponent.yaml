@@ -1,4 +1,0 @@
-templateScript: /magnolia-thymeleaf-renderer-example/templates/components/thymeleafExampleComponent.html
-dialog: travel-demo:components/textImage
- 
-renderType: thymeleaf

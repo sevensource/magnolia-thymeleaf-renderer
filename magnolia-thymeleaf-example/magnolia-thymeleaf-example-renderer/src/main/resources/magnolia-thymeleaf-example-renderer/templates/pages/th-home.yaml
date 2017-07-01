@@ -1,0 +1,18 @@
+title: Th Home
+renderType: thymeleaf
+templateScript: /magnolia-thymeleaf-example-renderer/templates/pages/th-home.html
+dialog: magnolia-thymeleaf-example-renderer:pages/th-home-properties
+
+areas:
+  main:
+    type: list
+    availableComponents:
+      thText:
+        id: magnolia-thymeleaf-example-renderer:components/th-text
+        
+  aux:
+    type: list
+    templateScript: /magnolia-thymeleaf-example-renderer/templates/areas/aux.html
+    availableComponents:
+      thTeaser:
+        id: magnolia-thymeleaf-example-renderer:components/th-teaser

@@ -1,0 +1,10 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:cms="http://www.sevensource.org/mgnl">
+	<h2>Aux Area</h2>
+	
+  	<div th:each="component : ${components}">
+  		<div class="aux-component">
+  			<cms:component cms:content="${component}" />
+  		</div>
+  	</div>
+</div>
+

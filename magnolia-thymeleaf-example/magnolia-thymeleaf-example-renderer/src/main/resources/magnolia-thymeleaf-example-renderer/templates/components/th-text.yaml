@@ -1,0 +1,6 @@
+title: Th Text
+templateScript: /magnolia-thymeleaf-example-renderer/templates/components/th-text.html
+renderType: thymeleaf
+
+dialog: magnolia-thymeleaf-example-renderer:components/th-text-properties
+ 

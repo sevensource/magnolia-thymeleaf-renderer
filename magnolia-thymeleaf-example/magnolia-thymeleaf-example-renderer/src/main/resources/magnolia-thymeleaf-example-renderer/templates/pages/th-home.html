@@ -1,19 +1,22 @@
 <html  xmlns:cms="http://www.eiswind.de/mgnl" xmlns:th="http://www.thymeleaf.org" lang="en" >
   <head>
-  	<cms:init />
+  	<cms:page />
+  	<style>
+  		.aux-component {
+  			border: 1px solid black;
+  			background-color: a1a1a1;
+  		}
+  	</style>
   </head>
   <body>
   		<h1 th:text="${content.title}"></h1>
-  		<div style="border: 2px solid red; min-height: 30px;">
+  		
+  		<div>
 	  		<cms:area cms:name="main" />
   		</div>
   		
-  		<div style="border: 2px solid red; min-height: 30px;">
+  		<div>
   			<cms:area cms:name="aux" />
-  			
-			<div>1a</div>
-			<div>2a</div>
-			<div>3a</div>
   		</div>
   </body>
 </html>
