@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+  <name>thymeleaf-renderer</name>
+  <displayName>Thymeleaf Renderer Module</displayName>
+  <class>org.sevensource.magnolia.thymeleaf.blossom.MagnoliaThymeleafBlossomRendererModule</class>
+  <versionHandler>org.sevensource.magnolia.thymeleaf.blossom.setup.MagnoliaThymeleafBlossomRendererVersionHandler</versionHandler>
+  <version>${project.version}</version>
+
+  <dependencies>
+    <dependency>
+      <name>core</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>rendering</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>templating</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>blossom</name>
+      <version>3.1.4/*</version>
+    </dependency>
+    <dependency>
+      <name>thymeleaf-renderer</name>
+      <version>0.9*/*</version>
+    </dependency>
+  </dependencies>
+</module>
