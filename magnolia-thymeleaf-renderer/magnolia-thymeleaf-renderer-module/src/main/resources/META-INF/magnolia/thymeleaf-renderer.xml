@@ -3,7 +3,7 @@
 <module>
   <name>thymeleaf-renderer</name>
   <displayName>Thymeleaf Renderer Module</displayName>
-  <class>org.sevensource.magnolia.thymeleaf.MagnoliaThymeleafRenderer</class>
+  <class>org.sevensource.magnolia.thymeleaf.MagnoliaThymeleafRendererModule</class>
   <versionHandler>org.sevensource.magnolia.thymeleaf.setup.MagnoliaThymeleafRendererVersionHandler</versionHandler>
   <version>${project.version}</version>
 

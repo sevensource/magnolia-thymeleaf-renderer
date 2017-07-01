@@ -9,7 +9,7 @@ import info.magnolia.module.ModuleLifecycleContext;
  * using the properties and node from <tt>config:/modules/magnolia-thymeleaf-renderer-module</tt>.
  * If you don't need this, simply remove the reference to this class in the module descriptor xml.
  */
-public class MagnoliaThymeleafRenderer implements ModuleLifecycle {
+public class MagnoliaThymeleafRendererModule implements ModuleLifecycle {
 
 	@Override
 	public void start(ModuleLifecycleContext moduleLifecycleContext) {

@@ -27,11 +27,10 @@
 			<version>${thymeleaf.version}</version>
 		</dependency>
 
-    <dependency>
+		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-java8time</artifactId>
-			<version>${thymeleaf.version}</version>
-      <optional>true</optional>
+			<version>3.0.0.RELEASE</version>
 		</dependency>
 
 		<dependency>
