@@ -33,10 +33,15 @@
 			<organizationUrl>http://github.com/pgaschuetz</organizationUrl>
 		</developer>
 	</developers>
+	
+	<issueManagement>
+		<url>https://github.com/sevensource/magnolia-thymeleaf-renderer/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
 	<scm>
 		<connection>scm:git:git://github.com/sevensource/magnolia-thymeleaf-renderer.git</connection>
-		<developerConnection>scm:git:ssh://github.com:sevensource/magnolia-thymeleaf-renderer.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:sevensource/magnolia-thymeleaf-renderer.git</developerConnection>
 		<url>http://github.com/sevensource/magnolia-thymeleaf-renderer/tree/master</url>
 	</scm>
 
@@ -119,6 +124,23 @@
 						<target>${javaVersion}</target>
 					</configuration>
 				</plugin>
+		<!-- 		
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>${jgitflow-maven-plugin.version}</version>
+				<configuration>
+					<arguments>-Dmaven.install.skip=true</arguments>
+					<flowInitContext>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<enableSshAgent>true</enableSshAgent>
+					<noDeploy>true</noDeploy>
+					<pushReleases>true</pushReleases>
+				</configuration>
+			</plugin>
+-->
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

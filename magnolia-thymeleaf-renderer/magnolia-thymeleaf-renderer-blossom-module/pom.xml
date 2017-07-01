@@ -15,6 +15,7 @@
 
 	<properties>
 		<blossom.version>3.1.4</blossom.version>
+		<spring.version>4.3.9.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -35,6 +36,13 @@
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>${thymeleaf.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>
