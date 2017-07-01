@@ -10,16 +10,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sevensource.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import info.magnolia.context.MgnlContext;
 import info.magnolia.rendering.engine.RenderException;
@@ -28,10 +23,10 @@ public class ThymeleafRenderingHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(ThymeleafRenderingHelper.class);
 	
-	private TemplateEngine templateEngine;
+	private ITemplateEngine templateEngine;
 	
-	public ThymeleafRenderingHelper() {
-		this.templateEngine = getTemplateEngine();
+	public ThymeleafRenderingHelper(ITemplateEngine templateEngine) {
+		this.templateEngine = templateEngine;
 	}
 	
 	public void render(HttpServletRequest request, HttpServletResponse response, String templateScript, Locale locale, Map<String, Object> variables, Writer out) throws RenderException {
@@ -71,26 +66,5 @@ public class ThymeleafRenderingHelper {
 
     protected void addDefaultData(Map<String, Object> variables) {
     	// Nothing in the default IMPL
-    	
-    }
-    
-    protected TemplateEngine getTemplateEngine() {
-    	TemplateEngine templateEngine = new TemplateEngine();
-    	templateEngine.setTemplateResolver(getTemplateResolver());
-    	templateEngine.setAdditionalDialects(getDialects());
-    	return templateEngine;
-    }
-    
-    protected ITemplateResolver getTemplateResolver() {
-    	ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-    	resolver.setTemplateMode(TemplateMode.HTML);
-    	resolver.setCacheable(false);
-    	return resolver;
-    }
-    
-    protected Set<IDialect> getDialects() {
-    	Set<IDialect> dialects = new HashSet<>();
-    	dialects.add(new MagnoliaDialect());
-    	return dialects;
     }
 }

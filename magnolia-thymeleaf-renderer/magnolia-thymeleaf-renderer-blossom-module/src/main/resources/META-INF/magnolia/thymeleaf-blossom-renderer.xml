@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module SYSTEM "module.dtd" >
 <module>
-  <name>thymeleaf-renderer</name>
-  <displayName>Thymeleaf Renderer Module</displayName>
+  <name>thymeleaf-blossom-renderer</name>
+  <displayName>Thymeleaf Blossom Renderer Module</displayName>
   <class>org.sevensource.magnolia.thymeleaf.blossom.MagnoliaThymeleafBlossomRendererModule</class>
   <versionHandler>org.sevensource.magnolia.thymeleaf.blossom.setup.MagnoliaThymeleafBlossomRendererVersionHandler</versionHandler>
   <version>${project.version}</version>
@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <name>thymeleaf-renderer</name>
-      <version>0.9*/*</version>
+      <version>*</version>
     </dependency>
   </dependencies>
 </module>

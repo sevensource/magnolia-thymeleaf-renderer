@@ -3,19 +3,29 @@ package org.sevensource.magnolia.thymeleaf.renderer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.jcr.Node;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sevensource.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import org.sevensource.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import info.magnolia.context.MgnlContext;
+import info.magnolia.init.MagnoliaConfigurationProperties;
 import info.magnolia.jcr.util.ContentMap;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderException;
@@ -30,21 +40,24 @@ public class ThymeleafRenderer extends AbstractRenderer {
 	private static final Logger logger = LoggerFactory.getLogger(ThymeleafRenderer.class);
 	
 	private final TemplatingFunctions templatingFunctions;
-	private final ThymeleafRenderingHelper renderingHelper;
+	private ThymeleafRenderingHelper renderingHelper;
 	
 	private boolean decodeContent = true;
+	private boolean cacheTemplates = true;
 
     @Inject
-    public ThymeleafRenderer(RenderingEngine renderingEngine, TemplatingFunctions templatingFunctions) {
+    public ThymeleafRenderer(RenderingEngine renderingEngine, TemplatingFunctions templatingFunctions, MagnoliaConfigurationProperties magnoliaProperties) {
         super(renderingEngine);
         this.templatingFunctions = templatingFunctions;
-        this.renderingHelper = new ThymeleafRenderingHelper();
+        final boolean devMode = magnoliaProperties.getBooleanProperty("magnolia.develop");
+        this.cacheTemplates = !devMode;
+        this.renderingHelper = new ThymeleafRenderingHelper(getTemplateEngine());
     }
     
     @Override
     protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
                             Map<String, Object> ctx, String templateScript) throws RenderException {
-
+    	
         final Map<String, Object> vars = new HashMap<>(ctx);
         
         if(decodeContent) {
@@ -71,4 +84,39 @@ public class ThymeleafRenderer extends AbstractRenderer {
     protected Map<String, Object> newContext() {
         return new HashMap<>();
     }
+    
+    protected ITemplateEngine getTemplateEngine() {
+    	TemplateEngine templateEngine = new TemplateEngine();
+    	templateEngine.setTemplateResolver(getTemplateResolver());
+    	templateEngine.setAdditionalDialects(getDialects());
+    	return templateEngine;
+    }
+    
+    protected ITemplateResolver getTemplateResolver() {
+    	ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+    	resolver.setTemplateMode(TemplateMode.HTML);
+    	resolver.setCacheable(this.cacheTemplates);
+    	return resolver;
+    }
+    
+    protected Set<IDialect> getDialects() {
+    	final Set<IDialect> dialects = new HashSet<>();
+    	dialects.add(new MagnoliaDialect());
+    	
+    	try {
+    		Class<?> java8TimeDialectClazz = Class.forName("org.thymeleaf.extras.java8time.dialect.Java8TimeDialect");
+    		IDialect java8TimeDialect = (IDialect) java8TimeDialectClazz.newInstance();
+    		dialects.add(java8TimeDialect);
+    	} catch(ClassNotFoundException e) {
+    		logger.trace("Did not find Java8TimeDialect");
+    	} catch (IllegalAccessException | InstantiationException e) {
+    		logger.error("Cannot create Java8TimeDialect", e);
+		}
+    	
+    	return dialects;
+    }
+    
+    public void setDecodeContent(boolean decodeContent) {
+		this.decodeContent = decodeContent;
+	}
 }

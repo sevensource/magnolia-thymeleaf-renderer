@@ -31,6 +31,7 @@ import info.magnolia.cms.core.AggregationState;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.context.WebContext;
 import info.magnolia.i18nsystem.I18nizer;
+import info.magnolia.init.MagnoliaConfigurationProperties;
 import info.magnolia.objectfactory.ComponentProvider;
 import info.magnolia.objectfactory.Components;
 import info.magnolia.rendering.context.RenderingContext;
@@ -55,6 +56,8 @@ public class MagnoliaThymeleafMockSupport {
 	Node node;
 	RenderableDefinition renderableDefinition;
 	RenderingContext renderingContext;
+	
+	MagnoliaConfigurationProperties magnoliaProperties;
 
 	StringWriter stringWriter;
 
@@ -64,6 +67,7 @@ public class MagnoliaThymeleafMockSupport {
 		node = mock(Node.class);
 		renderableDefinition = mock(RenderableDefinition.class);
 		renderingContext = mock(RenderingContext.class);
+		magnoliaProperties = mock(MagnoliaConfigurationProperties.class);
 		final Provider<WebContext> webContextProvider = mock(Provider.class);
 		final ServerConfiguration serverConfiguration = mock(ServerConfiguration.class);
 		final ComponentProvider componentProvider = mock(ComponentProvider.class);
