@@ -16,7 +16,7 @@ public class BlossomTeaserComponent {
     public void mainTab(UiConfig cfg, TabBuilder tab) {
         tab.fields(
                 cfg.fields.text("title").label("Title"),
-                cfg.fields.link("href").label("Link")
+                cfg.fields.link("href").appName("pages").label("Link")
         );
     }
     

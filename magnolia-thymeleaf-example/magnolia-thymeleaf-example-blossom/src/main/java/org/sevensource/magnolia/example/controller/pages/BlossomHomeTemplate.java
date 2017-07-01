@@ -2,11 +2,14 @@ package org.sevensource.magnolia.example.controller.pages;
 
 import java.util.GregorianCalendar;
 
+import org.sevensource.magnolia.example.controller.components.BlossomTeaserComponent;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import info.magnolia.module.blossom.annotation.Area;
+import info.magnolia.module.blossom.annotation.AvailableComponentClasses;
+import info.magnolia.module.blossom.annotation.AvailableComponents;
 import info.magnolia.module.blossom.annotation.Inherits;
 import info.magnolia.module.blossom.annotation.TabFactory;
 import info.magnolia.module.blossom.annotation.Template;
@@ -34,10 +37,12 @@ public class BlossomHomeTemplate {
 	@Area("mainContent")
 	@Inherits
     @Controller
+    @AvailableComponents({"magnolia-thymeleaf-example-renderer:components/th-teaser"})
+	@AvailableComponentClasses({BlossomTeaserComponent.class})
     public static class MainContentArea {
         @RequestMapping("/pages/blossomHome/mainContent")
         public String render() {
-        	return "areas/areas.html :: main-content";
+        	return "areas/areas.html :: mainContent";
         }
     }
 }
