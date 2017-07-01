@@ -4,7 +4,7 @@
 
 	<groupId>org.sevensource.magnolia</groupId>
 	<artifactId>magnolia-thymeleaf-renderer</artifactId>
-	<version>0.9.4</version>
+	<version>0.9.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Magnolia Thymeleaf Renderer</name>
@@ -56,10 +56,6 @@
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
 	</distributionManagement>
 
 	<modules>
