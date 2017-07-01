@@ -14,7 +14,6 @@ public class CmsPageElementProcessorTest extends MagnoliaThymeleafMockSupport {
 	@Test
 	public void test_init() throws RenderException {
 		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, templatingFunctions, magnoliaProperties);
-		renderer.init();
 		renderer.onRender(node, renderableDefinition, renderingContext, Collections.emptyMap(), "test_page.html");
 		String result = stringWriter.toString();
 		assertTrue("cms:page was not rendered", result.contains("<!-- cms:page"));
