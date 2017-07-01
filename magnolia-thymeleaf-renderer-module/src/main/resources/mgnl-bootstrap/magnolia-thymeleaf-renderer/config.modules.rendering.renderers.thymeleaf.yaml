@@ -1,8 +1,0 @@
-'thymeleaf': 
-  'class': 'org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer'
-  'contextAttributes': 
-    'cmsfn': 
-      'componentClass': 'info.magnolia.templating.jsp.cmsfn.JspTemplatingFunction'
-      'name': 'cmsfn'
-
-
