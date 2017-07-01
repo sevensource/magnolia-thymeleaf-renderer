@@ -4,7 +4,7 @@
 
 	<groupId>org.sevensource.magnolia</groupId>
 	<artifactId>magnolia-thymeleaf-renderer</artifactId>
-	<version>0.9.0</version>
+	<version>0.9.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Magnolia Thymeleaf Renderer</name>
@@ -42,7 +42,7 @@
 		<connection>scm:git:git://github.com/sevensource/magnolia-thymeleaf-renderer.git</connection>
 		<developerConnection>scm:git:git@github.com:sevensource/magnolia-thymeleaf-renderer.git</developerConnection>
 		<url>http://github.com/sevensource/magnolia-thymeleaf-renderer/tree/master</url>
-	  <tag>v${releaseVersion}</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<distributionManagement>
