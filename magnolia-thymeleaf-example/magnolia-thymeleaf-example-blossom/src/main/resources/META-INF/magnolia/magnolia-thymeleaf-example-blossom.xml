@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+  <name>magnolia-thymeleaf-example-blossom</name>
+  <displayName>${project.name}</displayName>
+  <description>${project.description}</description>
+  <class>org.sevensource.magnolia.example.MagnoliaThymeleafBlossomExample</class>
+  <versionHandler>org.sevensource.magnolia.example.setup.MagnoliaThymeleafBlossomExampleVersionHandler</versionHandler>
+  <version>${project.version}</version>
+
+  <dependencies>
+    <dependency>
+      <name>core</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>rendering</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>templating</name>
+      <version>5.5.4/*</version>
+    </dependency>
+    <dependency>
+      <name>site</name>
+      <version>1.1.1/*</version>
+    </dependency>
+    <dependency>
+      <name>blossom</name>
+      <version>3.1.4/*</version>
+    </dependency>
+    <dependency>
+      <name>thymeleaf-blossom-renderer</name>
+      <version>*</version>
+    </dependency>
+  </dependencies>
+</module>

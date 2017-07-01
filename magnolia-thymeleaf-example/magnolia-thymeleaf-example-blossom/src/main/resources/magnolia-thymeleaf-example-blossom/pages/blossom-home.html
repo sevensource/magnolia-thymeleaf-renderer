@@ -1,0 +1,15 @@
+<html  xmlns:cms="http://www.eiswind.de/mgnl" xmlns:th="http://www.thymeleaf.org" lang="en" >
+  <head>
+  	<cms:page />
+  </head>
+  <body>
+  	<h1>A Blossom Thymeleaf Template</h1>
+	<h2 th:text="${content.title}"></h2>
+  	<p>This content has a date property of <span th:text="${#dates.format(content.date.time, 'dd-MMM-yyyy')}"></span></p>
+  	<p>This page has been rendered on <span th:text="${#dates.format(currentDate.time, 'dd-MMM-yyyy HH:mm:ss')}"></span></p>
+
+	<div>
+		<cms:area cms:name="mainContent" />
+	</div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<html xmlns:cms="http://www.eiswind.de/mgnl"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+
+	<div th:fragment="mainContent">
+		<h2>Main Content Area</h2>
+
+		<div th:each="component : ${components}">
+			<div>
+				<cms:component cms:content="${component}" />
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
