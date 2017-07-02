@@ -125,16 +125,25 @@ public class ThymeleafRenderer extends AbstractRenderer {
     	final Set<IDialect> dialects = new HashSet<>();
     	dialects.add(new MagnoliaDialect());
     	
-    	try {
-    		Class<?> java8TimeDialectClazz = Class.forName("org.thymeleaf.extras.java8time.dialect.Java8TimeDialect");
-    		IDialect java8TimeDialect = (IDialect) java8TimeDialectClazz.newInstance();
-    		dialects.add(java8TimeDialect);
-    	} catch(ClassNotFoundException e) {
-    		logger.trace("Did not find Java8TimeDialect");
-    	} catch (IllegalAccessException | InstantiationException e) {
-    		logger.error("Cannot create Java8TimeDialect", e);
-		}
+    	final String[] extraDialects = new String[]{
+    		"org.thymeleaf.extras.java8time.dialect.Java8TimeDialect"	
+    	};
     	
+    	for(String extraDialect : extraDialects) {
+        	try {
+        		final Class<?> extraDialectClazz = Class.forName(extraDialect);
+        		final IDialect dialect = (IDialect) extraDialectClazz.newInstance();
+        		if (logger.isInfoEnabled()) {
+					logger.info("Adding Thymeleaf dialect {}", dialect.getClass().getSimpleName());
+				} 
+        		dialects.add(dialect);
+        	} catch(ClassNotFoundException e) {
+        		logger.trace("Did not find Java8TimeDialect");
+        	} catch (IllegalAccessException | InstantiationException e) {
+        		logger.error("Cannot create Java8TimeDialect", e);
+    		}
+    	}
+    	    	
     	return dialects;
     }
     
