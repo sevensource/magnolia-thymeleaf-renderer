@@ -1,8 +1,9 @@
-<html  xmlns:cms="http://www.eiswind.de/mgnl" xmlns:th="http://www.thymeleaf.org" lang="en" >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:cms="http://www.sevensource.org/mgnl" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{magnolia-thymeleaf-example-blossom/layouts/layout.html}">
   <head>
   	<cms:page />
   </head>
-  <body>
+  <body layout:fragment="content">
   	<h1>A Blossom Thymeleaf Template</h1>
 	<h2 th:text="${content.title}"></h2>
   	<p>This content has a date property of <span th:text="${#dates.format(content.date.time, 'dd-MMM-yyyy')}"></span></p>
