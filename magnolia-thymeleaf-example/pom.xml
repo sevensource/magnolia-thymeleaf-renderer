@@ -10,21 +10,8 @@
   <properties>
     <magnoliaVersion>5.5.4</magnoliaVersion>
     <javaVersion>1.8</javaVersion>
+    <thymeleaf-renderer.version>0.9.8-SNAPSHOT</thymeleaf-renderer.version>
   </properties>
-
-  <inceptionYear>2017</inceptionYear>
-
-  <organization>
-  	<name>SevenSource, pgaschuetz</name>
-  	<url>http://www.github.com/sevensource</url>
-  </organization>
-
-  <!-- Fill the following in, so you can use the release plugin -->
-  <scm>
-    <connection/>
-    <developerConnection/>
-    <url/>
-  </scm>
 
   <modules>
     <module>magnolia-thymeleaf-example-webapp</module>
