@@ -26,24 +26,48 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.jcr.Node;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.web.servlet.support.RequestContext;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.expression.ThymeleafEvaluationContext;
+import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 
 import info.magnolia.init.MagnoliaConfigurationProperties;
 import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.model.RenderingModel;
 import info.magnolia.rendering.template.RenderableDefinition;
-import info.magnolia.templating.functions.TemplatingFunctions;
 
-public class BlossomThymeleafRenderer extends ThymeleafRenderer {
+public class BlossomThymeleafRenderer extends ThymeleafRenderer implements ApplicationContextAware, MessageSourceAware {
 
+	private final ServletContext servletContext;
+	private ApplicationContext applicationContext;
+	
     @Inject
-    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, TemplatingFunctions templatingFunctions, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine, templatingFunctions, magnoliaProperties);
+    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, MagnoliaConfigurationProperties magnoliaProperties) {
+        super(renderingEngine, servletContext, magnoliaProperties);
+        this.servletContext = servletContext;
     }
+    
+	@Override
+	protected TemplateEngine createTemplateEngine() {
+		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setTemplateResolver(createTemplateResolver());
+		templateEngine.setAdditionalDialects(createDialects());
+	    return templateEngine;
+	}
     
 	@Override
     protected String resolveTemplateScript(Node content, RenderableDefinition definition, RenderingModel<?> model,
@@ -52,17 +76,50 @@ public class BlossomThymeleafRenderer extends ThymeleafRenderer {
     }
 	
 	@Override
-	protected void setupContext(Map<String, Object> ctx, Node content, RenderableDefinition definition,
-			RenderingModel<?> model, Object actionResult) {
-        super.setupContext(ctx, content, definition, model, actionResult);
-        ctx.putAll(RenderContext.get().getModel());
+	protected void prepareModel(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
+		
+		model.putAll(RenderContext.get().getModel());
+		
+        final RequestContext requestContext =
+                new RequestContext(request, response, servletContext, model);
+
+        addRequestContextAsVariable(model, SpringContextVariableNames.SPRING_REQUEST_CONTEXT, requestContext);
+
+        if(applicationContext != null) {
+	        // Expose Thymeleaf's own evaluation context as a model variable
+	        //
+	        // Note Spring's EvaluationContexts are NOT THREAD-SAFE (in exchange for SpelExpressions being thread-safe).
+	        // That's why we need to create a new EvaluationContext for each request / template execution, even if it is
+	        // quite expensive to create because of requiring the initialization of several ConcurrentHashMaps.
+	        final ConversionService conversionService =
+	                (ConversionService) request.getAttribute(ConversionService.class.getName()); // might be null!
+	        final ThymeleafEvaluationContext evaluationContext =
+	                new ThymeleafEvaluationContext(applicationContext, conversionService);
+	        model.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
+        }
 	}
 
 	@Override
-	protected TemplateEngine getTemplateEngine() {
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.setTemplateResolver(getTemplateResolver());
-		templateEngine.setAdditionalDialects(getDialects());
-	    return templateEngine;
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
+
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+		ITemplateEngine templateEngine = getTemplateEngine();
+		if(templateEngine instanceof MessageSourceAware) {
+			((MessageSourceAware) templateEngine).setMessageSource(messageSource);
+		}
+	}
+	
+    protected static void addRequestContextAsVariable(
+            final Map<String,Object> model, final String variableName, final RequestContext requestContext) {
+        
+        if (model.containsKey(variableName)) {
+            throw new IllegalStateException(
+                    "Cannot expose request context in model attribute '" + variableName +
+                    "' because of an existing model object of the same name");
+        }
+        model.put(variableName, requestContext);
+    }
 }

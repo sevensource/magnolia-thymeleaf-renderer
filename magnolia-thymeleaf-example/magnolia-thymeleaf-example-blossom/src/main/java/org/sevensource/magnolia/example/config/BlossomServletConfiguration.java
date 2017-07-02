@@ -60,7 +60,7 @@ import info.magnolia.module.blossom.web.BlossomRequestMappingHandlerAdapter;
                 @ComponentScan.Filter(VirtualURIMapper.class),
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = VirtualURIMapping.class)
         })
-@Import({SiteAwareThymeleafRenderingConfiguration.class})
+@Import({BlossomThymeleafRenderingConfiguration.class})
 public class BlossomServletConfiguration {
 
     /**

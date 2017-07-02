@@ -1,0 +1,5 @@
+extraDialects:
+  java8time: org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
+  layout: nz.net.ultraq.thymeleaf.LayoutDialect
+
+
