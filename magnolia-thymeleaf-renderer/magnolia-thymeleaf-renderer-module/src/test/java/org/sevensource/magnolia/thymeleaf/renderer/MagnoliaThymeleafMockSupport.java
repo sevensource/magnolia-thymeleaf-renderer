@@ -63,18 +63,15 @@ import info.magnolia.rendering.template.RenderableDefinition;
 import info.magnolia.rendering.template.TemplateDefinition;
 import info.magnolia.rendering.template.assignment.TemplateDefinitionAssignment;
 import info.magnolia.rendering.template.configured.ConfiguredTemplateDefinition;
-import info.magnolia.rendering.template.type.TemplateTypeHelper;
 import info.magnolia.rendering.template.variation.RenderableVariationResolver;
 import info.magnolia.rendering.util.AppendableWriter;
 import info.magnolia.templating.elements.AreaElement;
 import info.magnolia.templating.elements.ComponentElement;
 import info.magnolia.templating.elements.PageElement;
-import info.magnolia.templating.functions.TemplatingFunctions;
 
 public class MagnoliaThymeleafMockSupport {
 
 	RenderingEngine engine;
-	TemplatingFunctions templatingFunctions;
 	Node node;
 	RenderableDefinition renderableDefinition;
 	RenderingContext renderingContext;
@@ -147,9 +144,6 @@ public class MagnoliaThymeleafMockSupport {
 			when(webCtx.getAggregationState()).thenReturn(state);
 			return webCtx;
 		});
-
-		templatingFunctions = new TemplatingFunctions(mock(TemplateTypeHelper.class), mock(Provider.class),
-				webContextProvider);
 		
 		TemplateDefinition templateDefinition = mock(ConfiguredTemplateDefinition.class);
 		when(templateDefinition.getDialog()).thenReturn(null);

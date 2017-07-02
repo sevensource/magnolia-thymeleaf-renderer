@@ -36,13 +36,12 @@ import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.model.RenderingModel;
 import info.magnolia.rendering.template.RenderableDefinition;
-import info.magnolia.templating.functions.TemplatingFunctions;
 
 public class BlossomThymeleafRenderer extends ThymeleafRenderer {
 
     @Inject
-    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, TemplatingFunctions templatingFunctions, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine, templatingFunctions, magnoliaProperties);
+    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, MagnoliaConfigurationProperties magnoliaProperties) {
+        super(renderingEngine, magnoliaProperties);
     }
     
 	@Override

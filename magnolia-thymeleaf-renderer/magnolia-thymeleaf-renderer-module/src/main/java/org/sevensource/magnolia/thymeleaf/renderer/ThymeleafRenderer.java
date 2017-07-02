@@ -35,6 +35,7 @@ import javax.jcr.Node;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sevensource.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import org.sevensource.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import org.slf4j.Logger;
@@ -46,31 +47,31 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import info.magnolia.cms.core.AggregationState;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.init.MagnoliaConfigurationProperties;
-import info.magnolia.jcr.util.ContentMap;
+import info.magnolia.jcr.decoration.ContentDecoratorUtil;
+import info.magnolia.jcr.util.NodeUtil;
+import info.magnolia.jcr.wrapper.ChannelVisibilityContentDecorator;
+import info.magnolia.jcr.wrapper.I18nNodeWrapper;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderException;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.renderer.AbstractRenderer;
 import info.magnolia.rendering.template.RenderableDefinition;
 import info.magnolia.rendering.util.AppendableWriter;
-import info.magnolia.templating.functions.TemplatingFunctions;
 
 public class ThymeleafRenderer extends AbstractRenderer {
 
 	private static final Logger logger = LoggerFactory.getLogger(ThymeleafRenderer.class);
 	
-	private final TemplatingFunctions templatingFunctions;
 	private ThymeleafRenderingHelper renderingHelper;
 	
-	private boolean decodeContent = true;
 	private boolean cacheTemplates = true;
 
     @Inject
-    public ThymeleafRenderer(RenderingEngine renderingEngine, TemplatingFunctions templatingFunctions, MagnoliaConfigurationProperties magnoliaProperties) {
+    public ThymeleafRenderer(RenderingEngine renderingEngine, MagnoliaConfigurationProperties magnoliaProperties) {
         super(renderingEngine);
-        this.templatingFunctions = templatingFunctions;
         final boolean devMode = magnoliaProperties.getBooleanProperty("magnolia.develop");
         this.cacheTemplates = !devMode;
         this.renderingHelper = new ThymeleafRenderingHelper(getTemplateEngine());
@@ -81,14 +82,6 @@ public class ThymeleafRenderer extends AbstractRenderer {
                             Map<String, Object> ctx, String templateScript) throws RenderException {
     	
         final Map<String, Object> vars = new HashMap<>(ctx);
-        
-        if(decodeContent) {
-        	final Object contentVar = vars.get("content");
-        	if(contentVar != null && contentVar instanceof ContentMap) {
-        		final ContentMap contentMap = (ContentMap) contentVar;
-        		vars.replace("content", templatingFunctions.decode(contentMap));
-        	}
-        }
         
         final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
         final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
@@ -147,7 +140,33 @@ public class ThymeleafRenderer extends AbstractRenderer {
     	return dialects;
     }
     
-    public void setDecodeContent(boolean decodeContent) {
-		this.decodeContent = decodeContent;
-	}
+    @Override
+    protected Node wrapNodeForTemplate(Node content) {
+        content = wrapWithChannelVisibilityWrapper(content);
+        content = wrapWithI18NWrapper(content);
+        return content;
+    }
+
+    private Node wrapWithI18NWrapper(Node content) {
+        if (!NodeUtil.isWrappedWith(content, I18nNodeWrapper.class)) {
+            content = new I18nNodeWrapper(content);
+        }
+        return content;
+    }
+
+    private Node wrapWithChannelVisibilityWrapper(Node content) {
+        // If it's already wrapped then we don't need to add a new one
+        if (ContentDecoratorUtil.isDecoratedWith(content, ChannelVisibilityContentDecorator.class)) {
+            return content;
+        }
+        AggregationState aggregationState = getAggregationStateSafely();
+        if (aggregationState == null) {
+            return content;
+        }
+        String channel = aggregationState.getChannel().getName();
+        if (StringUtils.isEmpty(channel) || channel.equalsIgnoreCase("all")) {
+            return content;
+        }
+        return new ChannelVisibilityContentDecorator(channel).wrapNode(content);
+    }
 }

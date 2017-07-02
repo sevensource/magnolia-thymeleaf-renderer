@@ -1,6 +1,5 @@
 'thymeleaf': 
   'class': 'org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer'
-  'decodeContent': true
   
   'contextAttributes': 
     'cmsfn': 
