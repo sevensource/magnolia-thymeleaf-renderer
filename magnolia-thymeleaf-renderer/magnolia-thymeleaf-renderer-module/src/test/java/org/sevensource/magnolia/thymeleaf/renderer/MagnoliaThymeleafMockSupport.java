@@ -75,6 +75,7 @@ public class MagnoliaThymeleafMockSupport {
 	Node node;
 	RenderableDefinition renderableDefinition;
 	RenderingContext renderingContext;
+	ServletContext servletContext;
 	
 	MagnoliaConfigurationProperties magnoliaProperties;
 
@@ -115,6 +116,8 @@ public class MagnoliaThymeleafMockSupport {
 		});
 		
 		
+		servletContext = mock(ServletContext.class);
+		
 		when(webContextProvider.get()).then((i) -> {
 			WebContext webCtx = mock(WebContext.class);
 			HttpServletResponse response = mock(HttpServletResponse.class);
@@ -122,9 +125,7 @@ public class MagnoliaThymeleafMockSupport {
 			
 			Map<String, Object> requestAttributes = new HashMap<>();
 			
-			when(request.getServletContext()).then((j) -> {
-				return mock(ServletContext.class);
-			});
+			when(request.getServletContext()).then((j) -> servletContext);
 			when(request.getAttribute(any())).then((j) -> requestAttributes.get(j.getArgumentAt(0, String.class)));
 			
 			

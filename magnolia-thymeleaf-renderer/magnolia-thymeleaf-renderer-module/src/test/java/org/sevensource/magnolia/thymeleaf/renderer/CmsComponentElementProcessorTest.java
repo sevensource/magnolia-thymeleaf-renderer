@@ -70,7 +70,7 @@ public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSuppo
 	
 	@Test
 	public void test_component() throws RenderException, RepositoryException {
-		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, magnoliaProperties);
+		ThymeleafRenderer renderer = new ThymeleafRenderer(engine, servletContext, magnoliaProperties);
 		
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("someContent", content);

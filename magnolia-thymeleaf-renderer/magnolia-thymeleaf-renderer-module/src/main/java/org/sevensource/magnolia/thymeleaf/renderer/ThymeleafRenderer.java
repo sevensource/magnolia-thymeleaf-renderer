@@ -31,98 +31,72 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.jcr.Node;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.sevensource.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import org.sevensource.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.IContext;
+import org.thymeleaf.context.WebExpressionContext;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import info.magnolia.cms.core.AggregationState;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.init.MagnoliaConfigurationProperties;
-import info.magnolia.jcr.decoration.ContentDecoratorUtil;
-import info.magnolia.jcr.util.NodeUtil;
-import info.magnolia.jcr.wrapper.ChannelVisibilityContentDecorator;
-import info.magnolia.jcr.wrapper.I18nNodeWrapper;
 import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderException;
 import info.magnolia.rendering.engine.RenderingEngine;
-import info.magnolia.rendering.renderer.AbstractRenderer;
 import info.magnolia.rendering.template.RenderableDefinition;
 import info.magnolia.rendering.util.AppendableWriter;
 
-public class ThymeleafRenderer extends AbstractRenderer {
+public class ThymeleafRenderer extends AbstractThymeleafRenderer {
+
+	private static final String MAGNOLIA_DEVELOP_PROPERTY = "magnolia.develop";
 
 	private static final Logger logger = LoggerFactory.getLogger(ThymeleafRenderer.class);
 	
-	private ThymeleafRenderingHelper renderingHelper;
-	
+	private ServletContext servletContext;
+	private TemplateEngine templateEngine;
 	private boolean cacheTemplates = true;
+	private Set<String> extraDialects = new HashSet<>();
 
     @Inject
-    public ThymeleafRenderer(RenderingEngine renderingEngine, MagnoliaConfigurationProperties magnoliaProperties) {
+    public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, MagnoliaConfigurationProperties magnoliaProperties) {
         super(renderingEngine);
-        final boolean devMode = magnoliaProperties.getBooleanProperty("magnolia.develop");
+        this.templateEngine = createTemplateEngine();
+        this.servletContext = servletContext;
+        final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
         this.cacheTemplates = !devMode;
-        this.renderingHelper = new ThymeleafRenderingHelper(getTemplateEngine());
     }
     
-    @Override
-    protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
-                            Map<String, Object> ctx, String templateScript) throws RenderException {
-    	
-        final Map<String, Object> vars = new HashMap<>(ctx);
-        
-        final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
-        final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
-        final Locale locale = MgnlContext.getAggregationState().getLocale();
-        
-        try (AppendableWriter out = renderingCtx.getAppendable()) {
-        	Writer writerWrapper = new AppendableWriterWrapper(out);
-        	renderingHelper.render(request, response, templateScript, locale, vars, writerWrapper);
-        } catch (IOException ioe) {
-            throw new RenderException(ioe);
-        }
-    }
-    
-    @Override
-    protected Map<String, Object> newContext() {
-        return new HashMap<>();
-    }
-    
-    protected ITemplateEngine getTemplateEngine() {
+    protected TemplateEngine createTemplateEngine() {
     	TemplateEngine templateEngine = new TemplateEngine();
-    	templateEngine.setTemplateResolver(getTemplateResolver());
-    	templateEngine.setAdditionalDialects(getDialects());
+    	templateEngine.setTemplateResolver(createTemplateResolver());
+    	templateEngine.setAdditionalDialects(createDialects());
     	return templateEngine;
     }
     
-    protected ITemplateResolver getTemplateResolver() {
+    protected ITemplateResolver createTemplateResolver() {
     	ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
     	resolver.setTemplateMode(TemplateMode.HTML);
     	resolver.setCacheable(this.cacheTemplates);
     	return resolver;
     }
     
-    protected Set<IDialect> getDialects() {
+    protected Set<IDialect> createDialects() {
     	final Set<IDialect> dialects = new HashSet<>();
     	dialects.add(new MagnoliaDialect());
     	
-    	final String[] extraDialects = new String[]{
-    		"org.thymeleaf.extras.java8time.dialect.Java8TimeDialect"	
-    	};
-    	
-    	for(String extraDialect : extraDialects) {
+    	for(String extraDialect : this.extraDialects) {
         	try {
         		final Class<?> extraDialectClazz = Class.forName(extraDialect);
         		final IDialect dialect = (IDialect) extraDialectClazz.newInstance();
@@ -131,9 +105,11 @@ public class ThymeleafRenderer extends AbstractRenderer {
 				} 
         		dialects.add(dialect);
         	} catch(ClassNotFoundException e) {
-        		logger.trace("Did not find Java8TimeDialect");
+        		logger.error("Cannot find dialect {}", extraDialect);
+        		throw new IllegalArgumentException(e);
         	} catch (IllegalAccessException | InstantiationException e) {
-        		logger.error("Cannot create Java8TimeDialect", e);
+        		logger.error("Cannot create Thymeleaf dialect {}: {}", extraDialect, e.getMessage());
+        		throw new IllegalArgumentException(e);
     		}
     	}
     	    	
@@ -141,32 +117,80 @@ public class ThymeleafRenderer extends AbstractRenderer {
     }
     
     @Override
-    protected Node wrapNodeForTemplate(Node content) {
-        content = wrapWithChannelVisibilityWrapper(content);
-        content = wrapWithI18NWrapper(content);
-        return content;
+    protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
+                            Map<String, Object> ctx, String templateScript) throws RenderException {
+        
+        final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
+        final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
+        final Locale locale = resolveLocale(MgnlContext.getAggregationState().getLocale());
+        
+        final Map<String, Object> variables = new HashMap<>(ctx);
+        prepareModel(request, response, variables);
+		IContext context = createContext(request, response, locale, variables);
+		
+        Set<String> selectors = null;
+        
+        final String[] templateSpec = templateScript.split("::");
+        final String template = templateSpec[0].trim();
+        if(templateSpec.length > 1) {
+        	selectors = new HashSet<>();
+        	selectors.add(templateSpec[1].trim());
+        }
+        
+        try (AppendableWriter out = renderingCtx.getAppendable()) {
+        	final Writer writerWrapper = new AppendableWriterWrapper(out);
+        	templateEngine.process(template, selectors, context, writerWrapper);
+        } catch (IOException ioe) {
+            throw new RenderException(ioe);
+        }
+    }
+    
+    protected Locale resolveLocale(Locale locale) {
+        if (locale != null) {
+            return locale;
+        } else if (MgnlContext.hasInstance()) {
+            return MgnlContext.getLocale();
+        } else {
+            return Locale.getDefault();
+        }
+    }
+    
+    protected IContext createContext(HttpServletRequest request, HttpServletResponse response, Locale locale, Map<String, Object> variables) {
+        final IEngineConfiguration configuration = templateEngine.getConfiguration();
+        return new WebExpressionContext(configuration, request, response, servletContext, locale, variables);
+    }
+    
+    protected void prepareModel(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
+    	// do nothing in the default impl
     }
 
-    private Node wrapWithI18NWrapper(Node content) {
-        if (!NodeUtil.isWrappedWith(content, I18nNodeWrapper.class)) {
-            content = new I18nNodeWrapper(content);
-        }
-        return content;
+    
+    public void setExtraDialects(Set<String> extraDialects) {
+    	this.extraDialects = extraDialects;
+    	reconfigureDialects();
+	}
+    
+    public void addExtraDialect(String dialect) {
+		this.extraDialects.add(dialect);
+		reconfigureDialects();
+	}
+    
+    private void reconfigureDialects() {
+    	if(this.templateEngine != null) {
+    		final Set<IDialect> dialects = createDialects();
+    		this.templateEngine.setAdditionalDialects(dialects);
+    	}
     }
-
-    private Node wrapWithChannelVisibilityWrapper(Node content) {
-        // If it's already wrapped then we don't need to add a new one
-        if (ContentDecoratorUtil.isDecoratedWith(content, ChannelVisibilityContentDecorator.class)) {
-            return content;
-        }
-        AggregationState aggregationState = getAggregationStateSafely();
-        if (aggregationState == null) {
-            return content;
-        }
-        String channel = aggregationState.getChannel().getName();
-        if (StringUtils.isEmpty(channel) || channel.equalsIgnoreCase("all")) {
-            return content;
-        }
-        return new ChannelVisibilityContentDecorator(channel).wrapNode(content);
-    }
+    
+    public boolean isCacheTemplates() {
+		return cacheTemplates;
+	}
+    
+    public TemplateEngine getTemplateEngine() {
+		return templateEngine;
+	}
+    
+    public void setTemplateEngine(TemplateEngine templateEngine) {
+		this.templateEngine = templateEngine;
+	}
 }
