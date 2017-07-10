@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.jcr.Node;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
