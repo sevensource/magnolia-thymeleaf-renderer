@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.jcr.Node;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -72,17 +71,17 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
     @Inject
     public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, MagnoliaConfigurationProperties magnoliaProperties) {
         super(renderingEngine);
-        this.templateEngine = createTemplateEngine();
-        this.servletContext = servletContext;
         final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
         this.cacheTemplates = !devMode;
+        this.templateEngine = createTemplateEngine();
+        this.servletContext = servletContext;
     }
     
     protected TemplateEngine createTemplateEngine() {
-    	TemplateEngine templateEngine = new TemplateEngine();
-    	templateEngine.setTemplateResolver(createTemplateResolver());
-    	templateEngine.setAdditionalDialects(createDialects());
-    	return templateEngine;
+    	final TemplateEngine engine = new TemplateEngine();
+    	engine.setTemplateResolver(createTemplateResolver());
+    	engine.setAdditionalDialects(createDialects());
+    	return engine;
     }
     
     protected ITemplateResolver createTemplateResolver() {

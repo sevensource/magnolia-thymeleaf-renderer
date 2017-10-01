@@ -3,7 +3,11 @@
   
   'contextAttributes': 
     'cmsfn': 
-      'componentClass': 'info.magnolia.templating.jsp.cmsfn.JspTemplatingFunction'
+      'componentClass': 'info.magnolia.templating.functions.TemplatingFunctions'
       'name': 'cmsfn'
+    'jspCmsfn':
+      'componentClass': 'info.magnolia.templating.jsp.cmsfn.JspTemplatingFunction'
+      'name': 'jspCmsfn'
+
 
 
