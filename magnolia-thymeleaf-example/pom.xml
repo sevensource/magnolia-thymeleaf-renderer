@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <magnoliaVersion>5.5.4</magnoliaVersion>
+    <magnoliaVersion>5.5.6</magnoliaVersion>
     <javaVersion>1.8</javaVersion>
     <thymeleaf-renderer.version>0.9.9-SNAPSHOT</thymeleaf-renderer.version>
   </properties>

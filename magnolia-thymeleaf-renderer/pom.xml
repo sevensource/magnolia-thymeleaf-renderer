@@ -15,8 +15,8 @@
 	<properties>
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<magnoliaVersion>5.5.4</magnoliaVersion>
-		<thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
+		<magnoliaVersion>5.5.6</magnoliaVersion>
+		<thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
 	</properties>
 
 	<inceptionYear>2017</inceptionYear>

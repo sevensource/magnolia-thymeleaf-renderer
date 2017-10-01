@@ -15,7 +15,7 @@
 
 	<properties>
 		<blossom.version>3.1.4</blossom.version>
-		<spring.version>4.3.9.RELEASE</spring.version>
+		<spring.version>4.3.11.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
