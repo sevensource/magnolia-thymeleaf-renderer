@@ -1,5 +1,11 @@
 package org.sevensource.magnolia.thymeleaf.setup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /*-
  * #%L
  * Magnolia Thymeleaf Renderer
@@ -23,6 +29,9 @@ package org.sevensource.magnolia.thymeleaf.setup;
  */
 
 import info.magnolia.module.DefaultModuleVersionHandler;
+import info.magnolia.module.InstallContext;
+import info.magnolia.module.delta.Task;
+import info.magnolia.rendering.module.setup.InstallRendererContextAttributeTask;
 
 /**
  * This class is optional and lets you manage the versions of your module,
@@ -35,4 +44,31 @@ import info.magnolia.module.DefaultModuleVersionHandler;
  */
 public class MagnoliaThymeleafRendererVersionHandler extends DefaultModuleVersionHandler {
 
+	private static final Map<String, String> ctxAttributes = new HashMap<>();
+	static {
+		ctxAttributes.put("damfn", "info.magnolia.dam.templating.functions.DamTemplatingFunctions");
+		ctxAttributes.put("imgfn", "info.magnolia.imaging.functions.ImagingTemplatingFunctions");
+		ctxAttributes.put("resfn", "info.magnolia.modules.resources.templating.ResourcesTemplatingFunctions");
+		ctxAttributes.put("sitefn", "info.magnolia.module.site.functions.SiteFunctions");
+	}
+	
+	@Override
+	protected List<Task> getExtraInstallTasks(InstallContext installContext) {
+        List<Task> tasks = new ArrayList<>();
+        tasks.addAll(super.getExtraInstallTasks(installContext));
+        
+
+        for(Entry<String, String> entry : ctxAttributes.entrySet()) {
+        	try {
+        		 final Class<?> ctxClazz = Class.forName( entry.getValue() );
+        		 final Task task = new InstallRendererContextAttributeTask(
+        				 "rendering", "thymeleaf", entry.getKey(), ctxClazz.getName()); 
+        	     tasks.add(task);
+        		} catch( ClassNotFoundException e ) {
+        			// don't do nothing...
+        		}
+        }
+        
+        return tasks;
+	}
 }
