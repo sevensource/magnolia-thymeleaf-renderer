@@ -5,9 +5,15 @@
     'cmsfn': 
       'componentClass': 'info.magnolia.templating.functions.TemplatingFunctions'
       'name': 'cmsfn'
-    'jspCmsfn':
-      'componentClass': 'info.magnolia.templating.jsp.cmsfn.JspTemplatingFunction'
-      'name': 'jspCmsfn'
+    'navfn': 
+      'componentClass': 'info.magnolia.templating.functions.NavigationTemplatingFunctions'
+      'name': 'navfn'
+    'searchfn': 
+      'componentClass': 'info.magnolia.templating.functions.SearchTemplatingFunctions'
+      'name': 'searchfn'
+
+
+
 
 
 
