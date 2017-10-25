@@ -76,6 +76,7 @@ public class MagnoliaThymeleafMockSupport {
 	RenderableDefinition renderableDefinition;
 	RenderingContext renderingContext;
 	ServletContext servletContext;
+	ServerConfiguration serverConfiguration;
 	
 	MagnoliaConfigurationProperties magnoliaProperties;
 
@@ -88,8 +89,8 @@ public class MagnoliaThymeleafMockSupport {
 		renderableDefinition = mock(RenderableDefinition.class);
 		renderingContext = mock(RenderingContext.class);
 		magnoliaProperties = mock(MagnoliaConfigurationProperties.class);
+		serverConfiguration = mock(ServerConfiguration.class);
 		final Provider<WebContext> webContextProvider = mock(Provider.class);
-		final ServerConfiguration serverConfiguration = mock(ServerConfiguration.class);
 		final ComponentProvider componentProvider = mock(ComponentProvider.class);
 		
 		when(engine.getRenderingContext()).then((i) -> renderingContext) ;

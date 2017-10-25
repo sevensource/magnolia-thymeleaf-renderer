@@ -49,6 +49,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.context.MgnlContext;
 import info.magnolia.init.MagnoliaConfigurationProperties;
 import info.magnolia.rendering.context.RenderingContext;
@@ -69,8 +70,8 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 	private Set<String> extraDialects = new HashSet<>();
 
     @Inject
-    public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine);
+    public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
+        super(renderingEngine, serverConfiguration);
         final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
         this.cacheTemplates = !devMode;
         this.templateEngine = createTemplateEngine();

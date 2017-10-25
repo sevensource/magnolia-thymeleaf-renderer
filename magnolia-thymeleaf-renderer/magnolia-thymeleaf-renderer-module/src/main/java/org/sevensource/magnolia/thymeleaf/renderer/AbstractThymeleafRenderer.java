@@ -7,23 +7,40 @@ import javax.jcr.Node;
 
 import org.apache.commons.lang3.StringUtils;
 
+import info.magnolia.channel.ChannelResolver;
+import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.cms.core.AggregationState;
+import info.magnolia.context.MgnlContext;
 import info.magnolia.jcr.decoration.ContentDecoratorUtil;
 import info.magnolia.jcr.util.NodeUtil;
 import info.magnolia.jcr.wrapper.ChannelVisibilityContentDecorator;
 import info.magnolia.jcr.wrapper.I18nNodeWrapper;
 import info.magnolia.rendering.engine.RenderingEngine;
+import info.magnolia.rendering.model.RenderingModel;
 import info.magnolia.rendering.renderer.AbstractRenderer;
+import info.magnolia.rendering.template.RenderableDefinition;
 
 public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
 	
-	public AbstractThymeleafRenderer(RenderingEngine renderingEngine) {
+	private final ServerConfiguration serverConfiguration;
+	
+	public AbstractThymeleafRenderer(RenderingEngine renderingEngine, ServerConfiguration serverConfiguration) {
 		super(renderingEngine);
+		this.serverConfiguration = serverConfiguration;
 	}
 	
     @Override
     protected Map<String, Object> newContext() {
         return new HashMap<>();
+    }
+    
+    @Override
+    protected void setupContext(Map<String, Object> ctx, Node content, RenderableDefinition definition,
+    		RenderingModel<?> model, Object actionResult) {
+    	super.setupContext(ctx, content, definition, model, actionResult);
+    	
+        setContextAttribute(ctx, "ctx", MgnlContext.getInstance());
+        setContextAttribute(ctx, "defaultBaseUrl", serverConfiguration.getDefaultBaseUrl());
     }
     
     @Override
@@ -50,7 +67,7 @@ public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
             return content;
         }
         String channel = aggregationState.getChannel().getName();
-        if (StringUtils.isEmpty(channel) || channel.equalsIgnoreCase("all")) {
+        if (StringUtils.isEmpty(channel) || channel.equalsIgnoreCase(ChannelResolver.ALL)) {
             return content;
         }
         return new ChannelVisibilityContentDecorator(channel).wrapNode(content);
