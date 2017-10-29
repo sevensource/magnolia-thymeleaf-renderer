@@ -1,5 +1,6 @@
 'thymeleaf': 
   'class': 'org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer'
+  'extraDialects':
   
   'contextAttributes': 
     'cmsfn': 
@@ -11,6 +12,7 @@
     'searchfn': 
       'componentClass': 'info.magnolia.templating.functions.SearchTemplatingFunctions'
       'name': 'searchfn'
+      
 
 
 

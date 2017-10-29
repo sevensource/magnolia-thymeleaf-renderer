@@ -63,134 +63,135 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 	private static final String MAGNOLIA_DEVELOP_PROPERTY = "magnolia.develop";
 
 	private static final Logger logger = LoggerFactory.getLogger(ThymeleafRenderer.class);
-	
+
 	private ServletContext servletContext;
 	private TemplateEngine templateEngine;
 	private boolean cacheTemplates = true;
 	private Set<String> extraDialects = new HashSet<>();
 
-    @Inject
-    public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine, serverConfiguration);
-        final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
-        this.cacheTemplates = !devMode;
-        this.templateEngine = createTemplateEngine();
-        this.servletContext = servletContext;
-    }
-    
-    protected TemplateEngine createTemplateEngine() {
-    	final TemplateEngine engine = new TemplateEngine();
-    	engine.setTemplateResolver(createTemplateResolver());
-    	engine.setAdditionalDialects(createDialects());
-    	return engine;
-    }
-    
-    protected ITemplateResolver createTemplateResolver() {
-    	ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-    	resolver.setTemplateMode(TemplateMode.HTML);
-    	resolver.setCacheable(this.cacheTemplates);
-    	return resolver;
-    }
-    
-    protected Set<IDialect> createDialects() {
-    	final Set<IDialect> dialects = new HashSet<>();
-    	dialects.add(new MagnoliaDialect());
-    	
-    	for(String extraDialect : this.extraDialects) {
-        	try {
-        		final Class<?> extraDialectClazz = Class.forName(extraDialect);
-        		final IDialect dialect = (IDialect) extraDialectClazz.newInstance();
-        		if (logger.isInfoEnabled()) {
-					logger.info("Adding Thymeleaf dialect {}", dialect.getClass().getSimpleName());
-				} 
-        		dialects.add(dialect);
-        	} catch(ClassNotFoundException e) {
-        		logger.error("Cannot find dialect {}", extraDialect);
-        		throw new IllegalArgumentException(e);
-        	} catch (IllegalAccessException | InstantiationException e) {
-        		logger.error("Cannot create Thymeleaf dialect {}: {}", extraDialect, e.getMessage());
-        		throw new IllegalArgumentException(e);
-    		}
-    	}
-    	    	
-    	return dialects;
-    }
-    
-    @Override
-    protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
-                            Map<String, Object> ctx, String templateScript) throws RenderException {
-        
-        final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
-        final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
-        final Locale locale = resolveLocale(MgnlContext.getAggregationState().getLocale());
-        
-        final Map<String, Object> variables = new HashMap<>(ctx);
-        prepareModel(request, response, variables);
-		IContext context = createContext(request, response, locale, variables);
-		
-        Set<String> selectors = null;
-        
-        final String[] templateSpec = templateScript.split("::");
-        final String template = templateSpec[0].trim();
-        if(templateSpec.length > 1) {
-        	selectors = new HashSet<>();
-        	selectors.add(templateSpec[1].trim());
-        }
-        
-        try (AppendableWriter out = renderingCtx.getAppendable()) {
-        	final Writer writerWrapper = new AppendableWriterWrapper(out);
-        	templateEngine.process(template, selectors, context, writerWrapper);
-        } catch (IOException ioe) {
-            throw new RenderException(ioe);
-        }
-    }
-    
-    protected Locale resolveLocale(Locale locale) {
-        if (locale != null) {
-            return locale;
-        } else if (MgnlContext.hasInstance()) {
-            return MgnlContext.getLocale();
-        } else {
-            return Locale.getDefault();
-        }
-    }
-    
-    protected IContext createContext(HttpServletRequest request, HttpServletResponse response, Locale locale, Map<String, Object> variables) {
-        final IEngineConfiguration configuration = templateEngine.getConfiguration();
-        return new WebExpressionContext(configuration, request, response, servletContext, locale, variables);
-    }
-    
-    protected void prepareModel(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
-    	// do nothing in the default impl
-    }
-
-    
-    public void setExtraDialects(Set<String> extraDialects) {
-    	this.extraDialects = extraDialects;
-    	reconfigureDialects();
+	@Inject
+	public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext,
+			ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
+		super(renderingEngine, serverConfiguration);
+		final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
+		this.cacheTemplates = !devMode;
+		this.templateEngine = createTemplateEngine();
+		this.servletContext = servletContext;
 	}
-    
-    public void addExtraDialect(String dialect) {
+
+	protected TemplateEngine createTemplateEngine() {
+		final TemplateEngine engine = new TemplateEngine();
+		engine.setTemplateResolver(createTemplateResolver());
+		engine.setAdditionalDialects(createDialects());
+		return engine;
+	}
+
+	protected ITemplateResolver createTemplateResolver() {
+		ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+		resolver.setTemplateMode(TemplateMode.HTML);
+		resolver.setCacheable(this.cacheTemplates);
+		return resolver;
+	}
+
+	protected Set<IDialect> createDialects() {
+		final Set<IDialect> dialects = new HashSet<>();
+		dialects.add(new MagnoliaDialect());
+
+		for (String extraDialect : this.extraDialects) {
+			try {
+				final Class<?> extraDialectClazz = Class.forName(extraDialect);
+				final IDialect dialect = (IDialect) extraDialectClazz.newInstance();
+				if (logger.isInfoEnabled()) {
+					logger.info("Adding Thymeleaf dialect {}", dialect.getClass().getSimpleName());
+				}
+				dialects.add(dialect);
+			} catch (ClassNotFoundException e) {
+				logger.error("Cannot find dialect {}", extraDialect);
+				throw new IllegalArgumentException(e);
+			} catch (IllegalAccessException | InstantiationException e) {
+				logger.error("Cannot create Thymeleaf dialect {}: {}", extraDialect, e.getMessage());
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		return dialects;
+	}
+
+	@Override
+	protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
+			Map<String, Object> ctx, String templateScript) throws RenderException {
+
+		final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
+		final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
+		final Locale locale = resolveLocale(MgnlContext.getAggregationState().getLocale());
+
+		final Map<String, Object> variables = new HashMap<>(ctx);
+		prepareModel(request, response, variables);
+		IContext context = createContext(request, response, locale, variables);
+
+		Set<String> selectors = null;
+
+		final String[] templateSpec = templateScript.split("::");
+		final String template = templateSpec[0].trim();
+		if (templateSpec.length > 1) {
+			selectors = new HashSet<>();
+			selectors.add(templateSpec[1].trim());
+		}
+
+		try (AppendableWriter out = renderingCtx.getAppendable()) {
+			final Writer writerWrapper = new AppendableWriterWrapper(out);
+			templateEngine.process(template, selectors, context, writerWrapper);
+		} catch (IOException ioe) {
+			throw new RenderException(ioe);
+		}
+	}
+
+	protected Locale resolveLocale(Locale locale) {
+		if (locale != null) {
+			return locale;
+		} else if (MgnlContext.hasInstance()) {
+			return MgnlContext.getLocale();
+		} else {
+			return Locale.getDefault();
+		}
+	}
+
+	protected IContext createContext(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			Map<String, Object> variables) {
+		final IEngineConfiguration configuration = templateEngine.getConfiguration();
+		return new WebExpressionContext(configuration, request, response, servletContext, locale, variables);
+	}
+
+	protected void prepareModel(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
+		// do nothing in the default impl
+	}
+
+	public void setExtraDialects(Set<String> extraDialects) {
+		this.extraDialects = extraDialects;
+		reconfigureDialects();
+	}
+
+	public void addExtraDialect(String dialect) {
 		this.extraDialects.add(dialect);
 		reconfigureDialects();
 	}
-    
-    private void reconfigureDialects() {
-    	if(this.templateEngine != null) {
-    		final Set<IDialect> dialects = createDialects();
-    		this.templateEngine.setAdditionalDialects(dialects);
-    	}
-    }
-    
-    public boolean isCacheTemplates() {
+
+	private void reconfigureDialects() {
+		if (this.templateEngine != null) {
+			final Set<IDialect> dialects = createDialects();
+			this.templateEngine.setAdditionalDialects(dialects);
+		}
+	}
+
+	public boolean isCacheTemplates() {
 		return cacheTemplates;
 	}
-    
-    public TemplateEngine getTemplateEngine() {
+
+	public TemplateEngine getTemplateEngine() {
 		return templateEngine;
 	}
-    
-    public void setTemplateEngine(TemplateEngine templateEngine) {
+
+	public void setTemplateEngine(TemplateEngine templateEngine) {
 		this.templateEngine = templateEngine;
 	}
 }
