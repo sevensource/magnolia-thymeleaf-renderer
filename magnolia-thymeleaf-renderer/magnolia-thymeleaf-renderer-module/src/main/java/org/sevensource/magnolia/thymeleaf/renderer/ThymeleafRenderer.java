@@ -10,12 +10,12 @@ package org.sevensource.magnolia.thymeleaf.renderer;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -125,9 +125,11 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 		final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
 		final Locale locale = resolveLocale(MgnlContext.getAggregationState().getLocale());
 
+		final RequestAttributesPreservingRequestWrapper requestWrapper = new RequestAttributesPreservingRequestWrapper(request);
+
 		final Map<String, Object> variables = new HashMap<>(ctx);
-		prepareModel(request, response, variables);
-		IContext context = createContext(request, response, locale, variables);
+		prepareModel(requestWrapper, response, variables);
+		IContext context = createContext(requestWrapper, response, locale, variables);
 
 		Set<String> selectors = null;
 

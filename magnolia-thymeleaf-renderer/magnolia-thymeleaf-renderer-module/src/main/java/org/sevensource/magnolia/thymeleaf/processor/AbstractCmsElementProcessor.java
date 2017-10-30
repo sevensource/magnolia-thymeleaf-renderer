@@ -10,12 +10,12 @@ package org.sevensource.magnolia.thymeleaf.processor;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -83,6 +83,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		structureHandler.replaceWith(out, false);
 	}
 
+
 	@SuppressWarnings("unchecked")
 	protected Class<T> getTemplatingElementClass() {
 		return (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -92,7 +93,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		return Components.getComponentProvider().newInstance(getTemplatingElementClass(), renderingContext);
 	}
 
-	protected void initContentElement(ITemplateContext context, IProcessableElementTag tag,
+	protected void initTemplatingElement(ITemplateContext context, IProcessableElementTag tag,
 			AbstractContentTemplatingElement element) {
 		final Object contentObject = parseObjectAttribute(context, tag, ATTR_CONTENT);
 		if (contentObject != null) {
@@ -116,24 +117,27 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag,
 			String attributeName) {
 		final String obj = parseStringAttribute(context, tag, attributeName);
-		if (obj == null)
+		if (obj == null) {
 			return null;
+		}
 
 		return BooleanUtils.toBoolean(obj);
 	}
 
 	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final String obj = parseStringAttribute(context, tag, attributeName);
-		if (obj == null)
+		if (obj == null) {
 			return null;
+		}
 
 		return NumberUtils.toInt(obj);
 	}
 
 	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
-		if (obj == null)
+		if (obj == null) {
 			return null;
+		}
 
 		if (!(obj instanceof String)) {
 			final String msg = String.format("Don't know how to handle %s attribute of type %s", attributeName,

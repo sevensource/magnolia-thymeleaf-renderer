@@ -51,7 +51,7 @@ public class CmsPageElementProcessor extends AbstractCmsElementProcessor<PageEle
     	
     	final RenderingContext renderingContext = renderingEngine.getRenderingContext();
         final PageElement pageElement = createTemplatingElement(renderingContext);
-        initContentElement(context, tag, pageElement);
+        initTemplatingElement(context, tag, pageElement);
         pageElement.setDialog(parseStringAttribute(context, tag, ATTR_DIALOG));
         
         renderElement(structureHandler, pageElement);

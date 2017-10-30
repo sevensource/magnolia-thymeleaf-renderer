@@ -1,10 +1,5 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /*-
  * #%L
  * Magnolia Thymeleaf Renderer
@@ -15,12 +10,12 @@ import java.util.Map;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -30,7 +25,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
@@ -73,9 +67,10 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 			throw new TemplateProcessingException(msg);
 		}
 
+
 		final AreaDefinition areaDefinition = templateDefinition.getAreas().get(areaName);
 		final AreaElement areaElement = createTemplatingElement(renderingContext);
-		initContentElement(context, tag, areaElement);
+		initTemplatingElement(context, tag, areaElement);
 		areaElement.setName(areaDefinition.getName());
 
 		areaElement.setAvailableComponents(parseStringAttribute(context, tag, "components"));
@@ -87,21 +82,8 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 		areaElement.setCreateAreaNode(parseBooleanAttribute(context, tag, "createAreaNode"));
 		areaElement.setMaxComponents(parseNumberAttribute(context, tag, "maxComponents"));
 
-		final Map<String, Object> savedContext = new HashMap<>();
-		for(String var : context.getVariableNames()) {
-			savedContext.put(var, context.getVariable(var));
-		}
-		
+
 		renderElement(structureHandler, areaElement);
-		
-		if(context instanceof WebEngineContext) {
-			WebEngineContext wContext = (WebEngineContext) context;
-			if(wContext.level() > 0) {
-				wContext.decreaseLevel();
-				wContext.setVariables(savedContext);
-				wContext.increaseLevel();
-			}
-		}
 	}
 
 	private ConfiguredTemplateDefinition getTemplateDefintion(RenderingContext renderingContext) {
