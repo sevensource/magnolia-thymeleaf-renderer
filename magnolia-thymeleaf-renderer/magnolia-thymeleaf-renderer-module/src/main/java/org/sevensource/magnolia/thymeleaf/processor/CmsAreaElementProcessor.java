@@ -1,5 +1,7 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
+import org.apache.commons.lang3.StringUtils;
+
 /*-
  * #%L
  * Magnolia Thymeleaf Renderer
@@ -60,6 +62,12 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 		final ConfiguredTemplateDefinition templateDefinition = getTemplateDefintion(renderingContext);
 
 		final String areaName = parseStringAttribute(context, tag, ATTR_NAME);
+
+		if(StringUtils.isEmpty(areaName)) {
+			final String msg = String.format("No area name specified (attribute '%s')", getDialectPrefix() + ':' + ATTR_NAME);
+			logger.error(msg);
+			throw new TemplateProcessingException(msg);
+		}
 
 		if (!templateDefinition.getAreas().containsKey(areaName)) {
 			final String msg = String.format("Area '%s' not found", areaName);
