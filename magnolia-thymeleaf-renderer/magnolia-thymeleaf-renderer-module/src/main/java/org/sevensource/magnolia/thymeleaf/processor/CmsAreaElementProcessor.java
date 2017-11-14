@@ -1,5 +1,7 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 /*-
@@ -90,6 +92,14 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 		areaElement.setCreateAreaNode(parseBooleanAttribute(context, tag, "createAreaNode"));
 		areaElement.setMaxComponents(parseNumberAttribute(context, tag, "maxComponents"));
 
+		final Object objContextAttributes = parseObjectAttribute(context, tag, "contextAttributes");
+		if (objContextAttributes != null) {
+			if(! (objContextAttributes instanceof Map)) {
+				throw new IllegalArgumentException("ContextAttributes is not of type Map, but " + objContextAttributes.getClass().getName());
+			}
+
+			areaElement.setContextAttributes((Map<String, Object>) objContextAttributes);
+		}
 
 		renderElement(structureHandler, areaElement);
 	}

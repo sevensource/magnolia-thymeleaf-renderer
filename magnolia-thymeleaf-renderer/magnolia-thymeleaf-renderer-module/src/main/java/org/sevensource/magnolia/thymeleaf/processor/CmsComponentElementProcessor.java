@@ -1,5 +1,7 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
+import java.util.Map;
+
 /*-
  * #%L
  * Magnolia Thymeleaf Renderer
@@ -34,7 +36,6 @@ import info.magnolia.rendering.context.RenderingContext;
 import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.templating.elements.ComponentElement;
 
-
 public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CmsComponentElementProcessor.class);
@@ -48,16 +49,25 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
         this.renderingEngine = Components.getComponent(RenderingEngine.class);
     }
 
-    @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-    		IElementTagStructureHandler structureHandler) {
+	@Override
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+			IElementTagStructureHandler structureHandler) {
 
-        final RenderingContext renderingContext = renderingEngine.getRenderingContext();
-        final ComponentElement componentElement = createTemplatingElement(renderingContext);
-        initTemplatingElement(context, tag, componentElement);
-        componentElement.setEditable(parseBooleanAttribute(context, tag, "editable"));
-        componentElement.setDialog(parseStringAttribute(context, tag, "dialog"));
+		final RenderingContext renderingContext = renderingEngine.getRenderingContext();
+		final ComponentElement componentElement = createTemplatingElement(renderingContext);
+		initTemplatingElement(context, tag, componentElement);
+		componentElement.setEditable(parseBooleanAttribute(context, tag, "editable"));
+		componentElement.setDialog(parseStringAttribute(context, tag, "dialog"));
 
-        renderElement(structureHandler, componentElement);
-    }
+		final Object objContextAttributes = parseObjectAttribute(context, tag, "contextAttributes");
+		if (objContextAttributes != null) {
+			if(! (objContextAttributes instanceof Map)) {
+				throw new IllegalArgumentException("ContextAttributes is not of type Map, but " + objContextAttributes.getClass().getName());
+			}
+
+			componentElement.setContextAttributes((Map<String, Object>) objContextAttributes);
+		}
+
+		renderElement(structureHandler, componentElement);
+	}
 }
