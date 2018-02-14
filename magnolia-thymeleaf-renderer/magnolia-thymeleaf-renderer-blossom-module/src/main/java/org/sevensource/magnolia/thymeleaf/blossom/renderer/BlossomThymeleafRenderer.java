@@ -44,6 +44,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.expression.ThymeleafEvaluationContext;
 import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 
+import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.init.MagnoliaConfigurationProperties;
 import info.magnolia.module.blossom.render.RenderContext;
 import info.magnolia.rendering.engine.RenderingEngine;
@@ -56,8 +57,8 @@ public class BlossomThymeleafRenderer extends ThymeleafRenderer implements Appli
 	private ApplicationContext applicationContext;
 	
     @Inject
-    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine, servletContext, magnoliaProperties);
+    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
+        super(renderingEngine, servletContext, serverConfiguration, magnoliaProperties);
         this.servletContext = servletContext;
     }
     

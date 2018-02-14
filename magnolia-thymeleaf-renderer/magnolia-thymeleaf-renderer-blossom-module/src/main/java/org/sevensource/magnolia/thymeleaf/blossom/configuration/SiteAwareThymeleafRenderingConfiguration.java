@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 import info.magnolia.module.blossom.context.MagnoliaComponentFactoryBean;
 import info.magnolia.module.site.renderer.SiteAwareRendererWrapper;
-import info.magnolia.registry.RegistrationException;
 import info.magnolia.rendering.renderer.Renderer;
 import info.magnolia.rendering.renderer.registry.RendererRegistry;
 
@@ -30,8 +29,7 @@ public class SiteAwareThymeleafRenderingConfiguration {
 
 	@Bean
 	@Inject
-	public Renderer blossomThymeleafRenderer(ApplicationContext ctx, RendererRegistry registry)
-			throws RegistrationException {
+	public Renderer blossomThymeleafRenderer(ApplicationContext ctx, RendererRegistry registry) throws Exception {
 
 		final String rendererType = getThymeleafBlossomRendererType();
 		final Renderer renderer = registry.getRenderer(rendererType);
