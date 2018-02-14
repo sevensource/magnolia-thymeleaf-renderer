@@ -15,8 +15,8 @@
 	<properties>
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<magnoliaVersion>5.5.6</magnoliaVersion>
-		<thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
+		<magnoliaVersion>5.6.1</magnoliaVersion>
+		<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
 	</properties>
 
 	<inceptionYear>2017</inceptionYear>
@@ -79,12 +79,19 @@
 
 	<dependencies>
 	</dependencies>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>info.magnolia.bundle</groupId>
-				<artifactId>magnolia-bundle-parent</artifactId>
+				<groupId>info.magnolia.boms</groupId>
+				<artifactId>magnolia-external-dependencies</artifactId>
+				<version>${magnoliaVersion}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>info.magnolia</groupId>
+				<artifactId>magnolia-project</artifactId>
 				<version>${magnoliaVersion}</version>
 				<type>pom</type>
 				<scope>import</scope>
