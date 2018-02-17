@@ -3,15 +3,6 @@
   'extraDialects':
   
   'contextAttributes': 
-    'cmsfn': 
-      'componentClass': 'info.magnolia.templating.functions.TemplatingFunctions'
-      'name': 'cmsfn'
-    'navfn': 
-      'componentClass': 'info.magnolia.templating.functions.NavigationTemplatingFunctions'
-      'name': 'navfn'
-    'searchfn': 
-      'componentClass': 'info.magnolia.templating.functions.SearchTemplatingFunctions'
-      'name': 'searchfn'
       
 
 

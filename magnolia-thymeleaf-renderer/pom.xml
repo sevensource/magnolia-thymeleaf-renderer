@@ -4,13 +4,12 @@
 
 	<groupId>org.sevensource.magnolia</groupId>
 	<artifactId>magnolia-thymeleaf-renderer</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<name>Magnolia Thymeleaf Renderer</name>
 	<description>Thymeleaf rendering integration for Magnolia CMS</description>
 	<url>http://www.github.com/sevensource/magnolia-thymeleaf-renderer</url>
-
 
 	<properties>
 		<javaVersion>1.8</javaVersion>
