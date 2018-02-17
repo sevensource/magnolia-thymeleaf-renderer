@@ -10,7 +10,7 @@
   <properties>
     <magnoliaVersion>5.6.1</magnoliaVersion>
     <javaVersion>1.8</javaVersion>
-    <thymeleaf-renderer.version>1.0.1-SNAPSHOT</thymeleaf-renderer.version>
+    <thymeleaf-renderer.version>[1.0.0,)</thymeleaf-renderer.version>
   </properties>
 
   <modules>
