@@ -19,7 +19,9 @@ jobs:
           - v1-dependencies-
 
       # dependency:go-offline doesn't support multi-module reactors
+      - run: mvn install:install-file -Dpackaging=pom -Dfile=magnolia-thymeleaf-renderer-module/pom.xml -DpomFile=magnolia-thymeleaf-renderer-module/pom.xml
       - run: mvn --fail-never dependency:go-offline || true
+      - run: mvn dependency:purge-local-repository -DmanualInclude="org.sevensource.magnolia:magnolia-thymeleaf-renderer-module"
 
 
       - save_cache:
