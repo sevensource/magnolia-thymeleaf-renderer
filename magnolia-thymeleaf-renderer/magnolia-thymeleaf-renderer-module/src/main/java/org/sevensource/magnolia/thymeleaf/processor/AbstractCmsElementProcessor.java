@@ -157,7 +157,6 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		}
 
 		final IStandardExpression expression = expressionParser.parseExpression(context, expressionValue);
-		final Object obj = expression.execute(context);
-		return obj;
+		return expression.execute(context);
 	}
 }

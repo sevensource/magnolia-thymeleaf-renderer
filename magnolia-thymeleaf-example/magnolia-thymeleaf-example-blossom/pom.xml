@@ -15,8 +15,8 @@
 	<name>magnolia-thymeleaf-example-blossom Magnolia Module</name>
 
 	<properties>
-		<springVersion>4.3.14.RELEASE</springVersion>
-		<blossomVersion>3.2</blossomVersion>
+		<springVersion>5.1.4.RELEASE</springVersion>
+		<blossomVersion>3.2.1</blossomVersion>
 	</properties>
 
 	<dependencies>
@@ -37,10 +37,6 @@
 		<dependency>
 			<groupId>info.magnolia</groupId>
 			<artifactId>magnolia-templating</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>info.magnolia</groupId>
-			<artifactId>magnolia-templating-jsp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>info.magnolia.site</groupId>

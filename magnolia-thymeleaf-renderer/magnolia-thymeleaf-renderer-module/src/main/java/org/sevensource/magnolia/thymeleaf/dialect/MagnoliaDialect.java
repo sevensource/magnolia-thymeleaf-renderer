@@ -37,13 +37,14 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 public class MagnoliaDialect extends AbstractProcessorDialect {
 
-	private final static String DIALECT_PREFIX = "cms";
+	private static final String DIALECT_PREFIX = "cms";
 	
     public MagnoliaDialect() {
         super(DIALECT_PREFIX, DIALECT_PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
     }
 
-    public Set<IProcessor> getProcessors(String dialectName) {
+    @Override
+	public Set<IProcessor> getProcessors(String dialectName) {
         final Set<IProcessor> processors = new HashSet<>();
         processors.add(new CmsPageElementProcessor(dialectName));
         processors.add(new CmsAreaElementProcessor(dialectName));
