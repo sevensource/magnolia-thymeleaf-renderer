@@ -10,15 +10,15 @@
   <dependencies>
     <dependency>
       <name>core</name>
-      <version>5.5.4/*</version>
+      <version>6.1.0/*</version>
     </dependency>
     <dependency>
       <name>rendering</name>
-      <version>5.5.4/*</version>
+      <version>6.1.0/*</version>
     </dependency>
     <dependency>
       <name>templating</name>
-      <version>5.5.4/*</version>
+      <version>6.1.0/*</version>
     </dependency>
   </dependencies>
 </module>

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.sevensource.magnolia</groupId>
 		<artifactId>magnolia-thymeleaf-renderer</artifactId>
-		<version>1.1.0</version>
+		<version>1.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -14,16 +14,16 @@
 	<name>Magnolia Thymeleaf Blossom Renderer</name>
 
 	<properties>
-		<blossom.version>3.2.1</blossom.version>
-		<spring.version>5.0.4.RELEASE</spring.version>
-		<magnolia.site.version>1.2.2</magnolia.site.version>
+		<blossom.version>3.3</blossom.version>
+		<spring.version>5.1.11.RELEASE</spring.version>
+		<magnolia.site.version>1.2.3</magnolia.site.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.sevensource.magnolia</groupId>
 			<artifactId>magnolia-thymeleaf-renderer-module</artifactId>
-			<version>1.1.0</version>
+			<version>1.2</version>
 		</dependency>
 		
 		<dependency>

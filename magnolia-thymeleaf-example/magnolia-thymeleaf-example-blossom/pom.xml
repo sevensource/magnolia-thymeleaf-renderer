@@ -15,8 +15,9 @@
 	<name>magnolia-thymeleaf-example-blossom Magnolia Module</name>
 
 	<properties>
-		<springVersion>5.1.4.RELEASE</springVersion>
-		<blossomVersion>3.2.1</blossomVersion>
+		<springVersion>5.1.11.RELEASE</springVersion>
+		<blossomVersion>3.3</blossomVersion>
+		<validatorVersion>6.1.0.Final</validatorVersion>
 	</properties>
 
 	<dependencies>
@@ -81,8 +82,9 @@
 		</dependency>
 		<!-- For @Valid - JSR-303 Bean Validation API -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
+			<version>${validatorVersion}</version>
 		</dependency>
 
 		<!-- TEST -->

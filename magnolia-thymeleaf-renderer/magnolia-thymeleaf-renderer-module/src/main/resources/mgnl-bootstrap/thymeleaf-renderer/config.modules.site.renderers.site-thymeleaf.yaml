@@ -1,5 +1,3 @@
 'site-thymeleaf': 
   'class': 'info.magnolia.module.site.renderer.SiteAwareRendererWrapper'
   'wrappedRendererType': 'thymeleaf'
-
-

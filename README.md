@@ -5,7 +5,7 @@
 magnolia-thymeleaf-renderer
 ================================
 
-[Thymeleaf 3](http://www.thymeleaf.org/) rendering integration for [Magnolia CMS 5.5, 5.6, 6.0](https://www.magnolia-cms.com)
+[Thymeleaf 3](http://www.thymeleaf.org/) rendering integration for [Magnolia CMS 6.1](https://www.magnolia-cms.com)
 
 Inspired by https://github.com/eiswind/magnolia-thymeleaf-renderer/ and rewritten
 to match current technology stack.
@@ -15,7 +15,7 @@ to match current technology stack.
 About
 =====
 * [magnolia-thymeleaf-renderer-module](magnolia-thymeleaf-renderer/magnolia-thymeleaf-renderer-module)
-  is a Thymeleaf renderer for Magnolia 5.5, 5.6, 6.0
+  is a Thymeleaf renderer for Magnolia 6.1
 * [magnolia-thymeleaf-renderer-blossom-module](magnolia-thymeleaf-renderer/magnolia-thymeleaf-renderer-blossom-module)
   features integration with [Blossom](https://documentation.magnolia-cms.com/display/DOCS/Blossom+module)
 

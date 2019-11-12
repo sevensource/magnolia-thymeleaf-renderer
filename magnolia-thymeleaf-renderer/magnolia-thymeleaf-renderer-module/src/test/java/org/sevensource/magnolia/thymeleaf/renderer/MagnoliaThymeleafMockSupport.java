@@ -68,6 +68,7 @@ import info.magnolia.rendering.util.AppendableWriter;
 import info.magnolia.templating.elements.AreaElement;
 import info.magnolia.templating.elements.ComponentElement;
 import info.magnolia.templating.elements.PageElement;
+import info.magnolia.templating.module.TemplatingModule;
 
 public class MagnoliaThymeleafMockSupport {
 
@@ -176,18 +177,33 @@ public class MagnoliaThymeleafMockSupport {
 		
 		when(componentProvider.getComponent(eq(RenderingEngine.class))).thenReturn(engine);
 
+		when(componentProvider.getComponent(eq(TemplatingModule.class))).thenReturn(new TemplatingModule());
 		
 		when(componentProvider.newInstance(eq(PageElement.class), any())).then((i) -> {
-			PageElement element = new PageElement(serverConfiguration, renderingContext);
+			
+			WebContext webContext = webContextProvider.get();
+			Provider<TemplatingModule> templatingModuleProvider =
+					() -> Components.getComponent(TemplatingModule.class);
+					
+			PageElement element = new PageElement(serverConfiguration, renderingContext, templatingModuleProvider, webContext);
+			
 			return element;
 		});
+		
+		
 		when(componentProvider.newInstance(eq(AreaElement.class), any())).then((i) -> {
 			RenderableVariationResolver variationResolver = mock(RenderableVariationResolver.class);
 			
 			I18nizer i18nizer = mock(I18nizer.class);
 			when(i18nizer.decorate(templateDefinition)).thenReturn(templateDefinition);
 			
-			AreaElement element = new AreaElement(serverConfiguration, renderingContext, engine, variationResolver, i18nizer);
+			WebContext webContext = webContextProvider.get();
+			Provider<TemplatingModule> templatingModuleProvider =
+					() -> Components.getComponent(TemplatingModule.class);
+					
+			AreaElement element = new AreaElement(serverConfiguration, renderingContext, engine, variationResolver, 
+					templatingModuleProvider, webContext
+					);
 			return element;
 		});
 		when(componentProvider.newInstance(eq(ComponentElement.class), any())).then((i) -> {
