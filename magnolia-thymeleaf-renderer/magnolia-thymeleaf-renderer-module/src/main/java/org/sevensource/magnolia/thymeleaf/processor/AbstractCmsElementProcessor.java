@@ -114,17 +114,21 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		element.setNodeIdentifier(parseStringAttribute(context, tag, ATTR_UUID));
 	}
 
-	protected boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
 		
 		if (obj == null) {
-			return false;
+			return null;
 		} else if(obj instanceof Number) {
 			return BooleanUtils.toBoolean( ((Number)obj).intValue() );
 		} else if(obj instanceof Boolean) {
 			return BooleanUtils.toBoolean((Boolean) obj);
 		} else if(obj instanceof String) {
-			return BooleanUtils.toBoolean((String) obj);
+			if(StringUtils.isAllBlank((String) obj)) {
+				return null;
+			} else {
+				return BooleanUtils.toBoolean((String) obj);	
+			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
@@ -140,7 +144,11 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		} else if(obj instanceof Number) {
 			return ((Number)obj).intValue();
 		} else if(obj instanceof String) {
-			return NumberUtils.toInt((String) obj);
+			if(StringUtils.isAllBlank((String) obj)) {
+				return null;
+			} else {
+				return NumberUtils.toInt((String) obj);	
+			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
@@ -158,7 +166,11 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		} else if(obj instanceof Boolean) {
 			return BooleanUtils.toStringTrueFalse((Boolean) obj);
 		} else if(obj instanceof String) {
-			return (String) obj;
+			if(StringUtils.isAllBlank((String) obj)) {
+				return null;
+			} else {
+				return (String) obj;
+			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
