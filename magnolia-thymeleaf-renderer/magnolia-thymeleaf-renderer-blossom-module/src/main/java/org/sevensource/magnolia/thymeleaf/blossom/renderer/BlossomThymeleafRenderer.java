@@ -40,9 +40,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.web.servlet.support.RequestContext;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.expression.ThymeleafEvaluationContext;
-import org.thymeleaf.spring4.naming.SpringContextVariableNames;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.expression.ThymeleafEvaluationContext;
+import org.thymeleaf.spring5.naming.SpringContextVariableNames;
 
 import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.init.MagnoliaConfigurationProperties;
