@@ -83,7 +83,6 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		structureHandler.replaceWith(out, false);
 	}
 
-
 	@SuppressWarnings("unchecked")
 	protected Class<T> getTemplatingElementClass() {
 		return (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -114,39 +113,64 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		element.setNodeIdentifier(parseStringAttribute(context, tag, ATTR_UUID));
 	}
 
-	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag,
-			String attributeName) {
-		final String obj = parseStringAttribute(context, tag, attributeName);
-		if (obj == null) {
-			return null;
-		}
-
-		return BooleanUtils.toBoolean(obj);
-	}
-
-	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
-		final String obj = parseStringAttribute(context, tag, attributeName);
-		if (obj == null) {
-			return null;
-		}
-
-		return NumberUtils.toInt(obj);
-	}
-
-	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
+	
 		if (obj == null) {
 			return null;
-		}
-
-		if (!(obj instanceof String)) {
-			final String msg = String.format("Don't know how to handle %s attribute of type %s", attributeName,
-					obj.getClass().getName());
+		} else if(obj instanceof Number) {
+			return BooleanUtils.toBoolean( ((Number)obj).intValue() );
+		} else if(obj instanceof Boolean) {
+			return BooleanUtils.toBoolean((Boolean) obj);
+		} else if(obj instanceof String) {
+			if(StringUtils.isAllBlank((String) obj)) {
+				return null;
+			} else {
+				return BooleanUtils.toBoolean((String) obj);
+			}
+		} else {
+			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
 			throw new TemplateProcessingException(msg);
 		}
+}
+	
+ 	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+		final Object obj = parseObjectAttribute(context, tag, attributeName);
+		
+ 		if (obj == null) {
+ 			return null;
+		} else if(obj instanceof Number) {
+			return ((Number)obj).intValue();
+		} else if(obj instanceof String) {
+			if(StringUtils.isAllBlank((String) obj)) {
+				return null;
+			} else {
+				return NumberUtils.toInt((String) obj);	
+			}
+		} else {
+			final String msg = getConversionErrorMessage(attributeName, obj);
+			logger.error(msg);
+			throw new TemplateProcessingException(msg);
+ 		}
+ 	}
 
-		return (String) obj;
+ 	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+ 		final Object obj = parseObjectAttribute(context, tag, attributeName);
+		
+ 		if (obj == null) {
+ 			return null;
+		} else if(obj instanceof Number) {
+			return obj.toString();
+		} else if(obj instanceof Boolean) {
+			return BooleanUtils.toStringTrueFalse((Boolean) obj);
+		} else if(obj instanceof String) {
+			return (String) obj;
+		} else {
+			final String msg = getConversionErrorMessage(attributeName, obj);
+ 			logger.error(msg);
+ 			throw new TemplateProcessingException(msg);
+ 		}
 	}
 
 	protected Object parseObjectAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
@@ -158,5 +182,11 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 
 		final IStandardExpression expression = expressionParser.parseExpression(context, expressionValue);
 		return expression.execute(context);
+	}
+	
+ 	
+	private static String getConversionErrorMessage(String attributeName, Object o) {
+		return String.format("Don't know how to handle %s attribute of type %s", attributeName,
+				o.getClass().getName());
 	}
 }
