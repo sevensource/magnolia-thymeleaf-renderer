@@ -11,7 +11,7 @@
 	
 	<groupId>org.sevensource.magnolia</groupId>
 	<artifactId>magnolia-thymeleaf-renderer</artifactId>
-	<version>1.3.2</version>
+	<version>1.3.4</version>
 	<packaging>pom</packaging>
 
 	<name>Magnolia Thymeleaf Renderer</name>
