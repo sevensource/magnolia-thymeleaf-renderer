@@ -115,7 +115,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 
 	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
-	
+		
 		if (obj == null) {
 			return null;
 		} else if(obj instanceof Number) {
@@ -126,15 +126,15 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 			if(StringUtils.isAllBlank((String) obj)) {
 				return null;
 			} else {
-				return BooleanUtils.toBoolean((String) obj);
+				return BooleanUtils.toBoolean((String) obj);	
 			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
 			throw new TemplateProcessingException(msg);
 		}
-}
-	
+	}
+
  	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
 		
@@ -183,7 +183,6 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		final IStandardExpression expression = expressionParser.parseExpression(context, expressionValue);
 		return expression.execute(context);
 	}
-	
  	
 	private static String getConversionErrorMessage(String attributeName, Object o) {
 		return String.format("Don't know how to handle %s attribute of type %s", attributeName,
