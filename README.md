@@ -7,9 +7,6 @@ magnolia-thymeleaf-renderer
 
 [Thymeleaf 3](http://www.thymeleaf.org/) rendering integration for [Magnolia CMS 6.1](https://www.magnolia-cms.com)
 
-Inspired by https://github.com/eiswind/magnolia-thymeleaf-renderer/ and rewritten
-to match current technology stack.
-
 **Contributions welcome!**
 
 About
@@ -24,4 +21,4 @@ About
 
 Credits
 =======
-Thomas Kratz - https://github.com/eiswind/magnolia-thymeleaf-renderer/
+Thomas Kratz - https://github.com/doles/magnolia-thymeleaf-renderer/
