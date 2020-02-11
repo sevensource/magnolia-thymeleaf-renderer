@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.sevensource.magnolia</groupId>
 		<artifactId>magnolia-thymeleaf-renderer</artifactId>
-		<version>1.3.4</version>
+		<version>1.3.5</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -23,9 +23,9 @@
 		<dependency>
 			<groupId>org.sevensource.magnolia</groupId>
 			<artifactId>magnolia-thymeleaf-renderer-module</artifactId>
-			<version>1.3.4</version>
+			<version>1.3.5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>info.magnolia.site</groupId>
 			<artifactId>magnolia-site</artifactId>
@@ -45,7 +45,7 @@
 			<artifactId>thymeleaf-spring5</artifactId>
 			<version>${thymeleaf.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>

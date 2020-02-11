@@ -1,5 +1,16 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
+import info.magnolia.objectfactory.Components;
+import info.magnolia.rendering.context.RenderingContext;
+import info.magnolia.rendering.engine.RenderingEngine;
+import info.magnolia.templating.elements.ComponentElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
+
 import java.util.Map;
 
 /*-
@@ -24,18 +35,6 @@ import java.util.Map;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.templatemode.TemplateMode;
-
-import info.magnolia.objectfactory.Components;
-import info.magnolia.rendering.context.RenderingContext;
-import info.magnolia.rendering.engine.RenderingEngine;
-import info.magnolia.templating.elements.ComponentElement;
-
 public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<ComponentElement> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CmsComponentElementProcessor.class);
@@ -59,13 +58,11 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
 		componentElement.setEditable(parseBooleanAttribute(context, tag, "editable"));
 		componentElement.setDialog(parseStringAttribute(context, tag, "dialog"));
 
-		final Object objContextAttributes = parseObjectAttribute(context, tag, "contextAttributes");
-		if (objContextAttributes != null) {
-			if(! (objContextAttributes instanceof Map)) {
-				throw new IllegalArgumentException("ContextAttributes is not of type Map, but " + objContextAttributes.getClass().getName());
-			}
-
-			componentElement.setContextAttributes((Map<String, Object>) objContextAttributes);
+		final Map<?, ?> objContextAttributes = parseMapAttribute(context, tag, "contextAttributes");
+		if(objContextAttributes != null) {
+			@SuppressWarnings("unchecked")
+			final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
+			componentElement.setContextAttributes(ctx);
 		}
 
 		renderElement(structureHandler, componentElement);

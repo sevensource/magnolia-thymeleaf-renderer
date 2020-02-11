@@ -22,11 +22,12 @@ package org.sevensource.magnolia.thymeleaf.processor;
  * #L%
  */
 
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-
-import javax.jcr.Node;
-
+import info.magnolia.jcr.util.ContentMap;
+import info.magnolia.objectfactory.Components;
+import info.magnolia.rendering.context.RenderingContext;
+import info.magnolia.rendering.engine.RenderException;
+import info.magnolia.templating.elements.AbstractContentTemplatingElement;
+import info.magnolia.templating.elements.TemplatingElement;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -42,12 +43,10 @@ import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressionParser;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import info.magnolia.jcr.util.ContentMap;
-import info.magnolia.objectfactory.Components;
-import info.magnolia.rendering.context.RenderingContext;
-import info.magnolia.rendering.engine.RenderException;
-import info.magnolia.templating.elements.AbstractContentTemplatingElement;
-import info.magnolia.templating.elements.TemplatingElement;
+import javax.jcr.Node;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 
 public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> extends AbstractElementTagProcessor {
 
@@ -115,7 +114,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 
 	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
-		
+
 		if (obj == null) {
 			return null;
 		} else if(obj instanceof Number) {
@@ -126,7 +125,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 			if(StringUtils.isAllBlank((String) obj)) {
 				return null;
 			} else {
-				return BooleanUtils.toBoolean((String) obj);	
+				return BooleanUtils.toBoolean((String) obj);
 			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
@@ -135,31 +134,31 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		}
 	}
 
- 	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
-		
- 		if (obj == null) {
- 			return null;
+
+		if (obj == null) {
+			return null;
 		} else if(obj instanceof Number) {
 			return ((Number)obj).intValue();
 		} else if(obj instanceof String) {
 			if(StringUtils.isAllBlank((String) obj)) {
 				return null;
 			} else {
-				return NumberUtils.toInt((String) obj);	
+				return NumberUtils.toInt((String) obj);
 			}
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
 			logger.error(msg);
 			throw new TemplateProcessingException(msg);
- 		}
- 	}
+		}
+	}
 
- 	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
- 		final Object obj = parseObjectAttribute(context, tag, attributeName);
-		
- 		if (obj == null) {
- 			return null;
+	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+		final Object obj = parseObjectAttribute(context, tag, attributeName);
+
+		if (obj == null) {
+			return null;
 		} else if(obj instanceof Number) {
 			return obj.toString();
 		} else if(obj instanceof Boolean) {
@@ -168,24 +167,39 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 			return (String) obj;
 		} else {
 			final String msg = getConversionErrorMessage(attributeName, obj);
- 			logger.error(msg);
- 			throw new TemplateProcessingException(msg);
- 		}
+			logger.error(msg);
+			throw new TemplateProcessingException(msg);
+		}
 	}
 
 	protected Object parseObjectAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final String expressionValue = tag.getAttributeValue(getDialectPrefix(), attributeName);
 
-		if (StringUtils.isBlank(expressionValue)) {
+		if(expressionValue == null) {
 			return null;
+		} else if(StringUtils.isBlank(expressionValue)) {
+			return "";
 		}
 
 		final IStandardExpression expression = expressionParser.parseExpression(context, expressionValue);
 		return expression.execute(context);
 	}
- 	
+
+	protected Map<?, ?> parseMapAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
+		final Object obj = parseObjectAttribute(context, tag, attributeName);
+		if(obj == null) {
+			return null;
+		} else if(obj instanceof Map) {
+			return (Map) obj;
+		} else {
+			final String msg = getConversionErrorMessage(attributeName, obj);
+			logger.error(msg);
+			throw new TemplateProcessingException(msg);
+		}
+	}
+
 	private static String getConversionErrorMessage(String attributeName, Object o) {
 		return String.format("Don't know how to handle %s attribute of type %s", attributeName,
-				o.getClass().getName());
+				o == null ? "<null>" : o.getClass().getName());
 	}
 }

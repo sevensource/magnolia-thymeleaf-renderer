@@ -1,8 +1,22 @@
 package org.sevensource.magnolia.thymeleaf.processor;
 
-import java.util.Map;
-
+import info.magnolia.objectfactory.Components;
+import info.magnolia.rendering.context.RenderingContext;
+import info.magnolia.rendering.engine.RenderingEngine;
+import info.magnolia.rendering.template.AreaDefinition;
+import info.magnolia.rendering.template.RenderableDefinition;
+import info.magnolia.rendering.template.configured.ConfiguredTemplateDefinition;
+import info.magnolia.templating.elements.AreaElement;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.exceptions.TemplateProcessingException;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
+
+import java.util.Map;
 
 /*-
  * #%L
@@ -25,22 +39,6 @@ import org.apache.commons.lang3.StringUtils;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.templatemode.TemplateMode;
-
-import info.magnolia.objectfactory.Components;
-import info.magnolia.rendering.context.RenderingContext;
-import info.magnolia.rendering.engine.RenderingEngine;
-import info.magnolia.rendering.template.AreaDefinition;
-import info.magnolia.rendering.template.RenderableDefinition;
-import info.magnolia.rendering.template.configured.ConfiguredTemplateDefinition;
-import info.magnolia.templating.elements.AreaElement;
 
 public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaElement> {
 
@@ -92,13 +90,11 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 		areaElement.setCreateAreaNode(parseBooleanAttribute(context, tag, "createAreaNode"));
 		areaElement.setMaxComponents(parseNumberAttribute(context, tag, "maxComponents"));
 
-		final Object objContextAttributes = parseObjectAttribute(context, tag, "contextAttributes");
-		if (objContextAttributes != null) {
-			if(! (objContextAttributes instanceof Map)) {
-				throw new IllegalArgumentException("ContextAttributes is not of type Map, but " + objContextAttributes.getClass().getName());
-			}
-
-			areaElement.setContextAttributes((Map<String, Object>) objContextAttributes);
+		final Map<?,?> objContextAttributes = parseMapAttribute(context, tag, "contextAttributes");
+		if(objContextAttributes != null) {
+			@SuppressWarnings("unchecked")
+			final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
+			areaElement.setContextAttributes(ctx);
 		}
 
 		renderElement(structureHandler, areaElement);
