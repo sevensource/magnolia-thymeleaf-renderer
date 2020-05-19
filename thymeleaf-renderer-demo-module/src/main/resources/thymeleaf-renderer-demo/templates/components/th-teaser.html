@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:cms="http://www.sevensource.org/mgnl">
+  <head>
+  </head>
+  <body>
+  	<b>This element should really not be rendered, because this text is outside of the fragment.</b>
+
+	<div th:fragment="mainTeaser">
+		<div th:utext="${content.text}">
+		</div>
+	</div>
+</body>
+</html>

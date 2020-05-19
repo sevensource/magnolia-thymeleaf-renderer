@@ -1,0 +1,6 @@
+title: Th Text
+templateScript: /thymeleaf-renderer-demo/templates/components/th-text.html
+renderType: thymeleaf
+
+dialog: thymeleaf-renderer-demo:components/th-text-properties
+
