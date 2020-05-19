@@ -1,4 +1,4 @@
-'thymeleaf': 
+'thymeleaf':
   'class': 'org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer'
   'extraDialects':
-  'contextAttributes': 
+  'contextAttributes':

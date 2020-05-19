@@ -15,8 +15,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
 
       # dependency:go-offline doesn't support multi-module reactors
       - run: mvn install:install-file -Dpackaging=pom -Dfile=magnolia-thymeleaf-renderer-module/pom.xml -DpomFile=magnolia-thymeleaf-renderer-module/pom.xml

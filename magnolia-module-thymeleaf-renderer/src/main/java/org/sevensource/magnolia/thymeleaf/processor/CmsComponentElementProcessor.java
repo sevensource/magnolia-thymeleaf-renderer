@@ -39,18 +39,18 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
 
 	private static final Logger logger = LoggerFactory.getLogger(CmsComponentElementProcessor.class);
 
-    public static final String EL_NAME = "component";
+	public static final String EL_NAME = "component";
 
-    private final RenderingEngine renderingEngine;
+	private final RenderingEngine renderingEngine;
 
-    public CmsComponentElementProcessor(String prefix) {
-        super(TemplateMode.HTML, prefix, EL_NAME);
-        this.renderingEngine = Components.getComponent(RenderingEngine.class);
-    }
+	public CmsComponentElementProcessor(String prefix) {
+		super(TemplateMode.HTML, prefix, EL_NAME);
+		this.renderingEngine = Components.getComponent(RenderingEngine.class);
+	}
 
 	@Override
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-			IElementTagStructureHandler structureHandler) {
+							 IElementTagStructureHandler structureHandler) {
 
 		final RenderingContext renderingContext = renderingEngine.getRenderingContext();
 		final ComponentElement componentElement = createTemplatingElement(renderingContext);
@@ -60,8 +60,7 @@ public class CmsComponentElementProcessor extends AbstractCmsElementProcessor<Co
 
 		final Map<?, ?> objContextAttributes = parseMapAttribute(context, tag, "contextAttributes");
 		if(objContextAttributes != null) {
-			@SuppressWarnings("unchecked")
-			final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
+			@SuppressWarnings("unchecked") final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
 			componentElement.setContextAttributes(ctx);
 		}
 

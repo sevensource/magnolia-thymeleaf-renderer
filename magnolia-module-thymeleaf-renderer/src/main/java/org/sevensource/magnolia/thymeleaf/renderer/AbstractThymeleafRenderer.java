@@ -34,7 +34,7 @@ public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
 
 	@Override
 	protected void setupContext(Map<String, Object> ctx, Node content, RenderableDefinition definition,
-			RenderingModel<?> model, Object actionResult) {
+								RenderingModel<?> model, Object actionResult) {
 		super.setupContext(ctx, content, definition, model, actionResult);
 
 		setContextAttribute(ctx, "ctx", MgnlContext.getInstance());
@@ -49,7 +49,7 @@ public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
 	}
 
 	private Node wrapWithI18NWrapper(Node content) {
-		if (!NodeUtil.isWrappedWith(content, I18nNodeWrapper.class)) {
+		if(!NodeUtil.isWrappedWith(content, I18nNodeWrapper.class)) {
 			content = new I18nNodeWrapper(content);
 		}
 		return content;
@@ -57,15 +57,15 @@ public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
 
 	private Node wrapWithChannelVisibilityWrapper(Node content) {
 		// If it's already wrapped then we don't need to add a new one
-		if (ContentDecoratorUtil.isDecoratedWith(content, ChannelVisibilityContentDecorator.class)) {
+		if(ContentDecoratorUtil.isDecoratedWith(content, ChannelVisibilityContentDecorator.class)) {
 			return content;
 		}
 		AggregationState aggregationState = getAggregationStateSafely();
-		if (aggregationState == null) {
+		if(aggregationState == null) {
 			return content;
 		}
 		String channel = aggregationState.getChannel().getName();
-		if (StringUtils.isEmpty(channel) || channel.equalsIgnoreCase(ChannelResolver.ALL)) {
+		if(StringUtils.isEmpty(channel) || channel.equalsIgnoreCase(ChannelResolver.ALL)) {
 			return content;
 		}
 		return new ChannelVisibilityContentDecorator(channel).wrapNode(content);

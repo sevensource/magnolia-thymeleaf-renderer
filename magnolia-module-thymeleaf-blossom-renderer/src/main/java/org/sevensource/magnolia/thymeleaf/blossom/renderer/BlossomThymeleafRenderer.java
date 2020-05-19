@@ -54,48 +54,48 @@ public class BlossomThymeleafRenderer extends ThymeleafRenderer implements Appli
 	private final ServletContext servletContext;
 	private ApplicationContext applicationContext;
 
-    @Inject
-    public BlossomThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
-        super(renderingEngine, servletContext, serverConfiguration, magnoliaProperties);
-        this.servletContext = servletContext;
-    }
+	@Inject
+	public BlossomThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext, ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
+		super(renderingEngine, servletContext, serverConfiguration, magnoliaProperties);
+		this.servletContext = servletContext;
+	}
 
 	@Override
 	protected TemplateEngine createTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.setTemplateResolver(createTemplateResolver());
 		templateEngine.setAdditionalDialects(createDialects());
-	    return templateEngine;
+		return templateEngine;
 	}
 
 	@Override
-    protected String resolveTemplateScript(Node content, RenderableDefinition definition, RenderingModel<?> model,
-    		String actionResult) {
+	protected String resolveTemplateScript(Node content, RenderableDefinition definition, RenderingModel<?> model,
+										   String actionResult) {
 		return RenderContext.get().getTemplateScript();
-    }
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void prepareModel(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
 		model.putAll(RenderContext.get().getModel());
 
-        final RequestContext requestContext =
-                new RequestContext(request, response, servletContext, model);
+		final RequestContext requestContext =
+				new RequestContext(request, response, servletContext, model);
 
-        addRequestContextAsVariable(model, SpringContextVariableNames.SPRING_REQUEST_CONTEXT, requestContext);
+		addRequestContextAsVariable(model, SpringContextVariableNames.SPRING_REQUEST_CONTEXT, requestContext);
 
-        if(applicationContext != null) {
-	        // Expose Thymeleaf's own evaluation context as a model variable
-	        //
-	        // Note Spring's EvaluationContexts are NOT THREAD-SAFE (in exchange for SpelExpressions being thread-safe).
-	        // That's why we need to create a new EvaluationContext for each request / template execution, even if it is
-	        // quite expensive to create because of requiring the initialization of several ConcurrentHashMaps.
-	        final ConversionService conversionService =
-	                (ConversionService) request.getAttribute(ConversionService.class.getName()); // might be null!
-	        final ThymeleafEvaluationContext evaluationContext =
-	                new ThymeleafEvaluationContext(applicationContext, conversionService);
-	        model.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
-        }
+		if(applicationContext != null) {
+			// Expose Thymeleaf's own evaluation context as a model variable
+			//
+			// Note Spring's EvaluationContexts are NOT THREAD-SAFE (in exchange for SpelExpressions being thread-safe).
+			// That's why we need to create a new EvaluationContext for each request / template execution, even if it is
+			// quite expensive to create because of requiring the initialization of several ConcurrentHashMaps.
+			final ConversionService conversionService =
+					(ConversionService) request.getAttribute(ConversionService.class.getName()); // might be null!
+			final ThymeleafEvaluationContext evaluationContext =
+					new ThymeleafEvaluationContext(applicationContext, conversionService);
+			model.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
+		}
 	}
 
 
@@ -112,14 +112,14 @@ public class BlossomThymeleafRenderer extends ThymeleafRenderer implements Appli
 		}
 	}
 
-    protected static void addRequestContextAsVariable(
-            final Map<String,Object> model, final String variableName, final RequestContext requestContext) {
+	protected static void addRequestContextAsVariable(
+			final Map<String, Object> model, final String variableName, final RequestContext requestContext) {
 
-        if (model.containsKey(variableName)) {
-            throw new IllegalStateException(
-                    "Cannot expose request context in model attribute '" + variableName +
-                    "' because of an existing model object of the same name");
-        }
-        model.put(variableName, requestContext);
-    }
+		if(model.containsKey(variableName)) {
+			throw new IllegalStateException(
+					"Cannot expose request context in model attribute '" + variableName +
+							"' because of an existing model object of the same name");
+		}
+		model.put(variableName, requestContext);
+	}
 }

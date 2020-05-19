@@ -31,17 +31,17 @@ import org.sevensource.magnolia.thymeleaf.blossom.demo.config.ThymeleafBlossomRe
 
 public class ThymeleafBlossomRendererDemoModule extends BlossomModuleSupport implements ModuleLifecycle {
 
-    public void start(ModuleLifecycleContext moduleLifecycleContext) {
-        if (moduleLifecycleContext.getPhase() == ModuleLifecycleContext.PHASE_SYSTEM_STARTUP) {
-            super.initRootWebApplicationContext(ThymeleafBlossomRendererDemoConfiguration.class);
-            super.initBlossomDispatcherServlet("blossom", BlossomServletConfiguration.class);
-        }
-    }
+	public void start(ModuleLifecycleContext moduleLifecycleContext) {
+		if(moduleLifecycleContext.getPhase() == ModuleLifecycleContext.PHASE_SYSTEM_STARTUP) {
+			super.initRootWebApplicationContext(ThymeleafBlossomRendererDemoConfiguration.class);
+			super.initBlossomDispatcherServlet("blossom", BlossomServletConfiguration.class);
+		}
+	}
 
-    public void stop(ModuleLifecycleContext moduleLifecycleContext) {
-        if (moduleLifecycleContext.getPhase() == ModuleLifecycleContext.PHASE_SYSTEM_SHUTDOWN) {
-            super.destroyDispatcherServlets();
-            super.closeRootWebApplicationContext();
-        }
-    }
+	public void stop(ModuleLifecycleContext moduleLifecycleContext) {
+		if(moduleLifecycleContext.getPhase() == ModuleLifecycleContext.PHASE_SYSTEM_SHUTDOWN) {
+			super.destroyDispatcherServlets();
+			super.closeRootWebApplicationContext();
+		}
+	}
 }

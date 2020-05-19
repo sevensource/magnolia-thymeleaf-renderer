@@ -56,7 +56,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 
 	@Override
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-			IElementTagStructureHandler structureHandler) {
+							 IElementTagStructureHandler structureHandler) {
 
 		final RenderingContext renderingContext = renderingEngine.getRenderingContext();
 		final ConfiguredTemplateDefinition templateDefinition = getTemplateDefintion(renderingContext);
@@ -69,7 +69,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 			throw new TemplateProcessingException(msg);
 		}
 
-		if (!templateDefinition.getAreas().containsKey(areaName)) {
+		if(!templateDefinition.getAreas().containsKey(areaName)) {
 			final String msg = String.format("Area '%s' not found", areaName);
 			logger.error(msg);
 			throw new TemplateProcessingException(msg);
@@ -90,10 +90,9 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 		areaElement.setCreateAreaNode(parseBooleanAttribute(context, tag, "createAreaNode"));
 		areaElement.setMaxComponents(parseNumberAttribute(context, tag, "maxComponents"));
 
-		final Map<?,?> objContextAttributes = parseMapAttribute(context, tag, "contextAttributes");
+		final Map<?, ?> objContextAttributes = parseMapAttribute(context, tag, "contextAttributes");
 		if(objContextAttributes != null) {
-			@SuppressWarnings("unchecked")
-			final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
+			@SuppressWarnings("unchecked") final Map<String, Object> ctx = (Map<String, Object>) objContextAttributes;
 			areaElement.setContextAttributes(ctx);
 		}
 
@@ -102,7 +101,7 @@ public class CmsAreaElementProcessor extends AbstractCmsElementProcessor<AreaEle
 
 	private ConfiguredTemplateDefinition getTemplateDefintion(RenderingContext renderingContext) {
 		final RenderableDefinition renderableDefinition = renderingContext.getRenderableDefinition();
-		if (!(renderableDefinition instanceof ConfiguredTemplateDefinition)) {
+		if(!(renderableDefinition instanceof ConfiguredTemplateDefinition)) {
 			final String msg = String.format(
 					"RenderableDefinition is of type %s. Only ConfiguredTemplateDefinition is supported for areas.",
 					renderableDefinition.getClass().getName());

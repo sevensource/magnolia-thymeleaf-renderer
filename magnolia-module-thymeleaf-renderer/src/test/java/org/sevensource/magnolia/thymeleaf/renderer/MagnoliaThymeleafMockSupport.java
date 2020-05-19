@@ -91,8 +91,7 @@ public class MagnoliaThymeleafMockSupport {
 		final Provider<WebContext> webContextProvider = Mockito.<Provider>mock(Provider.class);
 		final ComponentProvider componentProvider = mock(ComponentProvider.class);
 
-		when(engine.getRenderingContext()).then((i) -> renderingContext) ;
-
+		when(engine.getRenderingContext()).then((i) -> renderingContext);
 
 
 		when(node.getSession()).then((i) -> {
@@ -109,9 +108,9 @@ public class MagnoliaThymeleafMockSupport {
 
 		when(node.getPath()).thenReturn("/home");
 		when(node.getNodes()).then((i) -> {
-	      NodeIterator nodeIterator = mock(NodeIterator.class);
-	      when(nodeIterator.hasNext()).thenReturn(false);
-	      return nodeIterator;
+			NodeIterator nodeIterator = mock(NodeIterator.class);
+			when(nodeIterator.hasNext()).thenReturn(false);
+			return nodeIterator;
 		});
 
 
@@ -129,7 +128,7 @@ public class MagnoliaThymeleafMockSupport {
 
 
 			doAnswer((j) -> requestAttributes.put(j.getArgumentAt(0, String.class), j.getArgumentAt(1, Object.class))).
-			when(request).setAttribute(any(), any());
+					when(request).setAttribute(any(), any());
 
 			when(request.getAttributeNames()).then((j) -> requestAttributes.keySet());
 
@@ -137,8 +136,8 @@ public class MagnoliaThymeleafMockSupport {
 			when(webCtx.getResponse()).thenReturn(response);
 			when(webCtx.getLocale()).thenReturn(Locale.ENGLISH);
 
-	        AggregationState state = mock(AggregationState.class);
-	        //when(state.getMainContentNode()).thenReturn(node);
+			AggregationState state = mock(AggregationState.class);
+			//when(state.getMainContentNode()).thenReturn(node);
 
 
 			when(webCtx.getAggregationState()).thenReturn(state);
@@ -148,12 +147,12 @@ public class MagnoliaThymeleafMockSupport {
 		TemplateDefinition templateDefinition = mock(ConfiguredTemplateDefinition.class);
 		when(templateDefinition.getDialog()).thenReturn(null);
 		when(templateDefinition.getAreas()).then((j) -> {
-	        final AreaDefinition areaDefinition = mock(AreaDefinition.class);
-	        when(areaDefinition.getName()).thenReturn("main");
-	        when(areaDefinition.getEnabled()).thenReturn(true);
+			final AreaDefinition areaDefinition = mock(AreaDefinition.class);
+			when(areaDefinition.getName()).thenReturn("main");
+			when(areaDefinition.getEnabled()).thenReturn(true);
 
-	        final Map<String, AreaDefinition> areas = new HashMap<>();
-	        areas.put("main", areaDefinition);
+			final Map<String, AreaDefinition> areas = new HashMap<>();
+			areas.put("main", areaDefinition);
 			return areas;
 		});
 
@@ -162,7 +161,7 @@ public class MagnoliaThymeleafMockSupport {
 			stringWriter = new StringWriter();
 			return new AppendableWriter(stringWriter);
 		});
-		when(renderingContext.getRenderableDefinition()).then((i) -> templateDefinition );
+		when(renderingContext.getRenderableDefinition()).then((i) -> templateDefinition);
 		when(renderingContext.getCurrentContent()).then((i) -> node);
 
 
@@ -195,7 +194,7 @@ public class MagnoliaThymeleafMockSupport {
 
 			return new AreaElement(serverConfiguration, renderingContext, engine, variationResolver,
 					templatingModuleProvider, webContext
-					);
+			);
 		});
 		when(componentProvider.newInstance(eq(ComponentElement.class), any())).then((i) -> {
 			I18nizer i18nizer = mock(I18nizer.class);
@@ -214,8 +213,8 @@ public class MagnoliaThymeleafMockSupport {
 		MgnlContext.setInstance(webContextProvider.get());
 	}
 
-    @After
-    public void cleanup() {
-        Components.popProvider();
-    }
+	@After
+	public void cleanup() {
+		Components.popProvider();
+	}
 }

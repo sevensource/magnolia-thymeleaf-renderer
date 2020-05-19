@@ -34,7 +34,7 @@ public class RequestAttributesPreservingRequestWrapper extends HttpServletReques
 	@Override
 	public Enumeration<String> getAttributeNames() {
 		final Set<String> attributeNames = new HashSet<>();
-		attributeNames.addAll(Collections.list( super.getAttributeNames() ));
+		attributeNames.addAll(Collections.list(super.getAttributeNames()));
 		attributeNames.addAll(shadowAttributes.keySet());
 		return Collections.enumeration(attributeNames);
 	}

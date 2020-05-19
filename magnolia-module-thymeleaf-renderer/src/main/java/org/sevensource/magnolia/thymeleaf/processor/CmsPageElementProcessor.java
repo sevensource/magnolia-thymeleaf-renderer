@@ -34,25 +34,25 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 public class CmsPageElementProcessor extends AbstractCmsElementProcessor<PageElement> {
 
-    private static final String EL_NAME = "page";
-    private static final String ATTR_DIALOG = "dialog";
+	private static final String EL_NAME = "page";
+	private static final String ATTR_DIALOG = "dialog";
 
-    private final RenderingEngine renderingEngine;
+	private final RenderingEngine renderingEngine;
 
-    public CmsPageElementProcessor(String prefix) {
-    	super(TemplateMode.HTML, prefix, EL_NAME);
-        this.renderingEngine = Components.getComponent(RenderingEngine.class);
-    }
+	public CmsPageElementProcessor(String prefix) {
+		super(TemplateMode.HTML, prefix, EL_NAME);
+		this.renderingEngine = Components.getComponent(RenderingEngine.class);
+	}
 
-    @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
-    		IElementTagStructureHandler structureHandler) {
+	@Override
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+							 IElementTagStructureHandler structureHandler) {
 
-    	final RenderingContext renderingContext = renderingEngine.getRenderingContext();
-        final PageElement pageElement = createTemplatingElement(renderingContext);
-        initTemplatingElement(context, tag, pageElement);
-        pageElement.setDialog(parseStringAttribute(context, tag, ATTR_DIALOG));
+		final RenderingContext renderingContext = renderingEngine.getRenderingContext();
+		final PageElement pageElement = createTemplatingElement(renderingContext);
+		initTemplatingElement(context, tag, pageElement);
+		pageElement.setDialog(parseStringAttribute(context, tag, ATTR_DIALOG));
 
-        renderElement(structureHandler, pageElement);
-    }
+		renderElement(structureHandler, pageElement);
+	}
 }

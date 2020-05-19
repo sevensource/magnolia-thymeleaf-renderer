@@ -33,7 +33,7 @@ public class SiteAwareThymeleafRenderingConfiguration {
 		final String rendererType = getThymeleafBlossomRendererType();
 		final Renderer renderer = registry.getRenderer(rendererType);
 
-		if (renderer instanceof SiteAwareRendererWrapper) {
+		if(renderer instanceof SiteAwareRendererWrapper) {
 			/*
 			 * if the renderer is a SiteAwareRendererWrapper, get the underlying
 			 * BlossomThymeleafRenderer and apply spring autowiring and
@@ -58,7 +58,7 @@ public class SiteAwareThymeleafRenderingConfiguration {
 	}
 
 	protected void checkRenderer(Renderer renderer, String rendererId) {
-		if (!(renderer instanceof BlossomThymeleafRenderer)) {
+		if(!(renderer instanceof BlossomThymeleafRenderer)) {
 			final String msg = String.format("Renderer with id %s is of type %s", rendererId,
 					renderer.getClass().getName());
 			throw new IllegalArgumentException(msg);

@@ -61,7 +61,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	protected static final String ATTR_UUID = "uuid";
 
 	public AbstractCmsElementProcessor(final TemplateMode templateMode, final String dialectPrefix,
-			final String elementName) {
+									   final String elementName) {
 
 		super(templateMode, dialectPrefix, elementName, (dialectPrefix != null), null, false, PRECEDENCE);
 		this.expressionParser = new StandardExpressionParser();
@@ -73,7 +73,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 		try {
 			templatingElement.begin(out);
 			templatingElement.end(out);
-		} catch (RenderException | IOException e) {
+		} catch(RenderException | IOException e) {
 			final String msg = String.format("Cannot render element: %s", e.getMessage());
 			logger.error(msg, e);
 			throw new TemplateProcessingException(msg, e);
@@ -92,12 +92,12 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	}
 
 	protected void initTemplatingElement(ITemplateContext context, IProcessableElementTag tag,
-			AbstractContentTemplatingElement element) {
+										 AbstractContentTemplatingElement element) {
 		final Object contentObject = parseObjectAttribute(context, tag, ATTR_CONTENT);
-		if (contentObject != null) {
-			if (contentObject instanceof Node) {
+		if(contentObject != null) {
+			if(contentObject instanceof Node) {
 				element.setContent((Node) contentObject);
-			} else if (contentObject instanceof ContentMap) {
+			} else if(contentObject instanceof ContentMap) {
 				element.setContent(((ContentMap) contentObject).getJCRNode());
 			} else {
 				final String msg = String.format("Don't know how to handle content of type %s",
@@ -115,10 +115,10 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	protected Boolean parseBooleanAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
 
-		if (obj == null) {
+		if(obj == null) {
 			return null;
 		} else if(obj instanceof Number) {
-			return BooleanUtils.toBoolean( ((Number)obj).intValue() );
+			return BooleanUtils.toBoolean(((Number) obj).intValue());
 		} else if(obj instanceof Boolean) {
 			return BooleanUtils.toBoolean((Boolean) obj);
 		} else if(obj instanceof String) {
@@ -137,10 +137,10 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	protected Integer parseNumberAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
 
-		if (obj == null) {
+		if(obj == null) {
 			return null;
 		} else if(obj instanceof Number) {
-			return ((Number)obj).intValue();
+			return ((Number) obj).intValue();
 		} else if(obj instanceof String) {
 			if(StringUtils.isAllBlank((String) obj)) {
 				return null;
@@ -157,7 +157,7 @@ public abstract class AbstractCmsElementProcessor<T extends TemplatingElement> e
 	protected String parseStringAttribute(ITemplateContext context, IProcessableElementTag tag, String attributeName) {
 		final Object obj = parseObjectAttribute(context, tag, attributeName);
 
-		if (obj == null) {
+		if(obj == null) {
 			return null;
 		} else if(obj instanceof Number) {
 			return obj.toString();

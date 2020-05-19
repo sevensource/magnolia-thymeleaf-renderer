@@ -29,17 +29,17 @@ import info.magnolia.ui.framework.config.UiConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Template(id="thymeleaf-blossom-renderer-demo:components/blossomTeaser", title="Blossom Th Teaser")
+@Template(id = "thymeleaf-blossom-renderer-demo:components/blossomTeaser", title = "Blossom Th Teaser")
 @Controller
 public class BlossomTeaserComponent {
 
-    @TabFactory("main")
-    public void mainTab(UiConfig cfg, TabBuilder tab) {
-        tab.fields(
-                cfg.fields.text("title").label("Title"),
-                cfg.fields.link("href").appName("pages").label("Link")
-        );
-    }
+	@TabFactory("main")
+	public void mainTab(UiConfig cfg, TabBuilder tab) {
+		tab.fields(
+				cfg.fields.text("title").label("Title"),
+				cfg.fields.link("href").appName("pages").label("Link")
+		);
+	}
 
 	@RequestMapping("/components/blossomTeaser")
 	public String render() {

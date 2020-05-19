@@ -60,9 +60,9 @@ public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSuppo
 
 		when(content.getPath()).thenReturn("/home");
 		when(content.getNodes()).then((i) -> {
-	      NodeIterator nodeIterator = mock(NodeIterator.class);
-	      when(nodeIterator.hasNext()).thenReturn(false);
-	      return nodeIterator;
+			NodeIterator nodeIterator = mock(NodeIterator.class);
+			when(nodeIterator.hasNext()).thenReturn(false);
+			return nodeIterator;
 		});
 	}
 

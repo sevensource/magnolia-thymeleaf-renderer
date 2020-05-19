@@ -39,19 +39,19 @@ public class MagnoliaDialect extends AbstractProcessorDialect {
 
 	private static final String DIALECT_PREFIX = "cms";
 
-    public MagnoliaDialect() {
-        super(DIALECT_PREFIX, DIALECT_PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
-    }
+	public MagnoliaDialect() {
+		super(DIALECT_PREFIX, DIALECT_PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
+	}
 
-    @Override
+	@Override
 	public Set<IProcessor> getProcessors(String dialectName) {
-        final Set<IProcessor> processors = new HashSet<>();
-        processors.add(new CmsPageElementProcessor(dialectName));
-        processors.add(new CmsAreaElementProcessor(dialectName));
-        processors.add(new CmsComponentElementProcessor(dialectName));
+		final Set<IProcessor> processors = new HashSet<>();
+		processors.add(new CmsPageElementProcessor(dialectName));
+		processors.add(new CmsAreaElementProcessor(dialectName));
+		processors.add(new CmsComponentElementProcessor(dialectName));
 
-        // remove xmlns:cms
-        processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, DIALECT_PREFIX));
-        return processors;
-    }
+		// remove xmlns:cms
+		processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, DIALECT_PREFIX));
+		return processors;
+	}
 }

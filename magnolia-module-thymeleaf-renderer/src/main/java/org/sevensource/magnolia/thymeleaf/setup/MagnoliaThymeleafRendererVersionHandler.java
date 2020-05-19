@@ -36,31 +36,32 @@ import java.util.Map.Entry;
 public class MagnoliaThymeleafRendererVersionHandler extends DefaultModuleVersionHandler {
 
 	private static final Map<String, String> ctxAttributes = new HashMap<>();
+
 	static {
-		ctxAttributes.put("damfn",	"info.magnolia.dam.templating.functions.DamTemplatingFunctions");
-		ctxAttributes.put("imgfn",	"info.magnolia.imaging.functions.ImagingTemplatingFunctions");
-		ctxAttributes.put("resfn",	"info.magnolia.modules.resources.templating.ResourcesTemplatingFunctions");
-		ctxAttributes.put("sitefn",	"info.magnolia.module.site.functions.SiteFunctions");
-		ctxAttributes.put("navfn",	"info.magnolia.templating.functions.NavigationTemplatingFunctions");
-		ctxAttributes.put("searchfn","info.magnolia.templating.functions.SearchTemplatingFunctions");
-		ctxAttributes.put("cmsfn",	"info.magnolia.templating.functions.TemplatingFunctions");
+		ctxAttributes.put("damfn", "info.magnolia.dam.templating.functions.DamTemplatingFunctions");
+		ctxAttributes.put("imgfn", "info.magnolia.imaging.functions.ImagingTemplatingFunctions");
+		ctxAttributes.put("resfn", "info.magnolia.modules.resources.templating.ResourcesTemplatingFunctions");
+		ctxAttributes.put("sitefn", "info.magnolia.module.site.functions.SiteFunctions");
+		ctxAttributes.put("navfn", "info.magnolia.templating.functions.NavigationTemplatingFunctions");
+		ctxAttributes.put("searchfn", "info.magnolia.templating.functions.SearchTemplatingFunctions");
+		ctxAttributes.put("cmsfn", "info.magnolia.templating.functions.TemplatingFunctions");
 	}
 
 	@Override
 	protected List<Task> getExtraInstallTasks(InstallContext installContext) {
 		List<Task> tasks = new ArrayList<>(super.getExtraInstallTasks(installContext));
 
-        for(Entry<String, String> entry : ctxAttributes.entrySet()) {
-        	try {
-        		 final Class<?> ctxClazz = Class.forName( entry.getValue() );
-        		 final Task task = new InstallRendererContextAttributeTask(
-        				 "rendering", "thymeleaf", entry.getKey(), ctxClazz.getName());
-        	     tasks.add(task);
-        		} catch( ClassNotFoundException e ) {
-        			// don't do nothing...
-        		}
-        }
+		for(Entry<String, String> entry : ctxAttributes.entrySet()) {
+			try {
+				final Class<?> ctxClazz = Class.forName(entry.getValue());
+				final Task task = new InstallRendererContextAttributeTask(
+						"rendering", "thymeleaf", entry.getKey(), ctxClazz.getName());
+				tasks.add(task);
+			} catch(ClassNotFoundException e) {
+				// don't do nothing...
+			}
+		}
 
-        return tasks;
+		return tasks;
 	}
 }

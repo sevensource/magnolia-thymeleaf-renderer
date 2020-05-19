@@ -1,22 +1,22 @@
-<html xmlns:cms="http://www.sevensource.org/mgnl" xmlns:th="http://www.thymeleaf.org" lang="en" >
-  <head>
-  	<cms:page />
-  	<style>
-  		.aux-component {
-  			border: 1px solid black;
-  			background-color: #a1a1a1;
-  		}
-  	</style>
-  </head>
-  <body>
-  		<h1 th:text="${content.title}"></h1>
+<html xmlns:cms="http://www.sevensource.org/mgnl" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<cms:page/>
+	<style>
+		.aux-component {
+			border: 1px solid black;
+			background-color: #a1a1a1;
+		}
+	</style>
+</head>
+<body>
+<h1 th:text="${content.title}"></h1>
 
-  		<div>
-	  		<cms:area cms:name="main" />
-  		</div>
+<div>
+	<cms:area cms:name="main"/>
+</div>
 
-  		<div>
-  			<cms:area cms:name="aux" />
-  		</div>
-  </body>
+<div>
+	<cms:area cms:name="aux"/>
+</div>
+</body>
 </html>

@@ -70,7 +70,7 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 
 	@Inject
 	public ThymeleafRenderer(RenderingEngine renderingEngine, ServletContext servletContext,
-			ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
+							 ServerConfiguration serverConfiguration, MagnoliaConfigurationProperties magnoliaProperties) {
 		super(renderingEngine, serverConfiguration);
 
 		final boolean devMode = magnoliaProperties.getBooleanProperty(MAGNOLIA_DEVELOP_PROPERTY);
@@ -98,18 +98,18 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 		final Set<IDialect> dialects = new HashSet<>();
 		dialects.add(new MagnoliaDialect());
 
-		for (String extraDialect : this.extraDialects) {
+		for(String extraDialect : this.extraDialects) {
 			try {
 				final Class<?> extraDialectClazz = Class.forName(extraDialect);
 				final IDialect dialect = (IDialect) extraDialectClazz.getDeclaredConstructor().newInstance();
-				if (logger.isInfoEnabled()) {
+				if(logger.isInfoEnabled()) {
 					logger.info("Adding Thymeleaf dialect {}", dialect.getClass().getSimpleName());
 				}
 				dialects.add(dialect);
-			} catch (ClassNotFoundException e) {
+			} catch(ClassNotFoundException e) {
 				logger.error("Cannot find dialect {}", extraDialect);
 				throw new IllegalArgumentException(e);
-			} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+			} catch(IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
 				logger.error("Cannot create Thymeleaf dialect {}: {}", extraDialect, e.getMessage());
 				throw new IllegalArgumentException(e);
 			}
@@ -120,7 +120,7 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 
 	@Override
 	protected void onRender(Node content, RenderableDefinition definition, RenderingContext renderingCtx,
-			Map<String, Object> ctx, String templateScript) throws RenderException {
+							Map<String, Object> ctx, String templateScript) throws RenderException {
 
 		final HttpServletRequest request = MgnlContext.getWebContext().getRequest();
 		final HttpServletResponse response = MgnlContext.getWebContext().getResponse();
@@ -136,23 +136,23 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 
 		final String[] templateSpec = templateScript.split("::");
 		final String template = templateSpec[0].trim();
-		if (templateSpec.length > 1) {
+		if(templateSpec.length > 1) {
 			selectors = new HashSet<>();
 			selectors.add(templateSpec[1].trim());
 		}
 
-		try (AppendableWriter out = renderingCtx.getAppendable()) {
+		try(AppendableWriter out = renderingCtx.getAppendable()) {
 			final Writer writerWrapper = new AppendableWriterWrapper(out);
 			templateEngine.process(template, selectors, context, writerWrapper);
-		} catch (IOException ioe) {
+		} catch(IOException ioe) {
 			throw new RenderException(ioe);
 		}
 	}
 
 	protected Locale resolveLocale(Locale locale) {
-		if (locale != null) {
+		if(locale != null) {
 			return locale;
-		} else if (MgnlContext.hasInstance()) {
+		} else if(MgnlContext.hasInstance()) {
 			return MgnlContext.getLocale();
 		} else {
 			return Locale.getDefault();
@@ -160,7 +160,7 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 	}
 
 	protected IContext createContext(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			Map<String, Object> variables) {
+									 Map<String, Object> variables) {
 		final IEngineConfiguration configuration = templateEngine.getConfiguration();
 		return new WebExpressionContext(configuration, request, response, servletContext, locale, variables);
 	}
@@ -180,7 +180,7 @@ public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 	}
 
 	private void reconfigureDialects() {
-		if (this.templateEngine != null) {
+		if(this.templateEngine != null) {
 			final Set<IDialect> dialects = createDialects();
 			this.templateEngine.setAdditionalDialects(dialects);
 		}
