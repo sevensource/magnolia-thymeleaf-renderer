@@ -7,22 +7,14 @@ jobs:
     environment:
       MAVEN_OPTS: -Xmx3200m
 
-    working_directory: ~/project/magnolia-thymeleaf-renderer
-
     steps:
-      - checkout:
-          path: ~/project
-
+      - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
 
-      # dependency:go-offline doesn't support multi-module reactors
-      - run: mvn install:install-file -Dpackaging=pom -Dfile=magnolia-thymeleaf-renderer-module/pom.xml -DpomFile=magnolia-thymeleaf-renderer-module/pom.xml
-      - run: mvn --fail-never dependency:go-offline -DexcludeGroupIds="org.sevensource.magnolia" || true
-      - run: mvn dependency:purge-local-repository -DmanualInclude="org.sevensource.magnolia:magnolia-thymeleaf-renderer-module"
-
+      - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
