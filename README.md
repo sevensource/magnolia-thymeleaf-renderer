@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/sevensource/magnolia-thymeleaf-renderer.svg?maxAge=2592000)](https://github.com/sevensource/magnolia-thymeleaf-renderer/blob/master/LICENSE)
 
 # Thymeleaf rendering for Magnolia CMS
-[Thymeleaf 3](http://www.thymeleaf.org/) templates rendering integration for [Magnolia CMS 6.2](https://www.magnolia-cms.com)
+[Thymeleaf 3](https://www.thymeleaf.org/) templates rendering integration for [Magnolia CMS 6.2](https://www.magnolia-cms.com)
 
 **Contributions welcome!**
 
@@ -13,6 +13,6 @@
 * [magnolia-module-thymeleaf-blossom-renderer](magnolia-module-thymeleaf-blossom-renderer)
   features integration with [Blossom](https://documentation.magnolia-cms.com/display/DOCS/Blossom+module) / [Spring Framework](https://www.spring.io)
 
-* see [thymeleaf-renderer-demo-module](thymeleaf-renderer-demo-module) and [thymeleaf-blossom-renderer-demo](thymeleaf-blossom-renderer-demo) for fully working examples.
+* see [thymeleaf-renderer-demo-module](thymeleaf-renderer-demo-module) and [thymeleaf-blossom-renderer-demo-module](thymeleaf-blossom-renderer-demo-module) for fully working examples.
 
 
