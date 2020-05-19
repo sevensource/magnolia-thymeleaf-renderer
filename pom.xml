@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sevensource.parents</groupId>
+		<artifactId>sevensource-oss-build</artifactId>
+		<version>1.10</version>
+		<relativePath/> <!-- lookup from repo -->
+	</parent>
+
+	<groupId>org.sevensource.magnolia</groupId>
+	<artifactId>magnolia-thymeleaf-renderer</artifactId>
+	<version>1.4.0</version>
+	<packaging>pom</packaging>
+
+	<name>Magnolia Thymeleaf Renderer</name>
+	<description>Thymeleaf rendering integration for Magnolia CMS</description>
+	<url>http://www.github.com/sevensource/magnolia-thymeleaf-renderer</url>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<magnolia.version>6.2</magnolia.version>
+		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+		<blossom.version>3.4</blossom.version>
+		<spring.version>5.2.5.RELEASE</spring.version>
+		<magnolia-site.version>1.3</magnolia-site.version>
+	</properties>
+
+	<modules>
+		<module>magnolia-module-thymeleaf-renderer</module>
+		<module>magnolia-module-thymeleaf-blossom-renderer</module>
+		<module>thymeleaf-blossom-renderer-demo-module</module>
+		<module>thymeleaf-renderer-demo-module</module>
+		<module>thymeleaf-renderer-demo-webapp</module>
+	</modules>
+
+	<inceptionYear>2017</inceptionYear>
+
+	<organization>
+		<name>SevenSource, pgaschuetz</name>
+		<url>http://www.github.com/sevensource</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<name>pgaschuetz</name>
+			<organizationUrl>http://github.com/pgaschuetz</organizationUrl>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<url>https://github.com/sevensource/magnolia-thymeleaf-renderer/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:git://github.com/sevensource/magnolia-thymeleaf-renderer.git</connection>
+		<developerConnection>scm:git:git@github.com:sevensource/magnolia-thymeleaf-renderer.git</developerConnection>
+		<url>http://github.com/sevensource/magnolia-thymeleaf-renderer/tree/master</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL)</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>magnolia.public</id>
+			<url>https://nexus.magnolia-cms.com/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>vaadin-addons</id>
+			<url>https://maven.vaadin.com/vaadin-addons</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>info.magnolia.boms</groupId>
+				<artifactId>magnolia-external-dependencies</artifactId>
+				<version>${magnolia.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>info.magnolia</groupId>
+				<artifactId>magnolia-project</artifactId>
+				<version>${magnolia.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>META-INF/magnolia/*</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+</project>

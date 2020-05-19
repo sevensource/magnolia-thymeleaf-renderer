@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+	<name>thymeleaf-renderer</name>
+	<displayName>Thymeleaf Renderer Module</displayName>
+	<class>org.sevensource.magnolia.thymeleaf.MagnoliaThymeleafRendererModule</class>
+	<versionHandler>org.sevensource.magnolia.thymeleaf.setup.MagnoliaThymeleafRendererVersionHandler</versionHandler>
+	<version>${project.version}</version>
+
+	<dependencies>
+		<dependency>
+			<name>core</name>
+			<version>6.2/*</version>
+		</dependency>
+		<dependency>
+			<name>rendering</name>
+			<version>6.2/*</version>
+		</dependency>
+		<dependency>
+			<name>templating</name>
+			<version>6.2/*</version>
+		</dependency>
+	</dependencies>
+</module>

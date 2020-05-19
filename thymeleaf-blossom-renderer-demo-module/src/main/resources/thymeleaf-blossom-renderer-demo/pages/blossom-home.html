@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:cms="http://www.sevensource.org/mgnl"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{thymeleaf-blossom-renderer-demo/layouts/layout.html}">
+<head>
+	<cms:page/>
+</head>
+<body layout:fragment="content">
+<h1>A Blossom Thymeleaf Template</h1>
+<h2 th:text="${content.title}"></h2>
+<p>This content has a date property of <span th:text="${#dates.format(content.date.time, 'dd-MMM-yyyy')}"></span></p>
+<p>This page has been rendered on <span th:text="${#dates.format(currentDate, 'dd-MMM-yyyy HH:mm:ss')}"></span></p>
+
+<div>
+	<cms:area cms:name="mainContent"/>
+</div>
+</body>
+</html>

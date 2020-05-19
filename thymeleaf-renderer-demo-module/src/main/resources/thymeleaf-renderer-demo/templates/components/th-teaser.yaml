@@ -1,0 +1,6 @@
+title: Th Teaser
+templateScript: "/thymeleaf-renderer-demo/templates/components/th-teaser.html :: mainTeaser"
+renderType: thymeleaf
+
+dialog: thymeleaf-renderer-demo:components/th-teaser-properties
+

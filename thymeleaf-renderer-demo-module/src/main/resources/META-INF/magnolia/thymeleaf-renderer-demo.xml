@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+	<name>thymeleaf-renderer-demo</name>
+	<displayName>${project.name}</displayName>
+	<description>${project.description}</description>
+	<version>${project.version}</version>
+
+	<dependencies>
+		<dependency>
+			<name>core</name>
+			<version>6.2/*</version>
+		</dependency>
+		<dependency>
+			<name>rendering</name>
+			<version>6.2/*</version>
+		</dependency>
+		<dependency>
+			<name>templating</name>
+			<version>6.2/*</version>
+		</dependency>
+		<dependency>
+			<name>site</name>
+			<version>1.1.1/*</version>
+		</dependency>
+		<dependency>
+			<name>thymeleaf-renderer</name>
+			<version>*</version>
+		</dependency>
+	</dependencies>
+</module>

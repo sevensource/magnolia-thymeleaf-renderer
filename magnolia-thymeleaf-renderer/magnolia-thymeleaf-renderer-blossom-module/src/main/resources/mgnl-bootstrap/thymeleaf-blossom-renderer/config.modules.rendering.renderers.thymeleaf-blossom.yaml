@@ -1,3 +1,0 @@
-'thymeleaf-blossom':
-  extends: "../thymeleaf" 
-  'class': 'org.sevensource.magnolia.thymeleaf.blossom.renderer.BlossomThymeleafRenderer'

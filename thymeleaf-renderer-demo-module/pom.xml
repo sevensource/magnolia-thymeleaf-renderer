@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sevensource.magnolia</groupId>
+		<artifactId>magnolia-thymeleaf-renderer</artifactId>
+		<version>1.4.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>thymeleaf-renderer-demo-module</artifactId>
+
+	<packaging>jar</packaging>
+
+	<properties>
+		<version.thymeleaf-layout-dialect>2.4.1</version.thymeleaf-layout-dialect>
+		<version.thymeleaf-extras-java8time>3.0.4.RELEASE</version.thymeleaf-extras-java8time>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.sevensource.magnolia</groupId>
+			<artifactId>magnolia-module-thymeleaf-renderer</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${version.thymeleaf-layout-dialect}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-java8time</artifactId>
+			<version>${version.thymeleaf-extras-java8time}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

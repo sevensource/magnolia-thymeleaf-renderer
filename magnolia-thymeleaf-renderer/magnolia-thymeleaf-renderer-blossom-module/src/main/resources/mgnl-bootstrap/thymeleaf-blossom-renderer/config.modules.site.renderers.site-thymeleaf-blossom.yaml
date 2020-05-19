@@ -1,5 +1,0 @@
-'site-thymeleaf-blossom': 
-  'class': 'info.magnolia.module.site.renderer.SiteAwareRendererWrapper'
-  'wrappedRendererType': 'thymeleaf-blossom'
-
-

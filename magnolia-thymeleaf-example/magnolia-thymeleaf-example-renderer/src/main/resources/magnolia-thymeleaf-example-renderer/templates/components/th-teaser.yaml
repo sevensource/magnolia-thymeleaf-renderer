@@ -1,6 +1,0 @@
-title: Th Teaser
-templateScript: "/magnolia-thymeleaf-example-renderer/templates/components/th-teaser.html :: mainTeaser"
-renderType: thymeleaf
-
-dialog: magnolia-thymeleaf-example-renderer:components/th-teaser-properties
- 

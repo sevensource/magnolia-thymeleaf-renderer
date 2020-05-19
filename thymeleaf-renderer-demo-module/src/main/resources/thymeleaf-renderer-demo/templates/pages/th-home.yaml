@@ -1,0 +1,18 @@
+title: Th Home
+renderType: thymeleaf
+templateScript: /thymeleaf-renderer-demo/templates/pages/th-home.html
+dialog: thymeleaf-renderer-demo:pages/th-home-properties
+
+areas:
+  main:
+    type: list
+    availableComponents:
+      thText:
+        id: thymeleaf-renderer-demo:components/th-text
+
+  aux:
+    type: list
+    templateScript: /thymeleaf-renderer-demo/templates/areas/aux.html
+    availableComponents:
+      thTeaser:
+        id: thymeleaf-renderer-demo:components/th-teaser
