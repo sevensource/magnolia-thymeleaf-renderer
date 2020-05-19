@@ -22,14 +22,12 @@ package org.sevensource.magnolia.thymeleaf.blossom.renderer;
  * #L%
  */
 
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.jcr.Node;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import info.magnolia.cms.beans.config.ServerConfiguration;
+import info.magnolia.init.MagnoliaConfigurationProperties;
+import info.magnolia.module.blossom.render.RenderContext;
+import info.magnolia.rendering.engine.RenderingEngine;
+import info.magnolia.rendering.model.RenderingModel;
+import info.magnolia.rendering.template.RenderableDefinition;
 import org.sevensource.magnolia.thymeleaf.renderer.ThymeleafRenderer;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -44,12 +42,12 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.expression.ThymeleafEvaluationContext;
 import org.thymeleaf.spring5.naming.SpringContextVariableNames;
 
-import info.magnolia.cms.beans.config.ServerConfiguration;
-import info.magnolia.init.MagnoliaConfigurationProperties;
-import info.magnolia.module.blossom.render.RenderContext;
-import info.magnolia.rendering.engine.RenderingEngine;
-import info.magnolia.rendering.model.RenderingModel;
-import info.magnolia.rendering.template.RenderableDefinition;
+import javax.inject.Inject;
+import javax.jcr.Node;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 public class BlossomThymeleafRenderer extends ThymeleafRenderer implements ApplicationContextAware, MessageSourceAware {
 

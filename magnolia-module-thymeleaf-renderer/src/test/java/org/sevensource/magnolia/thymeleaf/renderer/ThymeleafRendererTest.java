@@ -22,15 +22,12 @@ package org.sevensource.magnolia.thymeleaf.renderer;
  * #L%
  */
 
-import static org.junit.Assert.assertTrue;
+import info.magnolia.rendering.engine.RenderException;
+import org.junit.Test;
 
 import java.util.Collections;
 
-import javax.jcr.RepositoryException;
-
-import org.junit.Test;
-
-import info.magnolia.rendering.engine.RenderException;
+import static org.junit.Assert.assertTrue;
 
 public class ThymeleafRendererTest extends MagnoliaThymeleafMockSupport {
 

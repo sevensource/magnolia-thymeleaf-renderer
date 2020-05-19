@@ -22,22 +22,19 @@ package org.sevensource.magnolia.thymeleaf.blossom.demo.controller.pages;
  * #L%
  */
 
-import java.time.Instant;
-import java.util.GregorianCalendar;
-
-import org.sevensource.magnolia.thymeleaf.blossom.demo.controller.components.BlossomTeaserComponent;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import info.magnolia.module.blossom.annotation.Area;
 import info.magnolia.module.blossom.annotation.AvailableComponentClasses;
-import info.magnolia.module.blossom.annotation.AvailableComponents;
 import info.magnolia.module.blossom.annotation.Inherits;
 import info.magnolia.module.blossom.annotation.TabFactory;
 import info.magnolia.module.blossom.annotation.Template;
 import info.magnolia.ui.form.config.TabBuilder;
 import info.magnolia.ui.framework.config.UiConfig;
+import org.sevensource.magnolia.thymeleaf.blossom.demo.controller.components.BlossomTeaserComponent;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.time.Instant;
 
 @Template(id="thymeleaf-blossom-renderer-demo:pages/blossomHome", title="Blossom Th Home")
 @Controller

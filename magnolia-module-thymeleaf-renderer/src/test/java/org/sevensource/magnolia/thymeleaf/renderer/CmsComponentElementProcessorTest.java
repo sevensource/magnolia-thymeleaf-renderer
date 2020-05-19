@@ -22,24 +22,22 @@ package org.sevensource.magnolia.thymeleaf.renderer;
  * #L%
  */
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
+import info.magnolia.rendering.engine.RenderException;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Workspace;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import info.magnolia.rendering.engine.RenderException;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CmsComponentElementProcessorTest extends MagnoliaThymeleafMockSupport {
 

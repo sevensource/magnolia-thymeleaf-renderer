@@ -1,12 +1,5 @@
 package org.sevensource.magnolia.thymeleaf.renderer;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.jcr.Node;
-
-import org.apache.commons.lang3.StringUtils;
-
 import info.magnolia.channel.ChannelResolver;
 import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.cms.core.AggregationState;
@@ -19,6 +12,11 @@ import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.model.RenderingModel;
 import info.magnolia.rendering.renderer.AbstractRenderer;
 import info.magnolia.rendering.template.RenderableDefinition;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.jcr.Node;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractThymeleafRenderer extends AbstractRenderer {
 

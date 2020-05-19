@@ -1,5 +1,10 @@
 package org.sevensource.magnolia.thymeleaf.setup;
 
+import info.magnolia.module.DefaultModuleVersionHandler;
+import info.magnolia.module.InstallContext;
+import info.magnolia.module.delta.Task;
+import info.magnolia.rendering.module.setup.InstallRendererContextAttributeTask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +32,6 @@ import java.util.Map.Entry;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
-import info.magnolia.module.DefaultModuleVersionHandler;
-import info.magnolia.module.InstallContext;
-import info.magnolia.module.delta.Task;
-import info.magnolia.rendering.module.setup.InstallRendererContextAttributeTask;
 
 public class MagnoliaThymeleafRendererVersionHandler extends DefaultModuleVersionHandler {
 

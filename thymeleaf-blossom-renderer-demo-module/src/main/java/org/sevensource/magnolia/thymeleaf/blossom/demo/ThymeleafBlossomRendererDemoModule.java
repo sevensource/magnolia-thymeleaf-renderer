@@ -25,8 +25,8 @@ package org.sevensource.magnolia.thymeleaf.blossom.demo;
 import info.magnolia.module.ModuleLifecycle;
 import info.magnolia.module.ModuleLifecycleContext;
 import info.magnolia.module.blossom.module.BlossomModuleSupport;
-import org.sevensource.magnolia.thymeleaf.blossom.demo.config.ThymeleafBlossomRendererDemoConfiguration;
 import org.sevensource.magnolia.thymeleaf.blossom.demo.config.BlossomServletConfiguration;
+import org.sevensource.magnolia.thymeleaf.blossom.demo.config.ThymeleafBlossomRendererDemoConfiguration;
 
 
 public class ThymeleafBlossomRendererDemoModule extends BlossomModuleSupport implements ModuleLifecycle {

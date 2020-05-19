@@ -22,21 +22,14 @@ package org.sevensource.magnolia.thymeleaf.renderer;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.jcr.Node;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import info.magnolia.cms.beans.config.ServerConfiguration;
+import info.magnolia.context.MgnlContext;
+import info.magnolia.init.MagnoliaConfigurationProperties;
+import info.magnolia.rendering.context.RenderingContext;
+import info.magnolia.rendering.engine.RenderException;
+import info.magnolia.rendering.engine.RenderingEngine;
+import info.magnolia.rendering.template.RenderableDefinition;
+import info.magnolia.rendering.util.AppendableWriter;
 import org.sevensource.magnolia.thymeleaf.dialect.MagnoliaDialect;
 import org.sevensource.magnolia.thymeleaf.workaraounds.AppendableWriterWrapper;
 import org.slf4j.Logger;
@@ -50,14 +43,19 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import info.magnolia.cms.beans.config.ServerConfiguration;
-import info.magnolia.context.MgnlContext;
-import info.magnolia.init.MagnoliaConfigurationProperties;
-import info.magnolia.rendering.context.RenderingContext;
-import info.magnolia.rendering.engine.RenderException;
-import info.magnolia.rendering.engine.RenderingEngine;
-import info.magnolia.rendering.template.RenderableDefinition;
-import info.magnolia.rendering.util.AppendableWriter;
+import javax.inject.Inject;
+import javax.jcr.Node;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class ThymeleafRenderer extends AbstractThymeleafRenderer {
 

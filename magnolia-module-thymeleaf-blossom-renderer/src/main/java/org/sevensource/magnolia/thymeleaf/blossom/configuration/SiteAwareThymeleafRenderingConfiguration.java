@@ -1,17 +1,16 @@
 package org.sevensource.magnolia.thymeleaf.blossom.configuration;
 
-import javax.inject.Inject;
-
+import info.magnolia.module.blossom.context.MagnoliaComponentFactoryBean;
+import info.magnolia.module.site.renderer.SiteAwareRendererWrapper;
+import info.magnolia.rendering.renderer.Renderer;
+import info.magnolia.rendering.renderer.registry.RendererRegistry;
 import org.sevensource.magnolia.thymeleaf.blossom.renderer.BlossomThymeleafRenderer;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import info.magnolia.module.blossom.context.MagnoliaComponentFactoryBean;
-import info.magnolia.module.site.renderer.SiteAwareRendererWrapper;
-import info.magnolia.rendering.renderer.Renderer;
-import info.magnolia.rendering.renderer.registry.RendererRegistry;
+import javax.inject.Inject;
 
 
 @Configuration

@@ -1,14 +1,13 @@
 package org.sevensource.magnolia.thymeleaf.blossom.demo.config;
 
-import javax.inject.Inject;
-
+import info.magnolia.module.blossom.view.TemplateViewResolver;
+import info.magnolia.rendering.renderer.Renderer;
 import org.sevensource.magnolia.thymeleaf.blossom.configuration.SiteAwareThymeleafRenderingConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import info.magnolia.module.blossom.view.TemplateViewResolver;
-import info.magnolia.rendering.renderer.Renderer;
+import javax.inject.Inject;
 
 
 @Configuration

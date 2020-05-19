@@ -22,13 +22,12 @@ package org.sevensource.magnolia.thymeleaf.blossom.demo.controller.components;
  * #L%
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import info.magnolia.module.blossom.annotation.TabFactory;
 import info.magnolia.module.blossom.annotation.Template;
 import info.magnolia.ui.form.config.TabBuilder;
 import info.magnolia.ui.framework.config.UiConfig;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Template(id="thymeleaf-blossom-renderer-demo:components/blossomTeaser", title="Blossom Th Teaser")
 @Controller
