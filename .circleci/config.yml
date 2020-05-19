@@ -31,7 +31,7 @@ jobs:
               gpg --batch --fast-import cd/codesigning.asc
               echo allow-loopback-pinentry >> ~/.gnupg/gpg-agent.conf
               echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-              mvn -s ../.circleci/settings.xml -DskipTests package deploy
+              mvn -s .circleci/settings.xml -DskipTests package deploy
             fi
 
 workflows:
