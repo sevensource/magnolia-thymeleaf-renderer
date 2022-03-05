@@ -4,8 +4,7 @@
 	<name>thymeleaf-blossom-renderer</name>
 	<displayName>Thymeleaf Blossom Renderer</displayName>
 	<class>org.sevensource.magnolia.thymeleaf.blossom.MagnoliaThymeleafBlossomRendererModule</class>
-	<versionHandler>org.sevensource.magnolia.thymeleaf.blossom.setup.MagnoliaThymeleafBlossomRendererVersionHandler
-	</versionHandler>
+	<versionHandler>org.sevensource.magnolia.thymeleaf.blossom.setup.MagnoliaThymeleafBlossomRendererVersionHandler</versionHandler>
 	<version>${project.version}</version>
 
 	<dependencies>
